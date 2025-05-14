@@ -1,88 +1,47 @@
 ---
+import { getCollection } from "astro:content";
+const posts = (await getCollection("blog"))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 6); // Hanya mengambil 6 postingan terbaru
 import FormattedDate from "./../components/FormattedDate.astro";
-import matter from "gray-matter";
-
-type GitHubFile = {
-  name: string;
-  path: string;
-  type: string;
-  download_url: string;
-};
-
-interface BlogMeta {
-  title: string;
-  description: string;
-  slug: string;
-  pubDate: string;
-  category?: string | string[];
-  heroImage?: string;
-}
-
-const res = await fetch(
-  "https://api.github.com/repos/myname-abdulmanap/test-tina/contents/src/content/blog"
-);
-const files: GitHubFile[] = await res.json();
-
-// Ambil isi dan metadata dari setiap file
-const posts: BlogMeta[] = await Promise.all(
-  files
-    .filter((file) => file.name.endsWith(".mdx"))
-    .map(async (file) => {
-      const slug = file.name.replace(".mdx", "");
-      const raw = await fetch(file.download_url).then((res) => res.text());
-      const { data } = matter(raw);
-
-      return {
-        ...(data as BlogMeta),
-        slug,
-      };
-    })
-);
-
-// Sort berdasarkan pubDate (descending)
-posts.sort(
-  (a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime()
-);
 ---
 
 <section class="blog">
   <div class="container">
     <header class="header fade-in">
-      <h2>Latest Articles 🍵</h2>
-      <p>Explore our collection of articles and insights</p>
+      <h2>News and Events 📰</h2>
+      <p>Explore our collection of articles, news, events and insights</p>
     </header>
 
     <div class="grid fade-in">
       {
         posts.map((post) => (
           <article class="card">
-            <a href={`/blog/${post.slug}/`}>
+            <a href={`/blog/${post.id}/`}>
               <div class="img-wrap">
                 <img
-                  src={post.heroImage ?? "/default.jpg"}
+                  src={post.data.heroImage}
                   alt=""
                   loading="lazy"
                   decoding="async"
                 />
               </div>
               <div class="content">
-                <time>
-                  in{" "}
-                  {Array.isArray(post.category)
-                    ? post.category.join(", ")
-                    : post.category}{" "}
-                  - <FormattedDate date={new Date(post.pubDate)} />
-
-                </time>
-                <h3>{post.title}</h3>
-                <p>{post.description}</p>
+                <time> in {post.data.category instanceof Array
+    ? post.data.category.join(' , ') 
+    : post.data.category 
+  } - <FormattedDate date={post.data.pubDate} /> </time>
+                <h3>{post.data.title}</h3>
+                <p>{post.data.description}</p>
               </div>
             </a>
           </article>
         ))
       }
     </div>
-    <div class="btn-blog"><a href="/blog" class="btn">More Articles</a></div>
+<div class="btn-blog">  <a href="/blog" class="btn">More Articles</a></div> 
+
+    
   </div>
 </section>
 
@@ -91,6 +50,8 @@ posts.sort(
     padding: 2rem 0;
     background: var(--bg-main);
   }
+
+
 
   .container {
     max-width: 1000px;
@@ -180,13 +141,15 @@ posts.sort(
     align-items: center;
   }
 
+
+
   @media (max-width: 768px) {
     .grid {
       grid-template-columns: repeat(2, 1fr);
       gap: 0.75rem;
       margin-bottom: 2rem;
     }
-
+    
     .img-wrap {
       height: 120px;
     }
@@ -196,7 +159,7 @@ posts.sort(
     .grid {
       grid-template-columns: 1fr;
     }
-
+    
     .img-wrap {
       height: 160px;
     }

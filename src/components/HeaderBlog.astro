@@ -1,348 +1,301 @@
 ---
-
-import ThemeToggle from "./ThemeToggle.astro"
+import ThemeToggle from "./ThemeToggle.astro";
 ---
+
 <style>
-
-/* Header & Navigation */
-header {
-  position: fixed;
-  width: 100%;
-  z-index: 1000;
-  transition: all 0.5s ease;
-
-}
-
-header.transparent {
-  background: transparent;
-  /* box-shadow: 0 2px 20px rgba(148, 148, 148, 0.1); */
-
-}
-
-
-header.white {
-  background: var(--bg-color);
-  box-shadow: 0 2px 20px rgba(37, 37, 37, 0.1);
-
-}
-
-
-
-
-.nav-container {
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 1.25rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.navbar-icons {
-  display: flex;
-  align-items: center;
-}
-
-.navbar-icons .icon {
-  margin-left: 20px;
-  font-size: medium;
-  color: #000000;
-  background-color: rgb(244, 230, 181);
-  transition: color 0.3s ease;
-  padding: 2px;
-  /* Mengurangi padding untuk lebih ramping */
-  border-radius: 10px;
-}
-
-.navbar-icons .icon:hover {
-  color: #0073e6;
-}
-
-
-.logo a {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  text-decoration: none;
-  color: var(--text-color);
-  font-weight: 700;
-  font-size: 1.2rem;
-  transition: color 0.3s;
-}
-
-.logo h2 {
-  font-size: 1.7rem;
-}
-
-
-
-
-.logo a:hover {
-
-  color: var(--primary);
-}
-
-header.white .logo a:hover {
-  color: var(--color-bar);
-}
-
-header.transparent .logo a:hover {
-  color: var(--color-bar);
-}
-
-header.white .logo a {
-  color: var(--text-color);
-}
-
-header.white .logo h2:hover {
-  color: var(--color-bar);
-}
-
-header.transparent .logo h2 {
-  color: var(--text-color);
-}
-header.transparent .logo h2:hover {
-  color: var(--color-bar);
-}
-
-header.white .logo h2 {
-  color: var(--text-color);
-}
-
-.menu ul {
-  display: flex;
-  gap: 2.5rem;
-  list-style: none;
-}
-
-.menu a {
-  text-decoration: none;
-  color: var(--text-color);
-  font-weight: bold;
-  transition: color 0.3s;
-  font-size: 1.1rem;
-}
-
-header.white .menu a {
-  color: var(--text-color);
-}
-
-header.transparent .menu a {
-  color: var(--text-color);
-}
-
-header.transparent .menu a:hover {
-  color: var(--color-bar);
-}
-
-header.white .menu a:hover {
-  color: var(--color-bar);
-}
-
-header:hover {
-  color: var(--color-bar);
-
-}
-
-.menu a:hover {
-  color: var(--primary);
-}
-
-.bar {
-  display: block;
-  width: 27px;
-  height: 6px;
-  margin: 3px;
-  background-color: rgb(244, 230, 181);
-  transition: 0.3s;
-}
-
-header.white .bar {
-  background-color: rgb(229, 207, 129);
-}
-
-.hamburger {
-  display: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  z-index: 1001;
-  padding: 15px;
-}
-
-.overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  visibility: hidden;
-  transition: 0.3s;
-  pointer-events: none;
-}
-
-
-@keyframes gradientMove {
-  0% {
-    background-position: 0% 50%;
+  header {
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    transition: all 0.5s ease;
   }
 
-  50% {
-    background-position: 100% 50%;
+  header.transparent {
+    background: transparent;
+    box-shadow: none;
+   
   }
 
-  100% {
-    background-position: 0% 50%;
+  header.white {
+    background: var(--bg-color);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
   }
-}
 
-/* Responsive Design */
-@media (max-width: 768px) {
+  .nav-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-.logo a {
-  font-size: 0.8rem;
-}
+  .logo a {
+    position: relative;
+    display: inline-block;
+    width: 100px;
+    height: 50px;
+    overflow: visible;
+  }
 
-.logo h2 {
-  font-size: 1.2rem;
-}
+  .logo-img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150px;
+    height: auto;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
 
+  .logo-white {
+    opacity: 0;
+    filter: brightness(0) invert(1);
+  }
 
-.features-grid {
-  grid-template-columns: 1fr;
-}
+  
 
+  .menu ul {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
 
-.cta h2 {
-  font-size: 2rem;
-}
+  .menu a {
+    text-decoration: none;
+    color: var(--text-blog);
+    font-weight: bold;
+    transition: color 0.3s;
+    font-size: 1.1rem;
+  }
 
-.pricing-grid,
-.testimonials-grid,
-.footer-grid {
-  grid-template-columns: 1fr;
-}
+  header.white .menu a {
+    color: var(--text-color);
+  }
 
-.pricing-card.popular {
-  transform: translateY(0);
-}
+  .navbar-icons {
+    display: flex;
+    align-items: center;
+  }
 
-.form-grid {
-  grid-template-columns: 1fr;
-}
+  .navbar-icons .icon {
+    margin-left: 20px;
+    font-size: medium;
+    background-color: var(--bg-color);
+    padding: 2px;
+    border-radius: 10px;
+  }
 
+  .bar {
+    display: block;
+    width: 27px;
+    height: 6px;
+    margin: 3px;
+    background-color: var(--text-bar);
+    transition: 0.3s;
+  }
 
-.hamburger {
-  display: block;
-}
+  header.white .bar {
+    background-color: var(--text-color);
+  }
 
-.overlay {
-  display: block;
-}
+  .hamburger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1001;
+    padding: 15px;
+  }
 
-.overlay.active {
+  /* Overlay for mobile menu */
+  .overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
 
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-}
+  .overlay.active {
+    display: block;
+  }
 
-.menu {
-  position: fixed;
-  top: 0;
-  left: -280px;
-  height: 100vh;
-  width: 280px;
-  background: var(--bg-color);
-  padding: 2rem;
-  transition: left 0.3s ease;
-  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
-}
+  /* Dropdown styling */
+  .has-dropdown {
+    position: relative;
+  }
 
-header.transparent .menu a {
-  color: var(--text-color);
-}
+  .has-dropdown .dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--bg-color);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    min-width: 200px;
+    padding: 0;
+    z-index: 999;
+    
+    /* Animation properties */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+    overflow: hidden;
+    max-height: 0;
+    transition: all 0.3s ease;
+  }
 
+  .has-dropdown.open .dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    max-height: 200px; /* Adjust based on your content */
+    padding: 0.5rem 0;
+  }
 
-.menu.active {
-  left: 0;
-}
+  .dropdown li {
+    margin: 0;
+    padding: 0;
+  }
 
-.menu ul {
-  flex-direction: column;
-  gap: 1rem;
-}
+  .dropdown a {
+    padding: 0.75rem 1.5rem;
+    display: block;
+    color: var(--text-color);
+    font-weight: normal;
+    font-size: 1rem;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
 
-.menu a {
-  color: #333;
-  font-size: 1.1rem;
-  display: block;
-  padding: 0.5rem 0;
-}
+  .dropdown a:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
 
-.hamburger.active .bar:nth-child(1) {
-  transform: rotate(-45deg) translate(-5px, 6px);
-}
+  /* Style for dropdown toggle indicator */
+  .dropdown-toggle {
+    display: flex;
+    align-items: center;
+  }
 
-.hamburger.active .bar:nth-child(2) {
-  opacity: 0;
-}
+  .dropdown-toggle::after {
+    content: '▼';
+    display: inline-block;
+    margin-left: 6px;
+    font-size: 0.7em;
+    transition: transform 0.3s ease;
+  }
 
-.hamburger.active .bar:nth-child(3) {
-  transform: rotate(45deg) translate(-5px, -6px);
-}
+  .has-dropdown.open .dropdown-toggle::after {
+    transform: rotate(180deg);
+  }
 
-.hero h1 {
-  font-size: 2.5rem;
-}
-}
+  @media (max-width: 768px) {
+    .hamburger {
+      display: block;
+    }
 
+    .menu {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      height: 100vh;
+      width: 280px;
+      background: var(--bg-color);
+      padding: 2rem;
+      transition: left 0.3s ease;
+      z-index: 1000;
+    }
 
+    header.transparent .menu a {
+      color: var(--text-color);
+    }
+
+    .menu.active {
+      left: 0;
+    }
+
+    .menu ul {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .hamburger.active .bar:nth-child(1) {
+      transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .hamburger.active .bar:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active .bar:nth-child(3) {
+      transform: rotate(45deg) translate(-5px, -6px);
+    }
+    
+    /* Mobile dropdown styles */
+    .has-dropdown .dropdown {
+      position: static;
+      box-shadow: none;
+      border-radius: 0;
+      background: transparent;
+      padding-left: 1rem;
+      max-height: 0;
+      overflow: hidden;
+    }
+    
+    .has-dropdown.open .dropdown {
+      max-height: 500px;
+    }
+    
+    .dropdown a {
+      padding: 0.5rem 0;
+    }
+  }
 </style>
+
 <div class="overlay"></div>
 <header class="transparent">
-    <div class="nav-container">
-        <div class="logo">
-            <a href="/">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="16 18 22 12 16 6"></polyline>
-                <polyline points="8 6 2 12 8 18"></polyline>
-                <line x1="10" y1="6" x2="14" y2="18"></line>
-              </svg>
-              <h2>Abdul Manap</h2>
-            </a>
-          </div>
-      <nav class="menu">
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/blog">Blog</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="/services">Services</a></li>
-          <li><a href="/contact">Hire Me</a></li>
-        </ul>
-      </nav>
-
-      <div class="navbar-icons">
-        
-     
-        <a href="https://github.com/myname-abdulmanap" target="_blank" class="icon github-icon" aria-label="GitHub Profile">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
-                <path d="M12 2C6.48 2 2 6.48 2 12c0 4.418 2.866 8.167 6.839 9.49.5.092.679-.217.679-.482 0-.239-.01-.871-.015-1.711-2.78.602-3.372-1.34-3.372-1.34-.455-1.141-1.111-1.446-1.111-1.446-.91-.622.07-.61.07-.61 1.008.071 1.536 1.04 1.536 1.04.894 1.535 2.346 1.092 2.91.836.091-.648.35-1.091.638-1.343-2.221-.252-4.555-1.11-4.555-4.92 0-1.088.39-1.976 1.031-2.67-.103-.253-.448-1.267.097-2.635 0 0 .84-.268 2.747 1.037a9.656 9.656 0 0 1 2.502-.338c.85 0 1.71.118 2.502.338 1.907-1.305 2.747-1.037 2.747-1.037.545 1.368.2 2.382.097 2.635.642.694 1.031 1.582 1.031 2.67 0 3.818-2.337 4.666-4.56 4.92.358.342.669.97.669 1.955 0 1.411-.015 2.552-.015 2.895 0 .268.179.577.679.482 3.972-1.323 6.838-5.072 6.838-9.49 0-5.52-4.48-10-10-10z"/>
-            </svg>
-        </a>
-
-        <ThemeToggle />
-        <button class="hamburger" aria-label="Menu">
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-        </button>       
-      </div> 
+  <div class="nav-container">
+    <div class="logo">
+      <a href="/">
+        <img class="logo-img logo-dark" src="/assets/img/qualita_indonesia_logo.png" alt="Logo" width="50" height="50" />
+        <img class="logo-img logo-white" src="/assets/img/qualita_indonesia_logo.png" alt="Logo" width="50" height="50" />
+      </a>
     </div>
-  </header>
-  
-  <script src="/src/components/js/header.ts"></script>
-  
+    <nav class="menu">
+      <ul>
+        <li><a href="/#">Home</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li class="has-dropdown">
+          <a href="#" class="dropdown-toggle">Products</a>
+          <ul class="dropdown">
+            <li><a href="https://protectcube-landingpage.vercel.app">ProtectQube</a></li>
+            <li><a href="https://qifess.com">Qifess</a></li>
+          </ul>
+        </li>
+        <li><a href="/#contact">Contact Us</a></li>
+        <li><a href="/blog">News</a></li>
+      </ul>
+    </nav>
+    
+    <div class="navbar-icons">
+      <ThemeToggle />
+      <button class="hamburger" aria-label="Menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Gunakan script eksternal untuk mendukung View Transitions -->
+<script src="/src/components/js/header.ts"></script>

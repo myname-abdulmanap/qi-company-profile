@@ -51,6 +51,7 @@ html {
   --color-contact: #232424;
   --color-portfolio: #000000;
   --text-bar: #fff;
+  --text-blog: #fff;
 }
 
 [data-theme="dark"] {
@@ -70,6 +71,7 @@ html {
   --color-card: #ffffff;
   --color-contact: #fffcfc;
   --color-portfolio: #ffffff;
+  --text-blog: #000000;
 
 }
 
