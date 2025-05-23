@@ -1,75 +1,105 @@
 <section class="gallery-section" id="gallery">
   <div class="gallery-header">
-    <h2 class="animate-element fade-up">Our Gallery<span class="line-animated"></span></h2>
-    <p class="animate-element fade-up">
-      A glimpse into the spirit of Qualita Indonesia<br/> moments of collaboration, dedication, and excellence
-      captured in timeless visuals.
+    <h2 class="animate-element">Our Gallery<span class="line-animated"></span></h2>
+    <p class="animate-element">
+      A glimpse into the spirit of Qualita Indonesia - moments of collaboration, dedication, and excellence captured in timeless visuals.
     </p>
   </div>
+
   <div class="gallery-container">
-    <div class="gallery-item tall">
-      <img class="clickable" src="assets/img/qi-1.jpg" alt="Gallery 1" />
-    </div>
-    <div class="gallery-item">
-      <img class="clickable" src="assets/img/qi-3.jpg" alt="Gallery 3" />
-    </div>
-    <div class="gallery-item">
-      <img class="clickable" src="assets/img/qi-4.jpg" alt="Gallery 4" />
-    </div>
-    <div class="gallery-item">
-      <img class="clickable" src="assets/img/qi-5.jpg" alt="Gallery 5" />
-    </div>
-    <div class="gallery-item">
-      <img class="clickable" src="assets/img/qi-6.jpg" alt="Gallery 6" />
-    </div>
-    
-    <div class="gallery-item">
-      <img class="clickable" src="assets/img/qi-8.jpg" alt="Gallery 8" />
-    </div>
-    <div class="gallery-item tall">
-      <img class="clickable" src="assets/img/qi-9.jpg" alt="Gallery 9" />
-    </div>
-    <div class="gallery-item">
-      <img class="clickable" src="assets/img/qi-10.jpeg" alt="Gallery 10" />
-    </div>
-    <div class="gallery-item">
-      <img class="clickable" src="assets/img/qi-11.jpg" alt="Gallery 11" />
-    </div>
-    <div class="gallery-item">
-      <img class="clickable" src="assets/img/qi-12.jpg" alt="Gallery 12" />
-    </div>
-    <div class="gallery-item">
-      <img class="clickable" src="assets/img/qi-13.jpg" alt="Gallery 13" />
-    </div>
-    <div class="gallery-item">
-      <img class="clickable" src="assets/img/qi-14.jpg" alt="Gallery 14" />
-    </div>
-    <div class="gallery-item">
-      <img class="clickable" src="assets/img/qi-7.jpg" alt="Gallery 7" />
-    </div>
+    <!-- 13 Images -->
+    <label for="img1" class="gallery-item tall"><img src="assets/img/qi-1.jpg" alt="Gallery 1" /></label>
+    <label for="img2" class="gallery-item"><img src="assets/img/qi-3.jpg" alt="Gallery 2" /></label>
+    <label for="img3" class="gallery-item"><img src="assets/img/qi-4.jpg" alt="Gallery 3" /></label>
+    <label for="img4" class="gallery-item"><img src="assets/img/qi-5.jpg" alt="Gallery 4" /></label>
+    <label for="img5" class="gallery-item"><img src="assets/img/qi-6.jpg" alt="Gallery 5" /></label>
+    <label for="img6" class="gallery-item"><img src="assets/img/qi-8.jpg" alt="Gallery 6" /></label>
+    <label for="img7" class="gallery-item tall"><img src="assets/img/qi-9.jpg" alt="Gallery 7" /></label>
+    <label for="img8" class="gallery-item"><img src="assets/img/qi-10.jpeg" alt="Gallery 8" /></label>
+    <label for="img9" class="gallery-item"><img src="assets/img/qi-11.jpg" alt="Gallery 9" /></label>
+    <label for="img10" class="gallery-item"><img src="assets/img/qi-12.jpg" alt="Gallery 10" /></label>
+    <label for="img11" class="gallery-item"><img src="assets/img/qi-13.jpg" alt="Gallery 11" /></label>
+    <label for="img12" class="gallery-item"><img src="assets/img/qi-14.jpg" alt="Gallery 12" /></label>
+    <label for="img13" class="gallery-item"><img src="assets/img/qi-7.jpg" alt="Gallery 13" /></label>
   </div>
 </section>
 
-<!-- Lightbox preview -->
-<div id="lightbox" class="lightbox" style="display:none;">
-  <span class="close">&times;</span>
-  <img class="lightbox-img" src="" alt="Preview Image" />
-</div>
+<!-- Lightbox: 13 Items -->
+<input type="checkbox" id="img1" class="lightbox-toggle" hidden />
+<div class="lightbox"><label for="img1" class="lightbox-overlay"></label><img src="assets/img/qi-1.jpg" /></div>
+
+<input type="checkbox" id="img2" class="lightbox-toggle" hidden />
+<div class="lightbox"><label for="img2" class="lightbox-overlay"></label><img src="assets/img/qi-3.jpg" /></div>
+
+<input type="checkbox" id="img3" class="lightbox-toggle" hidden />
+<div class="lightbox"><label for="img3" class="lightbox-overlay"></label><img src="assets/img/qi-4.jpg" /></div>
+
+<input type="checkbox" id="img4" class="lightbox-toggle" hidden />
+<div class="lightbox"><label for="img4" class="lightbox-overlay"></label><img src="assets/img/qi-5.jpg" /></div>
+
+<input type="checkbox" id="img5" class="lightbox-toggle" hidden />
+<div class="lightbox"><label for="img5" class="lightbox-overlay"></label><img src="assets/img/qi-6.jpg" /></div>
+
+<input type="checkbox" id="img6" class="lightbox-toggle" hidden />
+<div class="lightbox"><label for="img6" class="lightbox-overlay"></label><img src="assets/img/qi-8.jpg" /></div>
+
+<input type="checkbox" id="img7" class="lightbox-toggle" hidden />
+<div class="lightbox"><label for="img7" class="lightbox-overlay"></label><img src="assets/img/qi-9.jpg" /></div>
+
+<input type="checkbox" id="img8" class="lightbox-toggle" hidden />
+<div class="lightbox"><label for="img8" class="lightbox-overlay"></label><img src="assets/img/qi-10.jpeg" /></div>
+
+<input type="checkbox" id="img9" class="lightbox-toggle" hidden />
+<div class="lightbox"><label for="img9" class="lightbox-overlay"></label><img src="assets/img/qi-11.jpg" /></div>
+
+<input type="checkbox" id="img10" class="lightbox-toggle" hidden />
+<div class="lightbox"><label for="img10" class="lightbox-overlay"></label><img src="assets/img/qi-12.jpg" /></div>
+
+<input type="checkbox" id="img11" class="lightbox-toggle" hidden />
+<div class="lightbox"><label for="img11" class="lightbox-overlay"></label><img src="assets/img/qi-13.jpg" /></div>
+
+<input type="checkbox" id="img12" class="lightbox-toggle" hidden />
+<div class="lightbox"><label for="img12" class="lightbox-overlay"></label><img src="assets/img/qi-14.jpg" /></div>
+
+<input type="checkbox" id="img13" class="lightbox-toggle" hidden />
+<div class="lightbox"><label for="img13" class="lightbox-overlay"></label><img src="assets/img/qi-7.jpg" /></div>
+
+<!-- Styles: Gunakan dari jawaban sebelumnya -->
 
 <style>
-  /* Basic styling */
+  /* Animasi scroll */
+  .animate-element {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease-out forwards;
+    animation-delay: 0.2s;
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Galeri */
+  .gallery-section {
+    padding: 5rem 2rem;
+    background: #fff;
+  }
+
   .gallery-header {
     text-align: center;
     margin-bottom: 4rem;
   }
+
   .gallery-header h2 {
     font-size: 2.5rem;
     font-weight: 700;
-    color: var(--heading-color, #222);
-    margin-bottom: 1rem;
     position: relative;
     display: inline-block;
   }
+
   .gallery-header h2::after {
     content: '';
     position: absolute;
@@ -81,18 +111,15 @@
     background: linear-gradient(to right, #4338ca, #ff5757);
     border-radius: 3px;
   }
+
   .gallery-header p {
-    max-width: 36rem;
+    max-width: 600px;
     margin: 1.5rem auto 0;
-    color: var(--text-color, #555);
     font-size: 1.1rem;
+    color: #555;
     line-height: 1.6;
   }
-  .gallery-section {
-    padding: 5rem 2rem;
-    background: var(--bg-color, #fff);
-    overflow: hidden;
-  }
+
   .gallery-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -100,81 +127,61 @@
     gap: 1rem;
     grid-auto-flow: dense;
   }
+
   .gallery-item {
-    position: relative;
     overflow: hidden;
     border-radius: 1rem;
-    opacity: 0; /* start hidden */
-    transform: translateY(20px);
-    animation-fill-mode: forwards;
-    /* animation assigned dynamically in JS */
+    transition: transform 0.3s, filter 0.3s;
+    display: block;
+    cursor: pointer;
   }
-  .gallery-item.tall {
-    grid-row: span 2;
-  }
+
   .gallery-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
-    border-radius: 1rem;
     filter: brightness(0.5);
-    transition: transform 0.4s ease, filter 0.4s ease;
+    transition: transform 0.3s ease, filter 0.3s ease;
   }
 
-  /* Hover: zoom + hue rotate (randomized by JS) */
   .gallery-item:hover img {
-    transform: scale(1.15);
-    filter: brightness(1.0) saturate(1.2) hue-rotate(var(--hue-rotate, 0deg));
-    cursor: pointer;
+    transform: scale(1.1);
+    filter: brightness(1.1) saturate(1.2);
   }
 
-  /* Fade-in keyframes */
-  @keyframes fadeInUp {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .gallery-item.tall {
+    grid-row: span 2;
   }
 
-  /* Lightbox styles */
+  /* Lightbox */
   .lightbox {
+    display: none;
     position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: rgba(0,0,0,0.85);
-    display: flex;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    cursor: zoom-out;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
   }
-  .lightbox.show {
-    opacity: 1;
-    pointer-events: auto;
-  }
-  .lightbox-img {
+
+  .lightbox img {
     max-width: 90%;
     max-height: 90%;
     border-radius: 12px;
-    box-shadow: 0 0 20px rgba(255,255,255,0.2);
-    user-select: none;
-  }
-  .close {
-    position: fixed;
-    top: 20px;
-    right: 30px;
-    font-size: 3rem;
-    color: white;
-    cursor: pointer;
-    user-select: none;
-    z-index: 10000;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
   }
 
-  /* Responsive */
+  .lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    cursor: zoom-out;
+  }
+
+  /* CSS Only Toggle */
+  .lightbox-toggle:checked + .lightbox {
+    display: flex;
+  }
+
   @media (max-width: 768px) {
     .gallery-container {
       grid-template-columns: repeat(2, 1fr);
@@ -182,48 +189,3 @@
     }
   }
 </style>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const items = document.querySelectorAll('.gallery-item');
-    
-    // Set random animation delay & hue-rotate for hover color variation
-    items.forEach((item, i) => {
-      const delay = (Math.random() * 1.5).toFixed(2); // 0 - 1.5s random delay
-      item.style.animation = `fadeInUp 0.8s ease forwards`;
-      item.style.animationDelay = `${delay}s`;
-      
-      // Random hue rotation between -45deg to 45deg for hover color effect
-      const hue = Math.floor(Math.random() * 90) - 45;
-      item.style.setProperty('--hue-rotate', `${hue}deg`);
-    });
-
-    // Lightbox logic
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = lightbox.querySelector('.lightbox-img');
-    const closeBtn = lightbox.querySelector('.close');
-
-    document.querySelectorAll('.clickable').forEach(img => {
-      img.addEventListener('click', () => {
-        lightboxImg.src = img.src;
-        lightbox.classList.add('show');
-      });
-    });
-
-    // Close lightbox on click background or close button
-    lightbox.addEventListener('click', (e) => {
-      if (e.target === lightbox || e.target === closeBtn) {
-        lightbox.classList.remove('show');
-        lightboxImg.src = '';
-      }
-    });
-
-    // Close with ESC key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && lightbox.classList.contains('show')) {
-        lightbox.classList.remove('show');
-        lightboxImg.src = '';
-      }
-    });
-  });
-</script>
