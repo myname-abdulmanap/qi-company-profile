@@ -1,0 +1,185 @@
+<section class="gallery-section" id="gallery">
+  <div class="gallery-header">
+    <h2 class="animate-element fade-up">Our Gallery<span class="line-animated"></span></h2>
+    <p class="animate-element fade-up">
+      A glimpse into the spirit of Qualita Indonesia<br/> moments of collaboration, dedication, and excellence
+      captured in timeless visuals.
+    </p>
+  </div>
+  <div class="gallery-container animate-element fade-up">
+    <div class="gallery-item"><img src="assets/img/qi-1.jpg" alt="Gallery 1" /></div>
+
+    <div class="gallery-item tall"><img src="assets/img/qi-3.jpg" alt="Gallery 3" /></div>
+    <div class="gallery-item"><img src="assets/img/qi-4.jpg" alt="Gallery 4" /></div>
+    <div class="gallery-item"><img src="assets/img/qi-5.jpg" alt="Gallery 5" /></div>
+    <div class="gallery-item"><img src="assets/img/qi-6.jpg" alt="Gallery 6" /></div>
+    <div class="gallery-item"><img src="assets/img/qi-7.jpg" alt="Gallery 7" /></div>
+    <div class="gallery-item"><img src="assets/img/qi-8.jpg" alt="Gallery 8" /></div>
+    <div class="gallery-item tall"><img src="assets/img/qi-9.jpg" alt="Gallery 9" /></div>
+    <div class="gallery-item"><img src="assets/img/qi-10.jpeg" alt="Gallery 10" /></div>
+    <div class="gallery-item"><img src="assets/img/qi-11.jpg" alt="Gallery 11" /></div>
+    <div class="gallery-item"><img src="assets/img/qi-12.jpg" alt="Gallery 12" /></div>
+    <div class="gallery-item"><img src="assets/img/qi-13.jpg" alt="Gallery 13" /></div>
+    <div class="gallery-item"><img src="assets/img/qi-14.jpg" alt="Gallery 14" /></div>
+  </div>
+</section>
+
+<style>
+  .gallery-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .gallery-header h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--heading-color);
+    margin-bottom: 1rem;
+    position: relative;
+    display: inline-block;
+  }
+
+  .gallery-header h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 3px;
+    background: linear-gradient(to right, #4338ca, #ec4899);
+    border-radius: 3px;
+    transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .gallery-header h2.animate::after {
+    width: 80px;
+  }
+
+  .gallery-header p {
+    max-width: 36rem;
+    margin: 1.5rem auto 0;
+    color: var(--text-secondary, #6b7280);
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+
+  .gallery-section {
+    padding: 5rem 2rem;
+    background: var(--bg-color); /* deep background */
+    overflow: hidden;
+  }
+
+  .gallery-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-auto-rows: 200px;
+    gap: 1rem;
+    grid-auto-flow: dense;
+  }
+
+  .gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    animation: fadeUp 1s ease both;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition:
+      transform 0.6s ease,
+      filter 0.6s ease;
+    border-radius: 1rem;
+  }
+
+  /* Hover effect: zoom + subtle blur */
+  .gallery-item:hover img {
+    transform: scale(1.1);
+    filter: brightness(1.2) contrast(1.1) saturate(1.2);
+  }
+
+  /* Abstract layout classes */
+  .gallery-item.wide {
+    grid-column: span 2;
+  }
+
+  .gallery-item.tall {
+    grid-row: span 2;
+  }
+
+  /* Fade-in animation */
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Responsive masonry fallback */
+  @media (max-width: 768px) {
+    .gallery-container {
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: 150px;
+    }
+  }
+
+  /* Animation Keyframes */
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(0.95);
+      opacity: 0.7;
+    }
+    50% {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
+    100% {
+      transform: scale(0.95);
+      opacity: 0.7;
+    }
+  }
+
+  /* Entrance Animations */
+  .animate-element {
+    opacity: 0;
+    transform: translateY(30px);
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
+  }
+
+  .animate-element.animate {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .fade-up {
+    transform: translateY(50px);
+  }
+
+  .fade-in-right {
+    transform: translateX(-50px);
+  }
+
+  .fade-in-left {
+    transform: translateX(50px);
+  }
+</style>
