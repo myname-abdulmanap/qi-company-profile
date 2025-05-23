@@ -626,11 +626,11 @@ const categories = Array.isArray(category) ? category : [category];
       
 
         <nav class="breadcrumb" aria-label="Breadcrumb">
-          <a href="/blog">Articles</a> 
+          <a href="/posts">Articles</a> 
           <span class="separator">&gt;</span>
           {categories.map((cat, index) => (
             <>
-              <a href={`/blog/category/${cat.toLowerCase()}`}>{cat}</a>
+              <a href={`/posts/category/${cat.toLowerCase()}`}>{cat}</a>
               {index < categories.length - 1 && <span class="separator">&gt;</span>}
             </>
           ))}

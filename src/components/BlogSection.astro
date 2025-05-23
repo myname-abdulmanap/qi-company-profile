@@ -17,7 +17,7 @@ import FormattedDate from "./../components/FormattedDate.astro";
       {
         posts.map((post) => (
           <article class="card">
-            <a href={`/blog/${post.id}/`}>
+            <a href={`/posts/${post.id}/`}>
               <div class="img-wrap">
                 <img
                   src={post.data.heroImage}
@@ -39,7 +39,7 @@ import FormattedDate from "./../components/FormattedDate.astro";
         ))
       }
     </div>
-<div class="btn-blog">  <a href="/blog" class="btn">More Articles</a></div> 
+<div class="btn-blog">  <a href="/posts" class="btn">More Articles</a></div> 
 
     
   </div>
