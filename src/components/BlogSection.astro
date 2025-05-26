@@ -6,8 +6,8 @@ const posts = (await getCollection("blog"))
 import FormattedDate from "./../components/FormattedDate.astro";
 ---
 
-<section class="blog">
-  <div class="container">
+<section class="blog-section">
+  <div class="container-blog">
     <header class="header fade-in">
       <h2>News and Events 📰</h2>
       <p>Explore our collection of articles, news, events and insights</p>
@@ -46,14 +46,14 @@ import FormattedDate from "./../components/FormattedDate.astro";
 </section>
 
 <style>
-  .blog {
+  .blog-section {
     padding: 2rem 0;
     background: var(--bg-main);
   }
 
 
 
-  .container {
+  .container-blog {
     max-width: 1000px;
     margin: 0 auto;
     padding: 0 1rem;
