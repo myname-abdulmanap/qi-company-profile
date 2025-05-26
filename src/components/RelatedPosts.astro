@@ -50,7 +50,7 @@ const relatedPosts = allPosts
     <h3 class="related-posts-title">Related Posts</h3>
     <div class="related-posts-container">
       {relatedPosts.map((post) => (
-        <a href={`/blog/${post.data.slug}`} class="related-post-card">
+        <a href={`/posts/${post.data.slug}`} class="related-post-card">
           {post.data.heroImage && (
             <div class="related-post-image">
               <img 
