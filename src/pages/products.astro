@@ -1,0 +1,26 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE_PRODUCT, SITE_DESCRIPTION_PRODUCT } from "../consts";
+import { ClientRouter } from 'astro:transitions';
+import HeaderBlog from "../components/HeaderBlog.astro";
+import ProductSection from "../components/ProductSection.astro";
+
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={SITE_TITLE_PRODUCT} description={SITE_DESCRIPTION_PRODUCT} />
+   
+  </head>
+
+  <body>
+    <ClientRouter /> 
+    <HeaderBlog />
+    <br />
+   <ProductSection />
+    <Footer />
+  
+  </body>
+</html>

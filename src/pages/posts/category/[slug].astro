@@ -62,7 +62,7 @@ const pageTitle = `${categoryTitle} - ${SITE_TITLE}`;
           {filteredPosts.length > 0 ? (
             filteredPosts.map((post) => (
               <article class="blog-card fade-in">
-                <a href={`/blog/${post.data.slug}/`} class="card-link">
+                <a href={`/posts/${post.data.slug}/`} class="card-link">
                   <div class="card-image">
                     <img
                       src={post.data.heroImage}
