@@ -3,7 +3,7 @@ name: Deploy Astro to Server
 on:
   push:
     branches:
-      - main   
+      - main
 
 jobs:
   deploy:
@@ -16,31 +16,40 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '18'  
+        node-version: '20'
 
     - name: Install dependencies
-      run: npm install
+      run: npm ci
 
     - name: Build Astro project
       run: npm run build
 
     - name: Copy files to server via SSH
-      uses: appleboy/scp-action@v0.1.4
+      uses: appleboy/scp-action@v0.1.7
       with:
         host: qualita-indonesia.com
         username: kangdev
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
-        source: "dist/**"            
+        source: "dist/*"
         target: "/home/kangdev/astro_project"
 
-    - name: Restart Nginx or other service (optional)
-      uses: appleboy/ssh-action@v0.1.7
+    - name: Show files in target folder
+      uses: appleboy/ssh-action@v1.0.3
       with:
         host: qualita-indonesia.com
         username: kangdev
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         script: |
-     
+          ls -lah /home/kangdev/astro_project
+
+    - name: Restart Nginx
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: qualita-indonesia.com
+        username: kangdev
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
+        script: |
           sudo systemctl restart nginx
