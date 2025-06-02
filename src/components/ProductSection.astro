@@ -5,17 +5,17 @@
 <section class="products-section">
   <div class="container">
     <div class="products-header">
-      <h2 class="section-title animate-element fade-up">
+      <h2 class="section-title">
         Our Products
         <span class="title-accent"></span>
       </h2>
-      <p class="section-subtitle animate-element fade-up">
+      <p class="section-subtitle">
         Innovative solutions for field service management and IoT security
       </p>
     </div>
 
     <div class="products-grid">
-      <div class="product-card qifess-card animate-element fade-in-right">
+      <div class="product-card qifess-card">
         <div class="card-header">
           <div class="product-logo">
             <img src="/assets/img/qifess-logo.png" alt="Qifess Logo" />
@@ -49,7 +49,7 @@
         </div>
       </div>
 
-      <div class="product-card protectqube-card animate-element fade-in-left">
+      <div class="product-card protectqube-card">
         <div class="card-header">
           <div class="product-logo">
             <img src="/assets/img/protectqube-logo.png" alt="ProtectQube Logo" />
@@ -87,12 +87,12 @@
 </section>
 
 <style>
-
-
   .products-section {
     padding: 5rem 0;
     background: var(--bg-color, #f8fafc);
     position: relative;
+    /* Fade in sederhana untuk section */
+    animation: fadeIn 0.8s ease-out;
   }
 
   .container {
@@ -151,6 +151,12 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    /* Fade in dengan delay ringan */
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  .product-card:nth-child(2) {
+    animation-delay: 0.2s;
   }
 
   .product-card::before {
@@ -295,6 +301,27 @@
     border-color: rgba(0, 0, 0, 0.1);
   }
 
+  /* Animasi Fade Sederhana */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   /* Responsive Design */
   @media (max-width: 1024px) {
     .products-grid {
@@ -331,15 +358,31 @@
       width: 100%;
       justify-content: center;
     }
+
+    /* Nonaktifkan animasi kompleks di mobile untuk performa */
+    .product-card {
+      animation: fadeIn 0.5s ease-out;
+    }
+    
+    .product-card:nth-child(2) {
+      animation-delay: 0.1s;
+    }
   }
 
   @media (max-width: 480px) {
+    .products-section {
+      padding: 3rem 0;
+    }
+
     .products-grid {
       grid-template-columns: 1fr;
+      gap: 1.5rem;
     }
 
     .product-card {
       padding: 1.25rem;
+      /* Animasi minimal untuk mobile */
+      animation: fadeIn 0.4s ease-out;
     }
 
     .product-logo {
@@ -351,43 +394,30 @@
       font-size: 0.75rem;
       padding: 0.25rem 0.625rem;
     }
+
+    .section-title {
+      font-size: 1.75rem;
+    }
+
+    .container {
+      padding: 0 1rem;
+    }
   }
 
-  /* Entrance Animations */
-  .animate-element {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  }
-
-  .animate-element.animate {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .fade-up {
-    transform: translateY(50px);
-  }
-
-  .fade-in-right {
-    transform: translateX(-50px);
-  }
-
-  .fade-in-left {
-    transform: translateX(50px);
-  }
-
-  .fade-in-up {
-    transform: translateY(50px);
-  }
-
-  /* Staggered animations for product cards */
-  .product-card:nth-child(1).animate {
-    transition-delay: 0.2s;
-  }
-  .product-card:nth-child(2).animate {
-    transition-delay: 0.4s;
+  /* Prefers-reduced-motion untuk aksesibilitas */
+  @media (prefers-reduced-motion: reduce) {
+    .product-card,
+    .products-section {
+      animation: none;
+    }
+    
+    .product-card:hover {
+      transform: none;
+    }
+    
+    .btn-primary:hover {
+      transform: none;
+    }
   }
 </style>
-
-<script src="/src/components/js/products.js" type="module"></script>
+<script src="/src/components/js/product.js"></script>

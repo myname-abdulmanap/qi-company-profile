@@ -191,7 +191,6 @@ function initializeProductFeatures() {
         });
     });
 
-    console.log('🚀 Products section initialized successfully!');
 }
 
 // Export for potential use in other modules
