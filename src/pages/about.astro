@@ -5,18 +5,19 @@ import Footer from "../components/Footer.astro";
 import AboutSection from "../components/AboutSection.astro";
 import Timeline from "../components/Timeline.astro";
 import OtherComponent from "../components/OtherComponent.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { SITE_TITLE_ABOUT, SITE_DESCRIPTION_ABOUT } from "../consts";
 
 //import transitions effect
 import { ClientRouter } from 'astro:transitions';
 import PortfolioSection from "../components/PortfolioSection.astro";
+import MapSection from "../components/MapSection.astro";
 
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <BaseHead title={SITE_TITLE_ABOUT} description={SITE_DESCRIPTION_ABOUT} />
  
   </head>
 
@@ -26,6 +27,7 @@ import PortfolioSection from "../components/PortfolioSection.astro";
     <OtherComponent />
     <AboutSection />
     <Timeline />
+    <MapSection />
     <!-- <PortfolioSection /> -->
     
     <Footer />
