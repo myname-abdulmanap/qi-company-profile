@@ -1,5 +1,5 @@
 ---
-// FeaturesSection.astro dengan animasi yang ditingkatkan
+// FeaturesSection.astro 
 ---
 
 <section class="features" id="features">
@@ -60,12 +60,30 @@
               <p>Integrity & continuous improvement</p>
             </div>
           </div>
-          
         </div>
       </div>
-      
     </div>
-    
+
+    <!-- YouTube Video Section -->
+    <div class="youtube-section reveal-element" data-delay="450">
+      <div class="youtube-header">
+        <h3 class="youtube-title">Learn More About Our Company</h3>
+        <p class="youtube-description">Watch our company introduction video to understand our values and expertise better.</p>
+      </div>
+      <div class="youtube-container">
+        <div class="youtube-wrapper">
+          <iframe
+            src="https://www.youtube.com/embed/z7Ao_h3ytP0?si=ppAQlAA20yQk3QTM"
+            title="Qualita Indonesia Company Video"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+            loading="lazy"
+          ></iframe>
+        </div>
+      </div>
+    </div>
   </div>
   
   <!-- Parallax circles for modern effect -->
@@ -107,6 +125,7 @@
     grid-template-columns: 1fr 1.2fr;
     gap: 4rem;
     align-items: center;
+    margin-bottom: 5rem;
   }
   
   /* Left Column Styles - Lottie Animation */
@@ -299,6 +318,107 @@
   .feature-card:hover p {
     transform: translateX(5px);
   }
+
+  /* YouTube Section Styles */
+  .youtube-section {
+    margin-top: 6rem;
+    transform: translateY(50px);
+    opacity: 0;
+    transition: all 0.8s var(--easeOutQuart);
+  }
+
+  .youtube-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .youtube-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--heading-color, #1e293b);
+    margin: 0 0 1rem 0;
+    position: relative;
+    display: inline-block;
+  }
+
+  .youtube-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(to right, #4338ca, #ec4899);
+    border-radius: 3px;
+  }
+
+  .youtube-description {
+    font-size: 1.1rem;
+    color: #64748b;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .youtube-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.5s var(--easeOutBack);
+  }
+
+  .youtube-container:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+  }
+
+  .youtube-wrapper {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    overflow: hidden;
+    border-radius: 12px;
+    background: #000;
+  }
+
+  .youtube-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .youtube-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .youtube-wrapper:hover::before {
+    opacity: 1;
+  }
   
   /* Parallax shapes */
   .parallax-shape {
@@ -330,7 +450,7 @@
   .shape-3 {
     width: 150px;
     height: 150px;
-    top: 20%;
+    top: 60%;
     right: 10%;
     background: linear-gradient(45deg, rgba(249, 115, 22, 0.15), rgba(251, 146, 60, 0.1));
   }
@@ -375,6 +495,11 @@
     opacity: 1;
     transform: translateY(0);
   }
+
+  .youtube-section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
   
   /* When section is visible, show parallax shapes */
   .features.is-in-viewport .parallax-shape {
@@ -386,6 +511,7 @@
     .features-split-layout {
       grid-template-columns: 1fr;
       gap: 4rem;
+      margin-bottom: 4rem;
     }
     
     .lottie-container {
@@ -415,6 +541,14 @@
     .reveal-element.is-visible .animate-title::after {
       transform: translateX(-50%) scaleX(1);
     }
+
+    .youtube-section {
+      margin-top: 4rem;
+    }
+
+    .youtube-title {
+      font-size: 1.75rem;
+    }
   }
 
   @media (max-width: 768px) {
@@ -435,7 +569,21 @@
     }
     
     .parallax-shape {
-      opacity: 0.4; /* Reduce opacity on mobile for better text readability */
+      opacity: 0.4;
+    }
+
+    .youtube-container {
+      padding: 1rem;
+      margin: 0 1rem;
+    }
+
+    .youtube-title {
+      font-size: 1.5rem;
+    }
+
+    .youtube-description {
+      font-size: 1rem;
+      padding: 0 1rem;
     }
   }
   
@@ -451,15 +599,36 @@
     }
     
     .parallax-shape {
-      display: none; /* Hide on smallest screens for better performance */
+      display: none;
+    }
+
+    .youtube-container {
+      margin: 0 0.5rem;
+      padding: 0.75rem;
+    }
+
+    .youtube-section {
+      margin-top: 3rem;
+    }
+
+    .youtube-header {
+      margin-bottom: 2rem;
+    }
+
+    .youtube-title {
+      font-size: 1.25rem;
+    }
+
+    .youtube-description {
+      font-size: 0.9rem;
     }
   }
 
-  .no-js .feature-card {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-}
-
+  .no-js .feature-card,
+  .no-js .youtube-section {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
 </style>
 
 <script src="/src/components/js/featured.js"></script>
