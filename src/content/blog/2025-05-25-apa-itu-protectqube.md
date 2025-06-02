@@ -60,7 +60,7 @@ Fitur compliance management membantu organisasi memenuhi persyaratan regulasi de
 ## Target Pengguna
 
 ProtectQube cocok untuk berbagai jenis organisasi, termasuk:
-- List item
+
 - Perusahaan teknologi dan software
 - Institusi keuangan dan perbankan
 - Rumah sakit dan fasilitas kesehatan
