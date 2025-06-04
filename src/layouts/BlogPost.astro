@@ -6,7 +6,7 @@ import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import RelatedPosts from "../components/RelatedPosts.astro";
 import SosialShareButtons from "../components/SosialShareButtons.astro";
-import Justify from "../components/editing/Justify.astro";
+
 
 // Add these to your Props
 type Props = CollectionEntry<"blog">["data"] & {
@@ -139,7 +139,7 @@ const categories = Array.isArray(category) ? category : [category];
         
 
           <div class="tags">
-            {categories.map((cat) => <span class="tag">{cat}</span>)}
+            {categories.map((cat) => <span class="tag"><a href={`/posts/category/${cat.toLowerCase()}`}>{cat}</a></span>)}
           </div>
           <br />
           <hr />
