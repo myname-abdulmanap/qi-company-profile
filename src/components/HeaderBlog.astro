@@ -13,9 +13,9 @@ import ThemeToggle from "./ThemeToggle.astro";
   header.transparent {
     background: transparent;
     box-shadow: none;
-   
+
   }
-/* 
+/*
   header.transparent menu {
     color: var(--text-bar);
   } */
@@ -58,7 +58,7 @@ import ThemeToggle from "./ThemeToggle.astro";
     filter: brightness(0) invert(1);
   }
 
-  
+
 
   .menu ul {
     display: flex;
@@ -146,7 +146,7 @@ import ThemeToggle from "./ThemeToggle.astro";
     min-width: 200px;
     padding: 0;
     z-index: 999;
-    
+
     /* Animation properties */
     opacity: 0;
     visibility: hidden;
@@ -243,7 +243,7 @@ import ThemeToggle from "./ThemeToggle.astro";
     .hamburger.active .bar:nth-child(3) {
       transform: rotate(45deg) translate(-5px, -6px);
     }
-    
+
     /* Mobile dropdown styles */
     .has-dropdown .dropdown {
       position: static;
@@ -254,11 +254,11 @@ import ThemeToggle from "./ThemeToggle.astro";
       max-height: 0;
       overflow: hidden;
     }
-    
+
     .has-dropdown.open .dropdown {
       max-height: 500px;
     }
-    
+
     .dropdown a {
       padding: 0.5rem 0;
     }
@@ -278,20 +278,12 @@ import ThemeToggle from "./ThemeToggle.astro";
       <ul>
         <li><a href="/#">Home</a></li>
         <li><a href="/about">About Us</a></li>
-        <li><a href="/products">Products</a></li> 
-
-        <!-- <li class="has-dropdown">
-          <a href="/products" class="dropdown-toggle">Products</a>
-          <ul class="dropdown">
-            <li><a href="https://protectqube.com">ProtectQube</a></li>
-            <li><a href="https://qifess.com">Qifess</a></li>
-          </ul>
-        </li> -->
+        <li><a href="/products">Products</a></li>
         <li><a href="/contact">Contact Us</a></li>
         <li><a href="/posts">News</a></li>
       </ul>
     </nav>
-    
+
     <div class="navbar-icons">
       <ThemeToggle />
       <button class="hamburger" aria-label="Menu">
@@ -303,5 +295,4 @@ import ThemeToggle from "./ThemeToggle.astro";
   </div>
 </header>
 
-<!-- Gunakan script eksternal untuk mendukung View Transitions -->
 <script src="/src/components/js/header.ts"></script>

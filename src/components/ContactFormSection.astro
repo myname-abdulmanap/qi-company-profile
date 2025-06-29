@@ -4,9 +4,11 @@
 
 <section class="contact" id="contact">
   <div class="contact-container">
+    <br />
+    <br />
     <div class="section-title fade-in">
       <h2>Contact Us</h2>
-      <p>interest qifess?</p>
+      <p>Have questions? We'd love to hear from you.</p>
       <p>contact@qualita-indonesia.com</p>
     </div>
 
@@ -41,6 +43,10 @@
           <div class="g-recaptcha" data-sitekey="6LcSPkYrAAAAAA3TN5ptXfbY_nsfOOCCPXjMMESG"></div>
         </div>
       </div>
+      <p class="captcha-warning" style="margin-top: 1rem; color: #d9534f; font-size: 0.9rem;">
+        * Jika captcha tidak muncul, silakan refresh halaman terlebih dahulu.
+      </p>
+
       <button type="submit" class="btn" id="submit-btn">Send Message</button>
 
       <div class="status" id="status"></div>
@@ -113,8 +119,8 @@
 
       setLoading(true);
 
-      // Kirim email menggunakan EmailJS
-      // Ganti 'service_ffsqvoa' dan 'template_vms7qa9' dengan ID Anda
+
+
       emailjs
         .sendForm('service_ffsqvoa', 'template_vms7qa9', form)
         .then(function (response) {
@@ -273,5 +279,11 @@
     .contact {
       padding: 4rem 1rem;
     }
+  }
+
+  .captcha-warning {
+    margin-top: 1rem;
+    color: #d9534f;
+    font-size: 0.9rem;
   }
 </style>
