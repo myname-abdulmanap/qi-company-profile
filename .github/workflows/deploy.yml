@@ -1,55 +1,65 @@
-name: Deploy Astro to Server
+name: Deploy Astro Website to VPS
 
 on:
   push:
     branches:
-      - main
+      - main  # ganti jika kamu pakai branch lain
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repo
+    - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
+    - name: Install dependencies & build
+      run: |
+        npm install
+        npm run build
+
+    # Upload hasil build (dist folder)
+    - name: Upload dist folder to VPS
+      uses: appleboy/scp-action@v0.1.4
       with:
-        node-version: '20'
-
-    - name: Install dependencies
-      run: npm ci
-
-    - name: Build Astro project
-      run: npm run build
-
-    - name: Copy files to server via SSH
-      uses: appleboy/scp-action@v0.1.7
-      with:
-        host: qualita-indonesia.com
-        username: kangdev
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         source: "dist/*"
-        target: "/home/kangdev/astro_project"
+        target: "/home/${{ secrets.SSH_USER }}/astro-project/dist"
 
-    - name: Show files in target folder
-      uses: appleboy/ssh-action@v1.0.3
+    # Upload Dockerfile dan default.conf
+    - name: Upload Dockerfile and nginx config
+      uses: appleboy/scp-action@v0.1.4
       with:
-        host: qualita-indonesia.com
-        username: kangdev
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
-        script: |
-          ls -lah /home/kangdev/astro_project
+        source: |
+          Dockerfile
+          nginx/default.conf
+        target: "/home/${{ secrets.SSH_USER }}/astro-project/"
 
-    - name: Restart Nginx
+    # SSH: build ulang image dan restart container
+    - name: SSH and rebuild container
       uses: appleboy/ssh-action@v1.0.3
       with:
-        host: qualita-indonesia.com
-        username: kangdev
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: 22
         script: |
-          sudo systemctl restart nginx
+          cd ~/astro-project
+
+          echo "Stopping container if exists..."
+          docker stop astro-qualita || true
+          docker rm astro-qualita || true
+
+          echo "Rebuilding Docker image..."
+          docker build -t astro-qualita .
+
+          echo "Running container..."
+          docker run -d -p 80:80 --name astro-qualita astro-qualita
+
+          echo "Deployment finished!"
