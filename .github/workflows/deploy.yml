@@ -1,4 +1,4 @@
-name: Deploy Astro to Server
+name: Deploy Astro to Server (Simple Bind)
 
 on:
   push:
@@ -24,33 +24,21 @@ jobs:
     - name: Build Astro project
       run: npm run build
 
-    - name: Copy files to server via SSH
+    - name: Upload dist to server
       uses: appleboy/scp-action@v0.1.7
       with:
         host: qualita-indonesia.com
         username: kangdev
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
-        source: "dist/*"
-        target: "/home/kangdev/astro_sites/qualita-indonesia"
+        source: dist/*
+        target: /home/kangdev/qualita-indonesia
 
-    - name: Show files in target folder
+    - name: Restart Docker container (optional)
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: qualita-indonesia.com
         username: kangdev
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
-        script: |
-          ls -lah /home/kangdev/astro_sites/qualita-indonesia
-
-    - name: Restart Docker container astro-qualita
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: qualita-indonesia.com
-        username: kangdev
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: 22
-        script: |
-          echo "Restarting Docker container..."
-          sudo docker restart astro-qualita
+        script: docker restart astro-qualita || true
