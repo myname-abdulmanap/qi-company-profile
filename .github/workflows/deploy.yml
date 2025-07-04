@@ -32,7 +32,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         source: dist/*
-        target: /home/kangdev/qualita-indonesia
+        target: /home/kangdev/astro-sites/qualita-indonesia
 
     - name: Restart Docker container (optional)
       uses: appleboy/ssh-action@v1.0.3
@@ -41,4 +41,4 @@ jobs:
         username: kangdev
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
-        script: docker restart astro-qualita || true
+        script: sudo docker restart astro-qualita || true
