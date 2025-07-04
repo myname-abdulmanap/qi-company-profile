@@ -53,4 +53,4 @@ jobs:
         port: 22
         script: |
           echo "Restarting Docker container..."
-          docker restart astro-qualita
+          sudo docker restart astro-qualita
