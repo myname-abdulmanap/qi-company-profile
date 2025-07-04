@@ -1,65 +1,56 @@
-name: Deploy Astro Website to VPS
+name: Deploy Astro to Server
 
 on:
   push:
     branches:
-      - main  # ganti jika kamu pakai branch lain
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout repo
       uses: actions/checkout@v3
 
-    - name: Install dependencies & build
-      run: |
-        npm install
-        npm run build
-
-    # Upload hasil build (dist folder)
-    - name: Upload dist folder to VPS
-      uses: appleboy/scp-action@v0.1.4
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
       with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
+        node-version: '20'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build Astro project
+      run: npm run build
+
+    - name: Copy files to server via SSH
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: qualita-indonesia.com
+        username: kangdev
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         source: "dist/*"
-        target: "/home/${{ secrets.SSH_USER }}/astro-project/dist"
+        target: "/home/kangdev/astro_sites/astro-qualita"
 
-    # Upload Dockerfile dan default.conf
-    - name: Upload Dockerfile and nginx config
-      uses: appleboy/scp-action@v0.1.4
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: 22
-        source: |
-          Dockerfile
-          nginx/default.conf
-        target: "/home/${{ secrets.SSH_USER }}/astro-project/"
-
-    # SSH: build ulang image dan restart container
-    - name: SSH and rebuild container
+    - name: Show files in target folder
       uses: appleboy/ssh-action@v1.0.3
       with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
+        host: qualita-indonesia.com
+        username: kangdev
         key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
         script: |
-          cd ~/astro-project
+          ls -lah /home/kangdev/astro_sites/astro-qualita
 
-          echo "Stopping container if exists..."
-          docker stop astro-qualita || true
-          docker rm astro-qualita || true
-
-          echo "Rebuilding Docker image..."
-          docker build -t astro-qualita .
-
-          echo "Running container..."
-          docker run -d -p 80:80 --name astro-qualita astro-qualita
-
-          echo "Deployment finished!"
+    - name: Restart Docker container astro-qualita
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: qualita-indonesia.com
+        username: kangdev
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
+        script: |
+          echo "Restarting Docker container..."
+          docker restart astro-qualita
