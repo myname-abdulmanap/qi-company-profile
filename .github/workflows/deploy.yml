@@ -32,7 +32,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         source: "dist/*"
-        target: "/home/kangdev/astro_sites/astro-qualita"
+        target: "/home/kangdev/astro_sites/qualita-indonesia"
 
     - name: Show files in target folder
       uses: appleboy/ssh-action@v1.0.3
@@ -42,7 +42,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         script: |
-          ls -lah /home/kangdev/astro_sites/astro-qualita
+          ls -lah /home/kangdev/astro_sites/qualita-indonesia
 
     - name: Restart Docker container astro-qualita
       uses: appleboy/ssh-action@v1.0.3
