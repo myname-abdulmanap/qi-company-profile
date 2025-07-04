@@ -3,9 +3,10 @@ title: "Apa itu ProtectQube? "
 category: "Info"  
 slug: "apa-itu-protectqube"  
 description: "Solusi keamanan siber yang komprehensif yang dirancang untuk melindungi organisasi dari berbagai ancaman digital modern"  
-heroImage: "https://protectqube.com/wp-content/uploads/2025/01/home-3-illustration-min-768x803.png"  
-pubDate: "2025-05-26T03:11:45.567Z"  
+heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1747194830/atm-9590813_1280_11zon_xlxigx.png"  
+pubDate: "2025-07-04T00:33:03.893Z"  
 ---
+
 
 
 
@@ -13,7 +14,7 @@ pubDate: "2025-05-26T03:11:45.567Z"
 
 ## Pengenalan
 
-ProtectQube adalah solusi keamanan siber yang komprehensif yang dirancang untuk melindungi organisasi dari berbagai ancaman digital modern. Sebagai platform keamanan terpadu, ProtectQube menggabungkan teknologi deteksi ancaman canggih dengan manajemen keamanan yang mudah digunakan.
+protectQube adalah solusi keamanan siber yang komprehensif yang dirancang untuk melindungi organisasi dari berbagai ancaman digital modern. Sebagai platform keamanan terpadu, protectQube menggabungkan teknologi deteksi ancaman canggih dengan manajemen keamanan yang mudah digunakan.
 
 ## Fitur Utama
 
@@ -29,7 +30,7 @@ ProtectQube dilengkapi dengan SOC virtual yang memungkinkan monitoring keamanan 
 ### 4. Compliance Management
 Solusi ini membantu organisasi memenuhi berbagai standar kepatuhan industri seperti ISO 27001, PCI DSS, dan GDPR melalui audit otomatis dan pelaporan compliance yang terstruktur.
 
-## Keunggulan ProtectQube
+## Keunggulan protectQube
 
 ### Integrasi yang Mudah
 ProtectQube dirancang untuk mudah diintegrasikan dengan infrastruktur IT yang sudah ada. Platform ini kompatibel dengan berbagai sistem operasi dan aplikasi bisnis populer.
