@@ -4,8 +4,9 @@ category: "Info"
 slug: "apa-itu-protectqube"  
 description: "Solusi keamanan siber yang komprehensif yang dirancang untuk melindungi organisasi dari berbagai ancaman digital modern"  
 heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1747194830/atm-9590813_1280_11zon_xlxigx.png"  
-pubDate: "2025-07-04T00:33:03.893Z"  
+pubDate: "2025-07-08T19:55:49.655Z"  
 ---
+
 
 
 
@@ -19,7 +20,7 @@ protectQube adalah solusi keamanan siber yang komprehensif yang dirancang untuk 
 ## Fitur Utama
 
 ### 1. Deteksi Ancaman Real-time
-ProtectQube menggunakan teknologi artificial intelligence dan machine learning untuk mendeteksi ancaman keamanan secara real-time. Sistem ini mampu mengidentifikasi pola serangan yang mencurigakan dan memberikan respons otomatis untuk mencegah kerusakan lebih lanjut.
+protectQube menggunakan teknologi artificial intelligence dan machine learning untuk mendeteksi ancaman keamanan secara real-time. Sistem ini mampu mengidentifikasi pola serangan yang mencurigakan dan memberikan respons otomatis untuk mencegah kerusakan lebih lanjut.
 
 ### 2. Manajemen Vulnerability
 Platform ini menyediakan pemindaian kerentanan yang komprehensif untuk mengidentifikasi celah keamanan dalam infrastruktur IT organisasi. Fitur ini membantu tim keamanan memprioritaskan perbaikan berdasarkan tingkat risiko.
