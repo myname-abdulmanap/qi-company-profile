@@ -1,0 +1,243 @@
+---
+import { getCollection } from 'astro:content';
+import Header from '../../../components/Header.astro';
+import Footer from "../../../components/Footer.astro";
+import BlogHeroSection from '../../../components/BlogHeroSection.astro';
+import BaseHead from '../../../components/BaseHead.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from "../../../consts";
+import FormattedDate from "../../../components/FormattedDate.astro";
+import { ClientRouter } from "astro:transitions";
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  const categories = new Set();
+
+  posts.forEach(post => {
+    const category = post.data.category;
+    if (Array.isArray(category)) {
+      category.forEach(cat => categories.add(cat.toLowerCase()));
+    } else {
+      categories.add(category.toLowerCase());
+    }
+  });
+
+  return Array.from(categories).map(category => ({
+    params: { slug: category }
+  }));
+}
+
+const { slug } = Astro.params as { slug: string };
+const posts = await getCollection('blog');
+const filteredPosts = posts.filter(post => {
+  const category = post.data.category;
+  if (Array.isArray(category)) {
+    return category.some(cat => cat.toLowerCase() === slug.toLowerCase());
+  }
+  return category.toLowerCase() === slug.toLowerCase();
+});
+
+// Capitalize first letter of category for title
+const categoryTitle = slug.charAt(0).toUpperCase() + slug.slice(1);
+const pageTitle = `${categoryTitle} - ${SITE_TITLE}`;
+---
+
+<head>
+  <BaseHead title={pageTitle} description={SITE_DESCRIPTION} />
+
+</head>
+
+<body>
+  <ClientRouter />
+  <Header/>
+  <BlogHeroSection />
+  <main>
+    <section class="blog-section">
+      <div class="container">
+        <div class="section-header fade-in">
+          <h2>Category: {slug}</h2>
+          <p>Articles in this category</p>
+        </div>
+
+        <div class="blog-grid">
+          {filteredPosts.length > 0 ? (
+            filteredPosts.map((post) => (
+              <article class="blog-card fade-in">
+                <a href={`/careers/${post.data.slug}/`} class="card-link">
+                  <div class="card-image">
+                    <img
+                      src={post.data.heroImage}
+                      alt={post.data.title}
+                      loading="lazy"
+                    />
+                  </div>
+                  <div class="card-content">
+                    <p class="post-date">
+                      <FormattedDate date={post.data.pubDate} />
+                    </p>
+                    <h3>{post.data.title}</h3>
+                    <p class="excerpt">{post.data.description}</p>
+                  </div>
+                </a>
+              </article>
+            ))
+          ) : (
+            <div class="no-posts">
+              <p>No careers found in this category.</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+
+<style>
+  .blog-section {
+    padding: 4rem 0;
+    background-color: var(--bg-color);
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .section-header h2 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--heading-color);
+    text-transform: capitalize;
+  }
+
+  .section-header p {
+    color: #64748b;
+    font-size: 1.1rem;
+  }
+
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .blog-card {
+    background: var(--bg-color);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+  }
+
+  .blog-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .card-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+  }
+
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .blog-card:hover .card-image img {
+    transform: scale(1.05);
+  }
+
+  .card-content {
+    padding: 1.5rem;
+  }
+
+  .post-date {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-content h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-color);
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .excerpt {
+    color: #64748b;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .no-posts {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 2rem;
+    background: var(--bg-color);
+    border-radius: 12px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+  }
+
+  .no-posts p {
+    color: #64748b;
+    font-size: 1.1rem;
+  }
+
+  @media (max-width: 1024px) {
+    .blog-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .section-header h2 {
+      font-size: 2rem;
+    }
+
+    .section-header p {
+      font-size: 1rem;
+    }
+
+    .blog-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .card-content {
+      padding: 1.25rem;
+    }
+
+    .card-content h3 {
+      font-size: 1.1rem;
+    }
+
+    .excerpt {
+      font-size: 0.9rem;
+      -webkit-line-clamp: 2;
+    }
+  }
+</style>
+</body>

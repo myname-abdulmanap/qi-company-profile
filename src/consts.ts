@@ -12,3 +12,6 @@ export const SITE_DESCRIPTION_PRODUCT = 'Explore our range of products designed 
 
 export const SITE_TITLE_BLOG = 'Qualita Indonesia';
 export const SITE_DESCRIPTION_BLOG = 'Explore our collection of articles, news, events and insights. Shares the latest updates, events, and milestones from the Qualita team.';
+
+export const SITE_TITLE_CAREERS = 'Careers at Qualita Indonesia';
+export const SITE_DESCRIPTION_CAREERS = 'Discover exciting career opportunities and grow with us in the world of innovative technology.';

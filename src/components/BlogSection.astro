@@ -1,9 +1,32 @@
 ---
-import { getCollection } from "astro:content";
-const posts = (await getCollection("blog"))
+import { getCollection } from 'astro:content';
+const allPosts = await getCollection('blog');
+
+// Filter posts: exclude careers for regular posts
+const posts = allPosts
+  .filter((post) => {
+    const category = post.data.category;
+    if (category instanceof Array) {
+      return !category.some((cat) => cat.toLowerCase() === 'careers');
+    }
+    return category?.toLowerCase() !== 'careers';
+  })
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 6); // Hanya mengambil 6 postingan terbaru
-import FormattedDate from "./../components/FormattedDate.astro";
+  .slice(0, 6);
+
+// Filter for careers only
+const careerPosts = allPosts
+  .filter((post) => {
+    const category = post.data.category;
+    if (category instanceof Array) {
+      return category.some((cat) => cat.toLowerCase() === 'careers');
+    }
+    return category?.toLowerCase() === 'careers';
+  })
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 6);
+
+import FormattedDate from './../components/FormattedDate.astro';
 ---
 
 <section class="blog-section">
@@ -19,18 +42,17 @@ import FormattedDate from "./../components/FormattedDate.astro";
           <article class="card">
             <a href={`/posts/${post.id}/`}>
               <div class="img-wrap">
-                <img
-                  src={post.data.heroImage}
-                  alt=""
-                  loading="lazy"
-                  decoding="async"
-                />
+                <img src={post.data.heroImage} alt="" loading="lazy" decoding="async" />
               </div>
               <div class="content">
-                <time> in {post.data.category instanceof Array
-    ? post.data.category.join(' , ') 
-    : post.data.category 
-  } - <FormattedDate date={post.data.pubDate} /> </time>
+                <time>
+                  {' '}
+                  in{' '}
+                  {post.data.category instanceof Array
+                    ? post.data.category.join(' , ')
+                    : post.data.category}{' '}
+                  - <FormattedDate date={post.data.pubDate} />{' '}
+                </time>
                 <h3>{post.data.title}</h3>
                 <p>{post.data.description}</p>
               </div>
@@ -39,19 +61,60 @@ import FormattedDate from "./../components/FormattedDate.astro";
         ))
       }
     </div>
-<div class="btn-blog">  <a href="/posts" class="btn">More Articles</a></div> 
-
-    
+    <div class="btn-blog">
+      <a href="/posts" class="btn">More Articles</a>
+    </div>
   </div>
 </section>
+
+<!-- Careers Section -->
+{
+  careerPosts.length > 0 && (
+    <section class="blog-section">
+      <div class="container-blog">
+        <header class="header fade-in">
+          <h2>Careers 💼</h2>
+          <p>Join our team and explore exciting career opportunities</p>
+        </header>
+
+        <div class="grid fade-in">
+          {careerPosts.map((post) => (
+            <article class="card">
+              <a href={`/careers/${post.id}/`}>
+                <div class="img-wrap">
+                  <img src={post.data.heroImage} alt="" loading="lazy" decoding="async" />
+                </div>
+                <div class="content">
+                  <time>
+                    {' '}
+                    in{' '}
+                    {post.data.category instanceof Array
+                      ? post.data.category.join(' , ')
+                      : post.data.category}{' '}
+                    - <FormattedDate date={post.data.pubDate} />{' '}
+                  </time>
+                  <h3>{post.data.title}</h3>
+                  <p>{post.data.description}</p>
+                </div>
+              </a>
+            </article>
+          ))}
+        </div>
+        <div class="btn-blog">
+          <a href="/careers" class="btn">
+            More Careers
+          </a>
+        </div>
+      </div>
+    </section>
+  )
+}
 
 <style>
   .blog-section {
     padding: 2rem 0;
     background: var(--bg-main);
   }
-
-
 
   .container-blog {
     max-width: 1000px;
@@ -141,15 +204,13 @@ import FormattedDate from "./../components/FormattedDate.astro";
     align-items: center;
   }
 
-
-
   @media (max-width: 768px) {
     .grid {
       grid-template-columns: repeat(2, 1fr);
       gap: 0.75rem;
       margin-bottom: 2rem;
     }
-    
+
     .img-wrap {
       height: 120px;
     }
@@ -159,7 +220,7 @@ import FormattedDate from "./../components/FormattedDate.astro";
     .grid {
       grid-template-columns: 1fr;
     }
-    
+
     .img-wrap {
       height: 160px;
     }

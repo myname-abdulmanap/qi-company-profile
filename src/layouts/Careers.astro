@@ -1,0 +1,154 @@
+---
+import type { CollectionEntry } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import HeaderBlog from "../components/HeaderBlog.astro";
+import Footer from "../components/Footer.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import RelatedPosts from "../components/RelatedCareers.astro";
+import SosialShareButtons from "../components/SosialShareButtons.astro";
+
+
+// Add these to your Props
+type Props = CollectionEntry<"blog">["data"] & {
+  slug: string;
+};
+
+
+// Generate the current page URL
+const currentUrl = new URL(Astro.url.pathname, Astro.site);
+
+
+const { title, description, pubDate, updatedDate, heroImage, category } =
+  Astro.props;
+import { ClientRouter } from "astro:transitions";
+
+// Handle both string and array types for category
+const categories = Array.isArray(category) ? category : [category];
+---
+
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} />
+
+
+
+
+   <!-- Schema.org Breadcrumb -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Posts",
+        "item": `${Astro.site}post`
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "${categories[0]}",
+        "item": `${Astro.site}posts/category/${categories[0].toLowerCase()}`
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "${title}",
+        "item": `${currentUrl}`
+      }
+    ]
+  }
+</script>
+
+  </head>
+
+  <body>
+    <ClientRouter />
+    <HeaderBlog />
+    <main>
+      <article class="blog">
+
+
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/careers">Careers</a>
+          <!-- <span class="separator">&gt;</span>
+          {categories.map((cat, index) => (
+            <>
+              <a href={`/posts/category/${cat.toLowerCase()}`}>{cat}</a>
+              {index < categories.length - 1 && <span class="separator">&gt;</span>}
+            </>
+          ))} -->
+        </nav>
+
+
+
+
+
+        <div class="title">
+          <h1>
+            {title}
+          </h1>
+          <div class="date">
+            <p class="hero-description">
+              {description}
+            </p>
+            <hr />
+            <br />
+            <div class="author-section">
+              <div class="author-image">
+                <img
+                  src="/assets/img/qualita_indonesia_logo.png"
+                  alt="Qualita Indonesia"
+                />
+              </div>
+              <div class="author-info">
+                <span class="author-name">Admin Qualita</span>
+                <span class="author-title"
+                  >News, Event & Career</span
+                >
+
+                <br />
+                <span class="date-text"
+                  >Update on
+                  <FormattedDate date={pubDate} />
+                  {
+                    updatedDate && (
+                      <div class="last-updated-on">
+                        Last updated on <FormattedDate date={updatedDate} />
+                      </div>
+                    )
+                  }
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-image">
+          {
+            heroImage && (
+              <img width={1020} height={510} src={heroImage} alt="" />
+            )
+          }
+        </div>
+        <div class="prose">
+
+             <slot />
+
+
+
+
+          <div class="tags">
+            {categories.map((cat) => <span class="tag"><a href={`/careers/category/${cat.toLowerCase()}`}>{cat}</a></span>)}
+          </div>
+          <br />
+          <hr />
+          <br />
+          <SosialShareButtons title={title} description={description} />
+          <RelatedPosts category={category} />
+        </div>
+      </article>
+    </main>
+    <Footer />
+  </body>
+</html>
