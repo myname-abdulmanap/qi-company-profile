@@ -1,0 +1,531 @@
+---
+// formJob.astro
+---
+
+<section class="job-application" id="job-application">
+  <div class="job-application-container">
+    <div class="section-title fade-in">
+      <h2>Job Application</h2>
+      <p>Join our team at Qualita Indonesia</p>
+      <p>Fill out the form below to apply for available positions</p>
+    </div>
+
+    <form class="job-form fade-in" id="job-form" enctype="multipart/form-data" data-astro-reload>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="nama">Full Name *</label>
+          <input type="text" id="nama" name="nama" placeholder="Enter your full name" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email *</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email" required />
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="nomorTelepon">Phone Number *</label>
+          <input
+            type="tel"
+            id="nomorTelepon"
+            name="nomorTelepon"
+            placeholder="e.g. +62812345678 or 08123456789"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="posisi">Position *</label>
+          <select id="posisi" name="posisi" required>
+            <option value="">Select Position</option>
+            <option value="Software Engineer">Software Engineer</option>
+            <option value="Product Manager">Product Manager</option>
+            <option value="UI/UX Designer">UI/UX Designer</option>
+            <option value="Data Analyst">Data Analyst</option>
+            <option value="Quality Assurance">Quality Assurance</option>
+            <option value="Business Development">Business Development</option>
+            <option value="Marketing Specialist">Marketing Specialist</option>
+            <option value="Human Resources">Human Resources</option>
+            <option value="Finance">Finance</option>
+            <option value="Operations">Operations</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="alamat">Address *</label>
+        <textarea id="alamat" name="alamat" placeholder="Enter your complete address" required
+        ></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="cv">Upload CV/Resume</label>
+        <div class="file-upload-container">
+          <input
+            type="file"
+            id="cv"
+            name="cv"
+            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+            class="file-input"
+          />
+          <label for="cv" class="file-label">
+            <span class="file-icon">📄</span>
+            <span class="file-text">Choose CV file (PDF, DOC, DOCX, JPG, PNG)</span>
+          </label>
+          <div class="file-info" id="file-info"></div>
+        </div>
+        <small class="form-note"
+          >Maximum file size: 5MB. Supported formats: PDF, DOC, DOCX, JPG, PNG</small
+        >
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn primary" id="submit-btn"> Submit Application </button>
+        <button type="button" class="btn secondary" id="submit-without-cv-btn">
+          Submit Without CV
+        </button>
+      </div>
+
+      <div class="status" id="status"></div>
+    </form>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('job-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const submitWithoutCvBtn = document.getElementById('submit-without-cv-btn');
+    const status = document.getElementById('status');
+    const fileInput = document.getElementById('cv');
+    const fileInfo = document.getElementById('file-info');
+
+    if (!form || !submitBtn || !submitWithoutCvBtn || !status) {
+      console.error('Form elements tidak ditemukan');
+      return;
+    }
+
+    // File upload handling
+    fileInput.addEventListener('change', function (e) {
+      const file = e.target.files[0];
+      if (file) {
+        // Validate file size (5MB)
+        if (file.size > 5 * 1024 * 1024) {
+          showStatus('File size must be less than 5MB', 'error');
+          fileInput.value = '';
+          fileInfo.textContent = '';
+          return;
+        }
+
+        // Validate file type
+        const allowedTypes = [
+          'application/pdf',
+          'application/msword',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          'image/jpeg',
+          'image/jpg',
+          'image/png',
+        ];
+        if (!allowedTypes.includes(file.type)) {
+          showStatus(
+            'Invalid file type. Please upload PDF, DOC, DOCX, JPG, or PNG files only.',
+            'error',
+          );
+          fileInput.value = '';
+          fileInfo.textContent = '';
+          return;
+        }
+
+        fileInfo.textContent = `Selected: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+        fileInfo.style.color = '#48bb78';
+      } else {
+        fileInfo.textContent = '';
+      }
+    });
+
+    function showStatus(message, type) {
+      status.textContent = message;
+      status.className = `status ${type}`;
+      status.style.display = 'block';
+
+      setTimeout(() => {
+        status.style.display = 'none';
+      }, 8000);
+    }
+
+    function setLoading(isLoading, button) {
+      if (isLoading) {
+        button.disabled = true;
+        button.innerHTML = '<span class="loading"></span>Submitting...';
+      } else {
+        button.disabled = false;
+        button.innerHTML = button.id === 'submit-btn' ? 'Submit Application' : 'Submit Without CV';
+      }
+    }
+
+    function validateForm() {
+      const nama = document.getElementById('nama').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const nomorTelepon = document.getElementById('nomorTelepon').value.trim();
+      const posisi = document.getElementById('posisi').value;
+      const alamat = document.getElementById('alamat').value.trim();
+
+      // Check required fields
+      if (!nama || !email || !nomorTelepon || !posisi || !alamat) {
+        showStatus('Please fill in all required fields (marked with *).', 'error');
+        return false;
+      }
+
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showStatus('Please enter a valid email address.', 'error');
+        return false;
+      }
+
+      // Validate Indonesian phone number
+      const phoneRegex = /^(\+62|62|0)[0-9]{9,13}$/;
+      if (!phoneRegex.test(nomorTelepon.replace(/\s|-/g, ''))) {
+        showStatus(
+          'Please enter a valid Indonesian phone number (e.g., +62812345678 or 08123456789).',
+          'error',
+        );
+        return false;
+      }
+
+      return true;
+    }
+
+    async function submitApplication(withCV = true) {
+      if (!validateForm()) return;
+
+      const formData = new FormData(form);
+
+      // If submitting without CV, remove the file
+      if (!withCV) {
+        formData.delete('cv');
+      }
+
+      const button = withCV ? submitBtn : submitWithoutCvBtn;
+      setLoading(true, button);
+
+      try {
+        const endpoint = withCV ? '/api/applicants/submit' : '/api/applicants/submit-without-cv';
+
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          body: formData,
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          showStatus(
+            result.message || 'Application submitted successfully! We will contact you soon.',
+            'success',
+          );
+          form.reset();
+          fileInfo.textContent = '';
+        } else {
+          showStatus(result.error || 'Failed to submit application. Please try again.', 'error');
+        }
+      } catch (error) {
+        console.error('Submission error:', error);
+        showStatus('Network error. Please check your connection and try again.', 'error');
+      } finally {
+        setLoading(false, button);
+      }
+    }
+
+    // Submit with CV
+    submitBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      submitApplication(true);
+    });
+
+    // Submit without CV
+    submitWithoutCvBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      submitApplication(false);
+    });
+
+    // Real-time validation feedback
+    const inputs = document.querySelectorAll(
+      '#job-form input, #job-form textarea, #job-form select',
+    );
+    inputs.forEach((input) => {
+      // Focus effects
+      input.addEventListener('focus', function () {
+        this.parentElement.style.transform = 'scale(1.01)';
+        this.parentElement.style.transition = 'transform 0.2s ease';
+      });
+
+      input.addEventListener('blur', function () {
+        this.parentElement.style.transform = 'scale(1)';
+      });
+
+      // Real-time validation
+      input.addEventListener('input', function () {
+        if (this.hasAttribute('required') && this.value.trim() === '') {
+          this.style.borderColor = '#f56565';
+        } else if (this.type === 'email' && this.value.trim() !== '') {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          this.style.borderColor = emailRegex.test(this.value) ? '#48bb78' : '#f56565';
+        } else if (this.type === 'tel' && this.value.trim() !== '') {
+          const phoneRegex = /^(\+62|62|0)[0-9]{9,13}$/;
+          this.style.borderColor = phoneRegex.test(this.value.replace(/\s|-/g, ''))
+            ? '#48bb78'
+            : '#f56565';
+        } else if (this.value.trim() !== '') {
+          this.style.borderColor = '#48bb78';
+        } else {
+          this.style.borderColor = '#e2e8f0';
+        }
+      });
+    });
+
+    console.log('Job application form loaded successfully');
+  });
+
+  // For compatibility with view transitions
+  document.addEventListener('astro:page-load', function () {
+    // Re-initialize if there's a view transition
+    console.log('Job form re-initialized after page load');
+  });
+</script>
+
+<style>
+  .job-application {
+    padding: 8rem 1rem;
+    background: var(--color-contact);
+  }
+
+  .job-application-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .job-form {
+    margin-top: 4rem;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    font-weight: 500;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    color: var(--text-color);
+    transition: border-color 0.3s ease;
+    background: white;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+
+  .form-group textarea {
+    height: 100px;
+    resize: vertical;
+  }
+
+  .form-group select {
+    cursor: pointer;
+  }
+
+  /* File upload styling */
+  .file-upload-container {
+    position: relative;
+  }
+
+  .file-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .file-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    border: 2px dashed #e2e8f0;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+  }
+
+  .file-label:hover {
+    border-color: var(--primary);
+    background: #f0f8ff;
+  }
+
+  .file-icon {
+    font-size: 1.5rem;
+  }
+
+  .file-text {
+    color: var(--text-color);
+    font-size: 0.95rem;
+  }
+
+  .file-info {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  .form-note {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: #666;
+  }
+
+  /* Form actions */
+  .form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .btn {
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .btn.primary {
+    background: var(--primary);
+    color: white;
+  }
+
+  .btn.primary:hover {
+    background: var(--primary-dark, #2563eb);
+    transform: translateY(-2px);
+  }
+
+  .btn.secondary {
+    background: #6b7280;
+    color: white;
+  }
+
+  .btn.secondary:hover {
+    background: #4b5563;
+    transform: translateY(-2px);
+  }
+
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* Status messages */
+  .status {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    font-weight: 500;
+    display: none;
+  }
+
+  .status.success {
+    background: #d4edda;
+    color: #155724;
+    border: 2px solid #c3e6cb;
+  }
+
+  .status.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 2px solid #f5c6cb;
+  }
+
+  /* Loading spinner */
+  .loading {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s ease-in-out infinite;
+    margin-right: 8px;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .job-application {
+      padding: 4rem 1rem;
+    }
+
+    .form-actions {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .btn {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .job-application {
+      padding: 2rem 0.5rem;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      font-size: 0.9rem;
+    }
+  }
+</style>

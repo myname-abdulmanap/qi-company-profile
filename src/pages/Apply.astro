@@ -1,0 +1,23 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+
+import { SITE_TITLE_CONTACT, SITE_DESCRIPTION_CONTACT } from '../consts';
+// import { ClientRouter } from 'astro:transitions';
+import HeaderBlog from '../components/HeaderBlog.astro';
+import FormJob from '../components/FormJob.astro';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={SITE_TITLE_CONTACT} description={SITE_DESCRIPTION_CONTACT} />
+  </head>
+
+  <body>
+    <!-- <ClientRouter /> -->
+    <HeaderBlog />
+   <FormJob />
+    <Footer />
+  </body>
+</html>

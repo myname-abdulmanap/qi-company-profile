@@ -8,9 +8,22 @@ import { getCollection } from "astro:content";
 import FormattedDate from "../../components/FormattedDate.astro";
 import { ClientRouter } from "astro:transitions";
 
-const posts = (await getCollection("blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+const allPosts = await getCollection("blog");
+
+// Filter out posts with "careers" category
+const posts = allPosts
+  .filter((post) => {
+    // Handle both array and string categories
+    const category = post.data.category;
+    if (Array.isArray(category)) {
+      // Check if "careers" is not in the array (case-insensitive)
+      return !category.some(cat => cat.toLowerCase() === "careers");
+    } else {
+      // Check if category is not "careers" (case-insensitive)
+      return category.toLowerCase() !== "careers";
+    }
+  })
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <!doctype html>
