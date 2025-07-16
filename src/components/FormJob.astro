@@ -106,13 +106,8 @@ const displayText = formatSlugForDisplay(slug);
 
     // Get API base URL - adjust based on your environment
     const getApiBaseUrl = () => {
-      const isDev =
-        window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      if (isDev) {
-        return 'http://localhost:4000';
-      }
-      // For production, use relative path or your actual API domain
-      return window.location.origin;
+      // Paksa ke localhost untuk development
+      return 'http://localhost:4000';
     };
 
     // File upload handling
