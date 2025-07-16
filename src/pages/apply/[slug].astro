@@ -11,9 +11,8 @@ const { slug } = Astro.params;
 const posts = await getCollection('blog');
 const matchedPost = posts.find((post) => post.data.slug === slug);
 
-// Jika tidak ada, redirect ke halaman 404
 if (!matchedPost) {
-  return Astro.redirect('/404');
+  throw new Error(`404: Post with slug "${slug}" not found`);
 }
 ---
 
@@ -31,17 +30,15 @@ if (!matchedPost) {
   </body>
 </html>
 
-<!-- getStaticPaths with TypeScript support -->
+<!-- ✅ FIX: Gunakan post.data.slug -->
 <script type="ts">
-  import type { AstroConfig, Params } from 'astro';
-  import type { CollectionEntry } from 'astro:content';
   import { getCollection } from 'astro:content';
 
   export async function getStaticPaths() {
     const posts = await getCollection('blog');
 
-    return posts.map((post: CollectionEntry<'blog'>) => ({
-      params: { slug: post.slug },
+    return posts.map((post) => ({
+      params: { slug: post.data.slug },
     }));
   }
 </script>
