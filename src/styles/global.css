@@ -11,7 +11,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  
+
 
 }
 
@@ -110,11 +110,11 @@ body {
   color: var(--bg-color);
   word-wrap: break-word;
   overflow-wrap: break-word;
-  
+
 }
 
 main {
-  
+
   width: 100%;
   max-width: 100%;
   margin: auto;
@@ -193,7 +193,7 @@ a:hover {
 p {
   margin-bottom: 1.5em;
   line-height: 1.6;
-  
+
 }
 
 .prose p {
@@ -213,8 +213,8 @@ textarea, input {
 table {
   width: 100%;
   border-collapse: collapse;
-  border: 2px solid #6c757d; 
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); 
+  border: 2px solid #6c757d;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Header tabel */
@@ -224,26 +224,26 @@ th {
   color: white;
   font-weight: bold;
   text-align: left;
-  border: 2px solid #ffa8a8; 
+  border: 2px solid #ffa8a8;
 }
 
 /* Isi tabel */
 td {
   padding: 12px;
-  border: 2px solid #ffeb99; 
-  background-color: #fffcdb; 
+  border: 2px solid #ffeb99;
+  background-color: #fffcdb;
   color: #333;
 }
 
 
 tr:nth-child(even) td {
-  background-color: #d4f4ff; 
+  background-color: #d4f4ff;
   border: 2px solid #a0e9ff;
 }
 
 
 tr:hover td {
-  background-color: #c4e17f; 
+  background-color: #c4e17f;
   border-color: #92c45a;
   transition: 0.3s ease-in-out;
 }
@@ -420,7 +420,7 @@ hr {
 .pricing {
   padding: 8rem 1rem;
   background: var(--bg-color);
- 
+
 }
 
 .pricing-container {
@@ -666,6 +666,7 @@ hr {
 
   .btn-about {
     display: inline-block;
+    
     padding: 0.75rem 1.8rem;
     font-size: 0.9rem;
     border-radius: 40px;
@@ -682,7 +683,7 @@ hr {
         max-width: calc(100% - 2em);
         margin: 0 auto;
         padding: 4em 1em;
-      
+
       }
 
       .hero-image {
@@ -1116,15 +1117,15 @@ hr {
   .prose {
     font-size: 1.1rem;
   }
-  
+
   .prose h1 {
     font-size: 1.8rem;
   }
-  
+
   .prose h2 {
     font-size: 1.5rem;
   }
-  
+
   .prose h3 {
     font-size: 1.3rem;
   }
@@ -1134,19 +1135,19 @@ hr {
   .prose {
     font-size: 1rem;
   }
-  
+
   .prose h1 {
     font-size: 1.6rem;
   }
-  
+
   .prose h2 {
     font-size: 1.4rem;
   }
-  
+
   .prose h3 {
     font-size: 1.2rem;
   }
-  
+
   .prose ul, .prose ol {
     padding-left: 1.5rem;
   }
@@ -1202,6 +1203,3 @@ hr {
 .prose .footnotes p {
   font-size: 0.9rem;
 }
-   
-
-

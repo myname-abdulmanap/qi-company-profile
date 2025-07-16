@@ -61,11 +61,72 @@ const categories = Array.isArray(category) ? category : [category];
   }
 </script>
 
+<style>
+
+  .btn {
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .btn.primary {
+    background: var(--primary);
+    color: white;
+  }
+
+  .btn.primary:hover {
+    background: var(--primary-dark, #2563eb);
+    transform: translateY(-2px);
+  }
+
+  .btn.secondary {
+    background: #6b7280;
+    color: white;
+  }
+
+  .btn.secondary:hover {
+    background: #4b5563;
+    transform: translateY(-2px);
+  }
+
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .hero-image img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: 90vh; /* Ubah sesuai kebutuhan */
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+
+
+
+
+</style>
+
   </head>
 
   <body>
     <ClientRouter />
     <HeaderBlog />
+    
     <main>
       <article class="blog">
 
@@ -136,25 +197,26 @@ const categories = Array.isArray(category) ? category : [category];
              <slot />
 
 
-             <div class="mt-8 text-center">
+             <div class="mt-10 text-center">
               <a
                 href={`/apply/${Astro.props.slug}`}
-                class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300"
+                class="btn primary"
+                aria-label="Apply for this job"
               >
-                📝 Apply Now
+              Apply Now
               </a>
             </div>
+            <br />
 
-          <div class="tags">
+          <!-- <div class="tags">
             {categories.map((cat) => <span class="tag"><a href={`/careers/category/${cat.toLowerCase()}`}>{cat}</a></span>)}
-          </div>
+          </div> -->
           <br />
           <hr />
           <br />
           <SosialShareButtons title={title} description={description} />
           <RelatedPosts category={category} />
         </div>
-      </article>
     </main>
     <Footer />
   </body>

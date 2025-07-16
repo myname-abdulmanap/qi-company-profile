@@ -14,6 +14,8 @@ function formatSlugForDisplay(slug) {
 const displayText = formatSlugForDisplay(slug);
 ---
 
+<br />
+<br />
 <section class="job-application" id="job-application">
   <div class="job-application-container">
     <div class="section-title fade-in">
@@ -83,9 +85,12 @@ const displayText = formatSlugForDisplay(slug);
       </div>
 
       <div class="form-actions">
-        <button type="submit" class="btn primary" id="submit-btn"> Submit Application </button>
+        <button type="submit" class="btn primary" id="submit-btn">Submit Application</button>
       </div>
 
+      <div class="form-actions">
+        <a href={`/careers/${slug}`} class="btn secondary">Back to Detail</a>
+      </div>
       <div class="status" id="status"></div>
     </form>
   </div>
@@ -253,7 +258,11 @@ const displayText = formatSlugForDisplay(slug);
         const baseUrl = getApiBaseUrl();
         const endpoint = `${baseUrl}/api/v1/applicants/submit`;
 
-        console.log('Submitting to:', endpoint);
+        console.log('otw to submit', {
+          baseUrl,
+          endpoint,
+          formData: Object.fromEntries(formData.entries()),
+        });
 
         const response = await fetch(endpoint, {
           method: 'POST',
@@ -356,7 +365,7 @@ const displayText = formatSlugForDisplay(slug);
       showStatus('No internet connection. Please check your network.', 'error');
     });
 
-    console.log('Job application form loaded successfully');
+    // console.log('Job application form loaded successfully');
   });
 
   // For compatibility with view transitions
