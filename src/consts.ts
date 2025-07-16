@@ -15,3 +15,5 @@ export const SITE_DESCRIPTION_BLOG = 'Explore our collection of articles, news, 
 
 export const SITE_TITLE_CAREERS = 'Careers at Qualita Indonesia';
 export const SITE_DESCRIPTION_CAREERS = 'Discover exciting career opportunities and grow with us in the world of innovative technology.';
+export const SITE_TITLE_JOB = 'Job Application - Qualita Indonesia';
+export const SITE_DESCRIPTION_JOB = 'Apply for a job at Qualita Indonesia. Join our team and contribute to innovative solutions in technical management.';

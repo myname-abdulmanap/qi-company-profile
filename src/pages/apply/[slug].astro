@@ -1,7 +1,27 @@
 ---
+export const prerender = false;
+
 import FormJob from '../../components/FormJob.astro';
 
 const { slug } = Astro.params;
+
+import BaseHead from '../../components/BaseHead.astro';
+import { SITE_TITLE_JOB, SITE_DESCRIPTION_JOB } from '../../consts';
+import Footer from '../../components/Footer.astro';
+import HeaderBlog from '../../components/HeaderBlog.astro';
 ---
 
-<FormJob slug={slug} />
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={SITE_TITLE_JOB} description={SITE_DESCRIPTION_JOB} />
+    <meta name="robots" content="noindex" />
+  </head>
+
+  <body>
+    <!-- <ClientRouter /> -->
+    <HeaderBlog />
+    <FormJob slug={slug} />
+    <Footer />
+  </body>
+</html>

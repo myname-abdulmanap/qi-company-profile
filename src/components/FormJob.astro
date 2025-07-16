@@ -1,5 +1,17 @@
 ---
 const { slug } = Astro.props;
+
+// Function to format slug for display (remove dashes, numbers, and capitalize)
+function formatSlugForDisplay(slug) {
+  return slug
+    .split('-')
+    .map((word) => word.replace(/\d+/g, '').trim()) // Remove numbers
+    .filter((word) => word.length > 0) // Remove empty strings
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+const displayText = formatSlugForDisplay(slug);
 ---
 
 <section class="job-application" id="job-application">
@@ -37,9 +49,8 @@ const { slug } = Astro.props;
           <label for="posisi">Position *</label>
           <select id="posisi" name="posisi" required>
             <option value="">Select Position</option>
-            <option value={slug} selected>{slug}</option>
+            <option value={slug} selected>{displayText}</option>
           </select>
-
         </div>
       </div>
 
@@ -50,7 +61,7 @@ const { slug } = Astro.props;
       </div>
 
       <div class="form-group">
-        <label for="cv">Upload CV/Resume</label>
+        <label for="cv">Upload CV/Resume *</label>
         <div class="file-upload-container">
           <input
             type="file"
@@ -58,6 +69,7 @@ const { slug } = Astro.props;
             name="cv"
             accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
             class="file-input"
+            required
           />
           <label for="cv" class="file-label">
             <span class="file-icon">📄</span>
@@ -66,15 +78,12 @@ const { slug } = Astro.props;
           <div class="file-info" id="file-info"></div>
         </div>
         <small class="form-note"
-          >Maximum file size: 5MB. Supported formats: PDF, DOC, DOCX, JPG, PNG</small
+          >Maximum file size: 2MB. Supported formats: PDF, DOC, DOCX, JPG, PNG</small
         >
       </div>
 
       <div class="form-actions">
         <button type="submit" class="btn primary" id="submit-btn"> Submit Application </button>
-        <button type="button" class="btn secondary" id="submit-without-cv-btn">
-          Submit Without CV
-        </button>
       </div>
 
       <div class="status" id="status"></div>
@@ -86,12 +95,11 @@ const { slug } = Astro.props;
   document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('job-form');
     const submitBtn = document.getElementById('submit-btn');
-    const submitWithoutCvBtn = document.getElementById('submit-without-cv-btn');
     const status = document.getElementById('status');
     const fileInput = document.getElementById('cv');
     const fileInfo = document.getElementById('file-info');
 
-    if (!form || !submitBtn || !submitWithoutCvBtn || !status) {
+    if (!form || !submitBtn || !status) {
       console.error('Form elements tidak ditemukan');
       return;
     }
@@ -111,9 +119,9 @@ const { slug } = Astro.props;
     fileInput.addEventListener('change', function (e) {
       const file = e.target.files[0];
       if (file) {
-        // Validate file size (5MB)
-        if (file.size > 5 * 1024 * 1024) {
-          showStatus('File size must be less than 5MB', 'error');
+        // Validate file size (2MB)
+        if (file.size > 2 * 1024 * 1024) {
+          showStatus('File size must be less than 2MB', 'error');
           fileInput.value = '';
           fileInfo.textContent = '';
           return;
@@ -161,7 +169,7 @@ const { slug } = Astro.props;
         button.innerHTML = '<span class="loading"></span>Submitting...';
       } else {
         button.disabled = false;
-        button.innerHTML = button.id === 'submit-btn' ? 'Submit Application' : 'Submit Without CV';
+        button.innerHTML = 'Submit Application';
       }
     }
 
@@ -171,10 +179,14 @@ const { slug } = Astro.props;
       const nomorTelepon = document.getElementById('nomorTelepon').value.trim();
       const posisi = document.getElementById('posisi').value;
       const alamat = document.getElementById('alamat').value.trim();
+      const cv = document.getElementById('cv').files[0];
 
-      // Check required fields
-      if (!nama || !email || !nomorTelepon || !posisi || !alamat) {
-        showStatus('Please fill in all required fields (marked with *).', 'error');
+      // Check required fields including CV
+      if (!nama || !email || !nomorTelepon || !posisi || !alamat || !cv) {
+        showStatus(
+          'Please fill in all required fields (marked with *) and upload your CV.',
+          'error',
+        );
         return false;
       }
 
@@ -226,7 +238,7 @@ const { slug } = Astro.props;
       return 'Network error occurred. Please try again.';
     }
 
-    async function submitApplication(withCV = true) {
+    async function submitApplication() {
       if (!validateForm()) return;
 
       // Check network connectivity
@@ -236,14 +248,7 @@ const { slug } = Astro.props;
       }
 
       const formData = new FormData(form);
-
-      // If submitting without CV, remove the file
-      if (!withCV) {
-        formData.delete('cv');
-      }
-
-      const button = withCV ? submitBtn : submitWithoutCvBtn;
-      setLoading(true, button);
+      setLoading(true, submitBtn);
 
       // Create abort controller for timeout
       const controller = new AbortController();
@@ -251,9 +256,7 @@ const { slug } = Astro.props;
 
       try {
         const baseUrl = getApiBaseUrl();
-        const endpoint = withCV
-          ? `${baseUrl}/api/v1/applicants/submit`
-          : `${baseUrl}/api/v1/applicants/submit-without-cv`;
+        const endpoint = `${baseUrl}/api/v1/applicants/submit`;
 
         console.log('Submitting to:', endpoint);
 
@@ -304,20 +307,14 @@ const { slug } = Astro.props;
         const errorMessage = handleNetworkError(error);
         showStatus(errorMessage, 'error');
       } finally {
-        setLoading(false, button);
+        setLoading(false, submitBtn);
       }
     }
 
-    // Submit with CV
+    // Submit form
     submitBtn.addEventListener('click', function (e) {
       e.preventDefault();
-      submitApplication(true);
-    });
-
-    // Submit without CV
-    submitWithoutCvBtn.addEventListener('click', function (e) {
-      e.preventDefault();
-      submitApplication(false);
+      submitApplication();
     });
 
     // Real-time validation feedback
