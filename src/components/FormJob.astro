@@ -1,5 +1,5 @@
 ---
-// formJob.astro
+const { slug } = Astro.props;
 ---
 
 <section class="job-application" id="job-application">
@@ -37,18 +37,9 @@
           <label for="posisi">Position *</label>
           <select id="posisi" name="posisi" required>
             <option value="">Select Position</option>
-            <option value="Software Engineer">Software Engineer</option>
-            <option value="Product Manager">Product Manager</option>
-            <option value="UI/UX Designer">UI/UX Designer</option>
-            <option value="Data Analyst">Data Analyst</option>
-            <option value="Quality Assurance">Quality Assurance</option>
-            <option value="Business Development">Business Development</option>
-            <option value="Marketing Specialist">Marketing Specialist</option>
-            <option value="Human Resources">Human Resources</option>
-            <option value="Finance">Finance</option>
-            <option value="Operations">Operations</option>
-            <option value="Other">Other</option>
+            <option value={slug} selected>{slug}</option>
           </select>
+
         </div>
       </div>
 
@@ -104,6 +95,17 @@
       console.error('Form elements tidak ditemukan');
       return;
     }
+
+    // Get API base URL - adjust based on your environment
+    const getApiBaseUrl = () => {
+      const isDev =
+        window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      if (isDev) {
+        return 'http://localhost:4000';
+      }
+      // For production, use relative path or your actual API domain
+      return window.location.origin;
+    };
 
     // File upload handling
     fileInput.addEventListener('change', function (e) {
@@ -196,8 +198,42 @@
       return true;
     }
 
+    // Network connectivity check
+    function checkConnectivity() {
+      return navigator.onLine;
+    }
+
+    // Enhanced error handling for network issues
+    function handleNetworkError(error) {
+      console.error('Network error details:', error);
+
+      if (!checkConnectivity()) {
+        return 'No internet connection. Please check your network and try again.';
+      }
+
+      if (error.name === 'AbortError') {
+        return 'Request timeout. Please try again.';
+      }
+
+      if (error.code === 'ECONNREFUSED' || error.message.includes('ECONNREFUSED')) {
+        return 'Server is not responding. Please try again later or contact support.';
+      }
+
+      if (error.message.includes('Failed to fetch')) {
+        return 'Unable to connect to server. Please check your connection and try again.';
+      }
+
+      return 'Network error occurred. Please try again.';
+    }
+
     async function submitApplication(withCV = true) {
       if (!validateForm()) return;
+
+      // Check network connectivity
+      if (!checkConnectivity()) {
+        showStatus('No internet connection. Please check your network and try again.', 'error');
+        return;
+      }
 
       const formData = new FormData(form);
 
@@ -209,17 +245,46 @@
       const button = withCV ? submitBtn : submitWithoutCvBtn;
       setLoading(true, button);
 
+      // Create abort controller for timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
       try {
-        const endpoint = withCV ? '/api/applicants/submit' : '/api/applicants/submit-without-cv';
+        const baseUrl = getApiBaseUrl();
+        const endpoint = withCV
+          ? `${baseUrl}/api/v1/applicants/submit`
+          : `${baseUrl}/api/v1/applicants/submit-without-cv`;
+
+        console.log('Submitting to:', endpoint);
 
         const response = await fetch(endpoint, {
           method: 'POST',
           body: formData,
+          signal: controller.signal,
+          headers: {
+            // Don't set Content-Type for FormData, let browser handle it
+          },
         });
 
-        const result = await response.json();
+        clearTimeout(timeoutId);
 
-        if (response.ok && result.success) {
+        // Check if response is ok
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const contentType = response.headers.get('content-type');
+        let result;
+
+        if (contentType && contentType.includes('application/json')) {
+          result = await response.json();
+        } else {
+          // Handle non-JSON responses
+          const text = await response.text();
+          result = { success: response.ok, message: text };
+        }
+
+        if (result.success) {
           showStatus(
             result.message || 'Application submitted successfully! We will contact you soon.',
             'success',
@@ -227,11 +292,17 @@
           form.reset();
           fileInfo.textContent = '';
         } else {
-          showStatus(result.error || 'Failed to submit application. Please try again.', 'error');
+          showStatus(
+            result.error || result.message || 'Failed to submit application. Please try again.',
+            'error',
+          );
         }
       } catch (error) {
+        clearTimeout(timeoutId);
         console.error('Submission error:', error);
-        showStatus('Network error. Please check your connection and try again.', 'error');
+
+        const errorMessage = handleNetworkError(error);
+        showStatus(errorMessage, 'error');
       } finally {
         setLoading(false, button);
       }
@@ -282,6 +353,15 @@
           this.style.borderColor = '#e2e8f0';
         }
       });
+    });
+
+    // Network status monitoring
+    window.addEventListener('online', function () {
+      showStatus('Connection restored!', 'success');
+    });
+
+    window.addEventListener('offline', function () {
+      showStatus('No internet connection. Please check your network.', 'error');
     });
 
     console.log('Job application form loaded successfully');
