@@ -1,10 +1,10 @@
 ---
-title: "Account Manager"
+title: "Sales Executive"
 category: "careers"
-slug: "account-manager-35962"
-description: "PT Qualita Indonesia membuka lowongan untuk posisi Sales Executive yang bertanggung jawab dalam mencari pelanggan baru dan menjaga hubungan baik dengan klien."
-heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1747668806/uploads/sr8mrnopyuc9cxnwpowg.png"
-pubDate: "2025-07-16T07:59:33.291Z"
+slug: "sales-executive-67472"
+description: "PT Qualita Indonesia membuka lowongan untuk posisi **Sales Executive** yang bertanggung jawab dalam mencari pelanggan baru dan menjaga hubungan baik dengan klien."
+heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1747194830/atm-9590813_1280_11zon_xlxigx.png"
+pubDate: "2025-07-16T08:24:21.888Z"
 ---
 
 
@@ -28,5 +28,7 @@ PT Qualita Indonesia membuka lowongan untuk posisi **Sales Executive** yang bert
 ## Lokasi Kerja
 
 Jakarta, Indonesia
+
+## Kirim Lamaran
 
 
