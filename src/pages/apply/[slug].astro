@@ -9,7 +9,7 @@ import { getCollection } from 'astro:content';
 
 const { slug } = Astro.params;
 const posts = await getCollection('blog');
-const matchedPost = posts.find((post) => post.slug === slug);
+const matchedPost = posts.find((post) => post.data.slug === slug);
 
 // Jika tidak ada, redirect ke halaman 404
 if (!matchedPost) {

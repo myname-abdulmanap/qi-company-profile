@@ -14,22 +14,19 @@ PT Qualita Indonesia membuka lowongan untuk posisi **Sales Executive** yang bert
 
 ## Kualifikasi
 
-- Pendidikan minimal SMA/SMK (Diploma lebih disukai)  
-- Memiliki pengalaman di bidang sales minimal 1 tahun  
-- Komunikatif, persuasif, dan berorientasi pada target  
-- Memiliki kendaraan pribadi lebih disukai  
+- Pendidikan minimal SMA/SMK (Diploma lebih disukai)
+- Memiliki pengalaman di bidang sales minimal 1 tahun
+- Komunikatif, persuasif, dan berorientasi pada target
+- Memiliki kendaraan pribadi lebih disukai
 
 ## Tanggung Jawab
 
-- Menjual produk/jasa perusahaan ke pelanggan potensial  
-- Menjalin relasi dan follow up klien  
-- Membuat laporan aktivitas penjualan  
+- Menjual produk/jasa perusahaan ke pelanggan potensial
+- Menjalin relasi dan follow up klien
+- Membuat laporan aktivitas penjualan
 
 ## Lokasi Kerja
 
 Jakarta, Indonesia
 
 
-<a href={`/apply/${frontmatter.slug}`} class="apply-btn">
-  📝 Apply Now
-</a>
