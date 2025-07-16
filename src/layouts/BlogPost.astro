@@ -30,8 +30,8 @@ const categories = Array.isArray(category) ? category : [category];
   <head>
     <BaseHead title={title} description={description} />
 
-    
-   
+
+
 
    <!-- Schema.org Breadcrumb -->
 <script type="application/ld+json">
@@ -60,7 +60,7 @@ const categories = Array.isArray(category) ? category : [category];
     ]
   }
 </script>
-      
+
   </head>
 
   <body>
@@ -68,10 +68,10 @@ const categories = Array.isArray(category) ? category : [category];
     <HeaderBlog />
     <main>
       <article class="blog">
-      
+
 
         <nav class="breadcrumb" aria-label="Breadcrumb">
-          <a href="/posts">Articles</a> 
+          <a href="/posts">Articles</a>
           <span class="separator">&gt;</span>
           {categories.map((cat, index) => (
             <>
@@ -80,11 +80,11 @@ const categories = Array.isArray(category) ? category : [category];
             </>
           ))}
         </nav>
-        
-        
-        
-        
-      
+
+
+
+
+
         <div class="title">
           <h1>
             {title}
@@ -107,7 +107,7 @@ const categories = Array.isArray(category) ? category : [category];
                 <span class="author-title"
                   >News, Event & Career</span
                 >
-                
+
                 <br />
                 <span class="date-text"
                   >Update on
@@ -132,11 +132,11 @@ const categories = Array.isArray(category) ? category : [category];
           }
         </div>
         <div class="prose">
-     
+
              <slot />
-         
-        
-        
+
+
+
 
           <div class="tags">
             {categories.map((cat) => <span class="tag"><a href={`/posts/category/${cat.toLowerCase()}`}>{cat}</a></span>)}

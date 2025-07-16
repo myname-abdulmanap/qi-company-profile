@@ -1,14 +1,20 @@
 ---
-export const prerender = false;
-
 import FormJob from '../../components/FormJob.astro';
-
-const { slug } = Astro.params;
-
 import BaseHead from '../../components/BaseHead.astro';
 import { SITE_TITLE_JOB, SITE_DESCRIPTION_JOB } from '../../consts';
 import Footer from '../../components/Footer.astro';
 import HeaderBlog from '../../components/HeaderBlog.astro';
+
+import { getCollection } from 'astro:content';
+
+const { slug } = Astro.params;
+const posts = await getCollection('blog');
+const matchedPost = posts.find((post) => post.slug === slug);
+
+// Jika tidak ada, redirect ke halaman 404
+if (!matchedPost) {
+  return Astro.redirect('/404');
+}
 ---
 
 <!doctype html>
@@ -19,9 +25,23 @@ import HeaderBlog from '../../components/HeaderBlog.astro';
   </head>
 
   <body>
-    <!-- <ClientRouter /> -->
     <HeaderBlog />
     <FormJob slug={slug} />
     <Footer />
   </body>
 </html>
+
+<!-- getStaticPaths with TypeScript support -->
+<script type="ts">
+  import type { AstroConfig, Params } from 'astro';
+  import type { CollectionEntry } from 'astro:content';
+  import { getCollection } from 'astro:content';
+
+  export async function getStaticPaths() {
+    const posts = await getCollection('blog');
+
+    return posts.map((post: CollectionEntry<'blog'>) => ({
+      params: { slug: post.slug },
+    }));
+  }
+</script>
