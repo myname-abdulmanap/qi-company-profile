@@ -5,12 +5,21 @@ import { SITE_TITLE_JOB, SITE_DESCRIPTION_JOB } from '../../consts';
 import Footer from '../../components/Footer.astro';
 import HeaderBlog from '../../components/HeaderBlog.astro';
 
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+
+  return posts.map((post: CollectionEntry<'blog'>) => ({
+    params: { slug: post.data.slug },
+  }));
+}
 
 const { slug } = Astro.params;
 const posts = await getCollection('blog');
 const matchedPost = posts.find((post) => post.data.slug === slug);
 
+// Jika tidak ada, tampilkan error (Astro akan arahkan ke 404 jika dibungkus dalam try-catch di layout root)
 if (!matchedPost) {
   throw new Error(`404: Post with slug "${slug}" not found`);
 }
@@ -29,16 +38,3 @@ if (!matchedPost) {
     <Footer />
   </body>
 </html>
-
-<!-- ✅ FIX: Gunakan post.data.slug -->
-<script type="ts">
-  import { getCollection } from 'astro:content';
-
-  export async function getStaticPaths() {
-    const posts = await getCollection('blog');
-
-    return posts.map((post) => ({
-      params: { slug: post.data.slug },
-    }));
-  }
-</script>
