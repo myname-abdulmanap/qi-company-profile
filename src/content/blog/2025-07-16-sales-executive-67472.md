@@ -4,8 +4,9 @@ category: "careers"
 slug: "sales-executive-67472"
 description: "PT Qualita Indonesia membuka lowongan untuk posisi **Sales Executive** yang bertanggung jawab dalam mencari pelanggan baru dan menjaga hubungan baik dengan klien."
 heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1747194830/atm-9590813_1280_11zon_xlxigx.png"
-pubDate: "2025-07-16T08:24:21.888Z"
+pubDate: "2025-07-17T07:06:35.208Z"
 ---
+
 
 
 ## Deskripsi Pekerjaan
