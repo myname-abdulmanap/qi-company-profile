@@ -41,4 +41,7 @@ jobs:
         username: kangdev
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
-        script: sudo docker restart astro-qualita || true
+        script: |
+          cd /home/kangdev/astro-sites/qualita-indonesia
+          docker-compose down
+          docker-compose up -d
