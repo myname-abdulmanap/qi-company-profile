@@ -257,11 +257,11 @@ const displayText = formatSlugForDisplay(slug);
         const baseUrl = getApiBaseUrl();
         const endpoint = `${baseUrl}/api/v1/applicants/submit`;
 
-        console.log('otw to submittt', {
-          baseUrl,
-          endpoint,
-          formData: Object.fromEntries(formData.entries()),
-        });
+        // console.log('otw to submittt', {
+        //   baseUrl,
+        //   endpoint,
+        //   formData: Object.fromEntries(formData.entries()),
+        // });
 
         const response = await fetch(endpoint, {
           method: 'POST',
