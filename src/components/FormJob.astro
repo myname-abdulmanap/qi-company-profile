@@ -109,9 +109,8 @@ const displayText = formatSlugForDisplay(slug);
       return;
     }
 
-    // Get API base URL - adjust based on your environment
     const getApiBaseUrl = () => {
-      // Paksa ke localhost untuk development
+
       return '/api';
     };
 
@@ -258,7 +257,7 @@ const displayText = formatSlugForDisplay(slug);
         const baseUrl = getApiBaseUrl();
         const endpoint = `${baseUrl}/api/v1/applicants/submit`;
 
-        console.log('otw to submit', {
+        console.log('otw to submittt', {
           baseUrl,
           endpoint,
           formData: Object.fromEntries(formData.entries()),
