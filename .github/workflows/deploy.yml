@@ -44,4 +44,4 @@ jobs:
         script: |
           cd /home/kangdev/astro-sites/qualita-indonesia
           sudo docker-compose stop qualita
-          sudo docker-compose up -d qualita
+          sudo docker-compose up --build -d qualita
