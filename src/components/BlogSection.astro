@@ -2,26 +2,32 @@
 import { getCollection } from 'astro:content';
 const allPosts = await getCollection('blog');
 
-// Filter posts: exclude careers for regular posts
+// Filter posts: exclude careers AND only show published
 const posts = allPosts
   .filter((post) => {
     const category = post.data.category;
-    if (category instanceof Array) {
-      return !category.some((cat) => cat.toLowerCase() === 'careers');
-    }
-    return category?.toLowerCase() !== 'careers';
+    const status = post.data.status?.toLowerCase?.() || 'draft';
+
+    const isNotCareer = Array.isArray(category)
+      ? !category.some((cat) => cat.toLowerCase() === 'careers')
+      : category?.toLowerCase() !== 'careers';
+
+    return isNotCareer && status === 'published';
   })
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 6);
 
-// Filter for careers only
+// Filter for careers only AND only show published
 const careerPosts = allPosts
   .filter((post) => {
     const category = post.data.category;
-    if (category instanceof Array) {
-      return category.some((cat) => cat.toLowerCase() === 'careers');
-    }
-    return category?.toLowerCase() === 'careers';
+    const status = post.data.status?.toLowerCase?.() || 'draft';
+
+    const isCareer = Array.isArray(category)
+      ? category.some((cat) => cat.toLowerCase() === 'careers')
+      : category?.toLowerCase() === 'careers';
+
+    return isCareer && status === 'published';
   })
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 6);
