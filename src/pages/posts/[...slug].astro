@@ -8,7 +8,7 @@ export async function getStaticPaths() {
   const posts = await getCollection('blog');
 
   return posts
-    .filter((post) => post.data.status?.toLowerCase?.() === 'published') // hanya build yang published
+    .filter((post) => post.data.status?.toLowerCase?.() === 'published')
     .map((post) => ({
       params: { slug: post.data.slug },
       props: post,
@@ -27,7 +27,7 @@ if (post.data.status?.toLowerCase?.() !== 'published') {
 const { Content } = await render(post);
 ---
 
-// 5. Layout and slot injection
+
 <BlogPost {...post.data}>
   <Content />
 </BlogPost>
