@@ -1,22 +1,42 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content';
+// Import
+import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BlogPost from '../../layouts/Careers.astro';
-import { render } from 'astro:content';
 
+// 1. Static paths: hanya post kategori "careers" dan status "published"
 export async function getStaticPaths() {
-	const posts = await getCollection('blog');
-	return posts.map((post) => ({
-		params: { slug: post.data.slug },
-		props: post,
-	}));
+  const posts = await getCollection('blog');
+
+  return posts
+    .filter((post) => {
+      const category = post.data.category;
+      const status = post.data.status?.toLowerCase?.() || 'draft';
+
+      const isCareer = Array.isArray(category)
+        ? category.some((cat) => cat.toLowerCase() === 'careers')
+        : category?.toLowerCase() === 'careers';
+
+      return isCareer && status === 'published';
+    })
+    .map((post) => ({
+      params: { slug: post.data.slug },
+      props: post,
+    }));
 }
 
-type Props = CollectionEntry<'blog'>;
+// 2. Props dan render markdown
+const post: CollectionEntry<'blog'> = Astro.props;
 
-const post = Astro.props;
+// 3. Proteksi runtime untuk akses langsung ke draft
+if (post.data.status?.toLowerCase?.() !== 'published') {
+  throw Astro.redirect('/404', 302);
+}
+
+// 4. Render konten markdown
 const { Content } = await render(post);
 ---
 
+// 5. Layout khusus Careers
 <BlogPost {...post.data}>
-	<Content />
+  <Content />
 </BlogPost>
