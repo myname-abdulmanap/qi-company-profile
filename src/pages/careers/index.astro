@@ -10,15 +10,16 @@ import { ClientRouter } from 'astro:transitions';
 
 const allPosts = await getCollection('blog');
 
-// Filter posts untuk hanya kategori "careers"
 const posts = allPosts
   .filter((post) => {
-    // Jika category adalah array, cek apakah mengandung "careers"
-    if (post.data.category instanceof Array) {
-      return post.data.category.includes('careers');
-    }
-    // Jika category adalah string, cek apakah sama dengan "careers"
-    return post.data.category === 'careers';
+    const category = post.data.category;
+    const status = post.data.status?.toLowerCase?.() || 'draft'; // default draft jika tidak ada
+
+    const isCareer = Array.isArray(category)
+      ? category.some((cat) => cat.toLowerCase() === 'careers')
+      : category.toLowerCase() === 'careers';
+
+    return isCareer && status === 'published';
   })
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---

@@ -1,27 +1,26 @@
 ---
-import BaseHead from "../../components/BaseHead.astro";
-import Header from "../../components/Header.astro";
-import Footer from "../../components/Footer.astro";
-import BlogHeroSection from "../../components/BlogHeroSection.astro";
-import { SITE_TITLE_BLOG, SITE_DESCRIPTION_BLOG } from "../../consts";
-import { getCollection } from "astro:content";
-import FormattedDate from "../../components/FormattedDate.astro";
-import { ClientRouter } from "astro:transitions";
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import BlogHeroSection from '../../components/BlogHeroSection.astro';
+import { SITE_TITLE_BLOG, SITE_DESCRIPTION_BLOG } from '../../consts';
+import { getCollection } from 'astro:content';
+import FormattedDate from '../../components/FormattedDate.astro';
+import { ClientRouter } from 'astro:transitions';
 
-const allPosts = await getCollection("blog");
+const allPosts = await getCollection('blog');
 
-// Filter out posts with "careers" category
 const posts = allPosts
   .filter((post) => {
-    // Handle both array and string categories
     const category = post.data.category;
-    if (Array.isArray(category)) {
-      // Check if "careers" is not in the array (case-insensitive)
-      return !category.some(cat => cat.toLowerCase() === "careers");
-    } else {
-      // Check if category is not "careers" (case-insensitive)
-      return category.toLowerCase() !== "careers";
-    }
+    const status = post.data.status?.toLowerCase?.() || 'draft'; // default draft jika tidak ada
+
+    // hanya tampilkan yang bukan "careers" dan statusnya "published"
+    const notCareer = Array.isArray(category)
+      ? !category.some((cat) => cat.toLowerCase() === 'careers')
+      : category.toLowerCase() !== 'careers';
+
+    return notCareer && status === 'published';
   })
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
@@ -184,17 +183,13 @@ const posts = allPosts
                 <article class="blog-card fade-in">
                   <a href={`/posts/${post.id}/`} class="card-link">
                     <div class="card-image">
-                      <img
-                        src={post.data.heroImage}
-                        alt={post.data.title}
-                        loading="lazy"
-                      />
+                      <img src={post.data.heroImage} alt={post.data.title} loading="lazy" />
                     </div>
                     <div class="card-content">
                       <p class="post-date">
-                        in{" "}
+                        in{' '}
                         {post.data.category instanceof Array
-                          ? post.data.category.join(" , ")
+                          ? post.data.category.join(' , ')
                           : post.data.category}
                         - <FormattedDate date={post.data.pubDate} />
                       </p>
