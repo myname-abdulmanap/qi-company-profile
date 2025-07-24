@@ -1,22 +1,33 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content';
+// Import dependencies
+import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
-import { render } from 'astro:content';
 
+// 1. Generate Static Paths (build-time routing)
 export async function getStaticPaths() {
-	const posts = await getCollection('blog');
-	return posts.map((post) => ({
-		params: { slug: post.data.slug },
-		props: post,
-	}));
+  const posts = await getCollection('blog');
+
+  return posts
+    .filter((post) => post.data.status?.toLowerCase?.() === 'published') // hanya build yang published
+    .map((post) => ({
+      params: { slug: post.data.slug },
+      props: post,
+    }));
 }
 
-type Props = CollectionEntry<'blog'>;
+// 2. Render props (post data)
+const post: CollectionEntry<'blog'> = Astro.props;
 
-const post = Astro.props;
+// 3. Runtime protection (prevent accessing draft via preview/dev mode)
+if (post.data.status?.toLowerCase?.() !== 'published') {
+  throw Astro.redirect('/404', 302);
+}
+
+// 4. Render Markdown Content
 const { Content } = await render(post);
 ---
 
+// 5. Layout and slot injection
 <BlogPost {...post.data}>
-	<Content />
+  <Content />
 </BlogPost>
