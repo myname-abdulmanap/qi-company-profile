@@ -1,11 +1,14 @@
----  
-title: "Mengamankan ATM dari Ancaman Kejahatan: Saatnya Beralih ke ProtectQube"  
-category: "Info"  
-slug: "mengamankan-atm-dari-ancaman-kejahatan-saatnya-beralih-ke-protectqube"  
-description: "Mesin ATM merupakan fasilitas penting yang sering menjadi target tindak kejahatan jika tidak diamankan dengan baik. Bagi Anda pemilik lokasi yang menyediakan ruang untuk ATM, penting untuk mengambil langkah-langkah keamanan guna melindungi aset ini. Berikut beberapa tips yang bisa diterapkan:"  
-heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1747194830/atm-9590813_1280_11zon_xlxigx.png"  
-pubDate: "2025-05-17T15:54:41.508Z"  
 ---
+title: "Mengamankan ATM dari Ancaman Kejahatan: Saatnya Beralih ke ProtectQube"
+category: "Info"
+slug: "mengamankan-atm-dari-ancaman-kejahatan-saatnya-beralih-ke-protectqube"
+description: "Mesin ATM merupakan fasilitas penting yang sering menjadi target tindak kejahatan jika tidak diamankan dengan baik. Bagi Anda pemilik lokasi yang menyediakan ruang untuk ATM, penting untuk mengambil langkah-langkah keamanan guna melindungi aset ini. Berikut beberapa tips yang bisa diterapkan:"
+heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1747194830/atm-9590813_1280_11zon_xlxigx.png"
+status: "draft"
+pubDate: "2025-07-24T08:27:57.887Z"
+
+---
+
 
 
 ## Mengamankan ATM dari Ancaman Kejahatan: Saatnya Beralih ke ProtectQube
