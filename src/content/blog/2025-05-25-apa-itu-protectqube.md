@@ -1,17 +1,13 @@
 ---
-title: "Apa itu ProtectQube? "
+title: "Apa itu ProtectQubee? "
 category: "Info"
-slug: "apa-itu-protectqube"
+slug: "apa-itu-protectqubee-65491"
 description: "Solusi keamanan siber yang komprehensif yang dirancang untuk melindungi organisasi dari berbagai ancaman digital modern"
 heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1747194830/atm-9590813_1280_11zon_xlxigx.png"
 status: "published"
-pubDate: "2025-07-24T11:09:43.350Z"
+pubDate: "2025-07-25T08:03:41.884Z"
 
 ---
-
-
-
-
 
 
 
