@@ -5,9 +5,10 @@ slug: "freelance-teknisi-edc-51263"
 description: "Posisi ini bertanggung jawab untuk melakukan aktivasi dan perawatan (maintenance) mesin EDC di lokasi merchant atau klien yang telah ditentukan."
 heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1747670954/uploads/zy70ljky7xa0stxbcslw.png"
 status: "published"
-pubDate: "2025-07-28T08:04:17.415Z"
+pubDate: "2025-07-28T08:44:22.763Z"
 
 ---
+
 
 
 # Lowongan Pekerjaan: Aktivasi & Maintenance Mesin EDC
@@ -22,6 +23,9 @@ Posisi ini bertanggung jawab untuk melakukan **aktivasi dan perawatan (maintenan
 - Kandidat wajib mengikuti **training** sebelum mulai bekerja.
 
 ## Kualifikasi:
+
+![Alt text](https://res.cloudinary.com/dwkkbhn4z/image/upload/v1747670954/uploads/zy70ljky7xa0stxbcslw.png)
+
 
 - Pendidikan minimal **SMK/Sederajat** *(tidak ada minimal pendidikan secara formal)*.
 - **Usia 19–35 tahun**.
