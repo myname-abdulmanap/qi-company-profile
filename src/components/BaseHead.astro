@@ -5,9 +5,9 @@ import '../styles/global.css';
 import { SITE_TITLE } from '../consts';
 
 interface Props {
-	title: string;
-	description: string;
-	image?: string;
+  title: string;
+  description: string;
+  image?: string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -21,10 +21,10 @@ const { title, description, image = '/assets/img/banner.jpg' } = Astro.props;
 <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link
-	rel="alternate"
-	type="application/rss+xml"
-	title={SITE_TITLE}
-	href={new URL('rss.xml', Astro.site)}
+  rel="alternate"
+  type="application/rss+xml"
+  title={SITE_TITLE}
+  href={new URL('rss.xml', Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
 
@@ -35,9 +35,12 @@ const { title, description, image = '/assets/img/banner.jpg' } = Astro.props;
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Quicksand:wght@300..700&display=swap" rel="stylesheet"> -->
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Quicksand:wght@300..700&display=swap"
+  rel="stylesheet"
+/>
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
@@ -66,8 +69,8 @@ const { title, description, image = '/assets/img/banner.jpg' } = Astro.props;
 <link rel="alternate" href="https://qualita-indonesia.com" hreflang="id-ID" />
 <meta name="geo.region" content="ID" />
 <meta name="geo.placename" content="Indonesia" />
-<script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+<script
+  src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"
+  type="module"></script>
 <meta name="google-site-verification" content="74HamblE130X1P5iFTMU4IMH_NyQjO0QAtfq5ts9bb0" />
-
-
-
+<script defer data-domain="qualita-indonesia.com" src="http://localhost:8000/js/script.js"></script>
