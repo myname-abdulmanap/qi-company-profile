@@ -275,8 +275,14 @@ const displayText = formatSlugForDisplay(slug);
       // Jika ada response dari API yang mengandung CV URL, gunakan itu
       if (apiResponseData && apiResponseData.cvUrl) {
         document.getElementById('cv_url').value = apiResponseData.cvUrl;
+        document.getElementById('cv_filename').value = apiResponseData.cvFilename || '';
+        console.log('CV URL from API:', apiResponseData.cvUrl);
+      } else {
+        // Jika tidak ada CV URL dari API, beri tahu bahwa CV diupload tapi URL tidak tersedia
+        document.getElementById('cv_url').value = 'CV uploaded via API (URL not provided)';
         document.getElementById('cv_filename').value =
-          apiResponseData.cvFilename || document.getElementById('cv').files[0]?.name || '';
+          document.getElementById('cv').files[0]?.name || 'CV file';
+        console.log('No CV URL from API, using placeholder');
       }
     }
 
@@ -310,7 +316,7 @@ const displayText = formatSlugForDisplay(slug);
 
     // Submit ke API (dengan Cloudinary upload)
     async function submitToAPI() {
-      updateProgress(apiProgress, '⏳', 'Submitting to database and uploading CV...', 'processing');
+      updateProgress(apiProgress, '⏳', 'Submitting and  uploading CV...', 'processing');
 
       try {
         const formData = new FormData(form);
@@ -354,10 +360,22 @@ const displayText = formatSlugForDisplay(slug);
             'Saved to database and CV uploaded successfully',
             'success',
           );
+
+          // Log the full response to see what we get back
+          console.log('API Response:', result);
+
           return {
             success: true,
             message: result.message,
-            data: result.data, // Untuk mendapatkan CV URL jika ada
+            data: {
+              cvUrl: result.cvUrl || result.data?.cvUrl || result.cv_url || '',
+              cvFilename:
+                result.cvFilename ||
+                result.data?.cvFilename ||
+                result.cv_filename ||
+                document.getElementById('cv').files[0]?.name ||
+                '',
+            },
           };
         } else {
           throw new Error(result.error || result.message || 'API submission failed');
@@ -383,28 +401,27 @@ const displayText = formatSlugForDisplay(slug);
         const tempForm = document.createElement('form');
 
         // Add fields to temp form
-        const fields = [
-          'applicant_name',
-          'applicant_email',
-          'phone_number',
-          'position',
-          'address',
-          'cv_url',
-          'cv_filename',
-        ];
+        const fieldsData = {
+          applicant_name: document.getElementById('applicant_name').value,
+          applicant_email: document.getElementById('applicant_email').value,
+          phone_number: document.getElementById('phone_number').value,
+          position: document.getElementById('position').value,
+          address: document.getElementById('address').value,
+          cv_url: document.getElementById('cv_url').value,
+          cv_filename: document.getElementById('cv_filename').value,
+          application_date: new Date().toLocaleDateString('id-ID'),
+          submission_method: 'Website Form',
+        };
 
-        fields.forEach((fieldName) => {
+        Object.keys(fieldsData).forEach((fieldName) => {
           const input = document.createElement('input');
           input.type = 'hidden';
           input.name = fieldName;
-          input.value = document.getElementById(fieldName).value || '';
+          input.value = fieldsData[fieldName] || '';
           tempForm.appendChild(input);
         });
 
-        console.log(
-          'Sending email with form data:',
-          Array.from(tempForm.elements).map((el) => ({ name: el.name, value: el.value })),
-        );
+        console.log('Sending email with form data:', fieldsData);
 
         const response = await emailjs.sendForm('service_drhscig', 'template_sc48jkv', tempForm);
 
