@@ -379,20 +379,34 @@ const displayText = formatSlugForDisplay(slug);
         // Sinkronisasi data hidden fields dengan data dari API response
         syncHiddenFields(apiResponseData);
 
-        // Prepare template parameters for EmailJS
-        const templateParams = {
-          applicant_name: document.getElementById('applicant_name').value,
-          applicant_email: document.getElementById('applicant_email').value,
-          phone_number: document.getElementById('phone_number').value,
-          position: document.getElementById('position').value,
-          address: document.getElementById('address').value,
-          cv_url: document.getElementById('cv_url').value,
-          cv_filename: document.getElementById('cv_filename').value,
-        };
+        // Create a temporary form element untuk EmailJS
+        const tempForm = document.createElement('form');
 
-        console.log('Sending email with params:', templateParams);
+        // Add fields to temp form
+        const fields = [
+          'applicant_name',
+          'applicant_email',
+          'phone_number',
+          'position',
+          'address',
+          'cv_url',
+          'cv_filename',
+        ];
 
-        const response = await emailjs.send('service_drhscig', 'template_sc48jkv', templateParams);
+        fields.forEach((fieldName) => {
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = fieldName;
+          input.value = document.getElementById(fieldName).value || '';
+          tempForm.appendChild(input);
+        });
+
+        console.log(
+          'Sending email with form data:',
+          Array.from(tempForm.elements).map((el) => ({ name: el.name, value: el.value })),
+        );
+
+        const response = await emailjs.sendForm('service_drhscig', 'template_sc48jkv', tempForm);
 
         console.log('EmailJS SUCCESS!', response.status, response.text);
         updateProgress(emailProgress, '✅', 'Email notification sent', 'success');
@@ -400,7 +414,19 @@ const displayText = formatSlugForDisplay(slug);
       } catch (error) {
         console.error('EmailJS submission error:', error);
         updateProgress(emailProgress, '❌', 'Email notification failed', 'error');
-        return { success: false, message: 'Failed to send email notification' };
+
+        // Log more details about the error
+        if (error.status) {
+          console.error('EmailJS error status:', error.status);
+        }
+        if (error.text) {
+          console.error('EmailJS error text:', error.text);
+        }
+
+        return {
+          success: false,
+          message: `Failed to send email notification: ${error.text || error.message}`,
+        };
       }
     }
 
