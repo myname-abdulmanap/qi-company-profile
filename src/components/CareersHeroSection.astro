@@ -1,193 +1,55 @@
-<section class="careers-hero">
+---
+
+---
+
+<section class="blog-hero">
   <div class="hero-container">
     <div class="category-tag">Career</div>
-    <h1 class="hero-title fade-in delay-1">Career Opportunities</h1>
-    <p class="hero-description fade-in delay-2">Find your next career opportunity</p>
-  </div>
-</section>
-
-<section class="careers-list">
-  <div class="careers-container">
-    <div class="search-section">
-      <div class="search-container">
-        <input
-          type="text"
-          id="search-input"
-          placeholder="Search jobs by title..."
-          class="search-input"
+    <h1 class="hero-title fade-in delay-1">
+      Explore career opportunities, growth insights, and professional development
+    </h1>
+    <p class="hero-description fade-in delay-2">
+      Discover the latest career openings, professional development tips, and insights from our team
+      to help you advance your career journey.
+    </p>
+    <!-- <div class="author-section fade-in delay-3">
+      <div class="author-image">
+        <img
+          src="/assets/img/abdul-manap-software-developer.webp"
+          alt="Abdul Manap"
         />
-        <button class="search-btn" onclick="performSearch()">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <circle cx="11" cy="11" r="8"></circle>
-            <path d="m21 21-4.35-4.35"></path>
-          </svg>
-        </button>
       </div>
-    </div>
-
-    <div id="careers-container" class="careers-grid">
-      <!-- Career cards will be dynamically inserted here -->
-    </div>
-
-    <div id="pagination" class="pagination">
-      <!-- Pagination buttons will be dynamically inserted here -->
-    </div>
+      <div class="author-info">
+        <span class="author-name">Abdul Manap</span>
+        <span class="author-title">Software Developer & Tech Enthusiast</span>
+      </div>
+    </div> -->
+    <!-- <div class="stats-section fade-in delay-4">
+      <div class="stat-item">
+        <span class="stat-number">50+</span>
+        <span class="stat-label">Posts</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-number">5k+</span>
+        <span class="stat-label">Readers</span>
+      </div>
+    </div> -->
   </div>
 </section>
-
-<script>
-  let currentPage = 1;
-  const itemsPerPage = 6;
-  let careersData = []; // Your careers data will go here
-  let filteredData = []; // Filtered careers data
-  let totalPages = 1;
-
-  function renderCareers() {
-    const dataToRender = filteredData.length > 0 ? filteredData : careersData;
-    if (!dataToRender.length) return;
-
-    totalPages = Math.ceil(dataToRender.length / itemsPerPage);
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const currentCareers = dataToRender.slice(startIndex, endIndex);
-
-    const careersContainer = document.getElementById('careers-container');
-    careersContainer.innerHTML = '';
-
-    currentCareers.forEach((career) => {
-      const careerCard = document.createElement('div');
-      careerCard.className = 'career-card fade-in';
-      careerCard.innerHTML = `
-      <div class="career-header">
-        <h3 class="career-title">${career.title}</h3>
-        <span class="career-type">${career.type}</span>
-      </div>
-      <div class="career-details">
-        <span class="career-department">${career.department}</span>
-        <span class="career-location">${career.location}</span>
-      </div>
-      <button class="apply-btn" onclick="applyForJob(${career.id})">Apply</button>
-    `;
-      careersContainer.appendChild(careerCard);
-    });
-
-    renderPagination();
-  }
-
-  function performSearch() {
-    const searchTerm = document.getElementById('search-input').value.toLowerCase().trim();
-
-    if (!searchTerm) {
-      filteredData = [];
-    } else {
-      filteredData = careersData.filter(
-        (career) =>
-          career.title.toLowerCase().includes(searchTerm) ||
-          career.department.toLowerCase().includes(searchTerm) ||
-          career.location.toLowerCase().includes(searchTerm),
-      );
-    }
-
-    currentPage = 1;
-    renderCareers();
-  }
-
-  function renderPagination() {
-    const paginationContainer = document.getElementById('pagination');
-    paginationContainer.innerHTML = '';
-
-    if (totalPages <= 1) return;
-
-    // Previous button
-    const prevBtn = document.createElement('button');
-    prevBtn.className = `pagination-btn ${currentPage === 1 ? 'disabled' : ''}`;
-    prevBtn.innerHTML = '&larr;';
-    prevBtn.onclick = () => {
-      if (currentPage > 1) {
-        currentPage--;
-        renderCareers();
-      }
-    };
-    paginationContainer.appendChild(prevBtn);
-
-    // Page numbers
-    for (let i = 1; i <= totalPages; i++) {
-      const pageBtn = document.createElement('button');
-      pageBtn.className = `pagination-btn ${i === currentPage ? 'active' : ''}`;
-      pageBtn.textContent = i;
-      pageBtn.onclick = () => {
-        currentPage = i;
-        renderCareers();
-      };
-      paginationContainer.appendChild(pageBtn);
-    }
-
-    // Next button
-    const nextBtn = document.createElement('button');
-    nextBtn.className = `pagination-btn ${currentPage === totalPages ? 'disabled' : ''}`;
-    nextBtn.innerHTML = '&rarr;';
-    nextBtn.onclick = () => {
-      if (currentPage < totalPages) {
-        currentPage++;
-        renderCareers();
-      }
-    };
-    paginationContainer.appendChild(nextBtn);
-  }
-
-  // Function to load careers data - replace this with your API call
-  function loadCareersData(data) {
-    careersData = data;
-    filteredData = [];
-    currentPage = 1;
-    renderCareers();
-  }
-
-  // Function to handle job application - customize as needed
-  function applyForJob(jobId) {
-    // Your apply logic here
-    console.log('Apply for job ID:', jobId);
-  }
-
-  // Initialize when page loads
-  document.addEventListener('DOMContentLoaded', function () {
-    // Call your API or load data here
-    // loadCareersData(yourDataArray);
-
-    // Add real-time search functionality
-    const searchInput = document.getElementById('search-input');
-    searchInput.addEventListener('input', function () {
-      performSearch();
-    });
-
-    // Add enter key support for search
-    searchInput.addEventListener('keypress', function (e) {
-      if (e.key === 'Enter') {
-        performSearch();
-      }
-    });
-  });
-</script>
 
 <style>
-  .careers-hero {
+  .blog-hero {
     background: var(--container-color);
-    min-height: 35vh;
+    min-height: 70vh;
     display: flex;
     align-items: center;
-    padding: 2.5rem 1.5rem 1.5rem;
+    padding: 6rem 1.5rem;
     position: relative;
   }
 
   .hero-container {
-    max-width: 700px;
+    max-width: 900px;
     margin: 0 auto;
     text-align: center;
   }
@@ -196,214 +58,98 @@
     display: inline-block;
     background: rgba(255, 255, 255, 0.2);
     color: rgb(255, 255, 255);
-    padding: 0.3rem 0.7rem;
+    padding: 0.5rem 1rem;
     border-radius: 50px;
-    font-size: 0.75rem;
-    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
     font-weight: 500;
+    margin-top: 20px;
   }
 
   .hero-title {
-    font-size: 2rem;
+    font-size: 3.5rem;
     line-height: 1.2;
-    margin-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
     color: var(--text-header);
-    font-weight: 700;
+    font-weight: 800;
   }
 
   .hero-description {
-    font-size: 1rem;
-    max-width: 500px;
-    margin: 0 auto;
+    font-size: 1.25rem;
+    max-width: 700px;
+    margin: 0 auto 3rem;
     color: var(--text-header);
-    line-height: 1.5;
+    line-height: 1.6;
     opacity: 0.9;
   }
 
-  .careers-list {
-    padding: 1.5rem 1.5rem 3rem;
-    background: var(--container-color);
-  }
-
-  .careers-container {
-    max-width: 1000px;
-    margin: 0 auto;
-  }
-
-  .search-section {
-    margin-bottom: 2rem;
-  }
-
-  .search-container {
-    max-width: 400px;
-    margin: 0 auto;
-    position: relative;
-  }
-
-  .search-input {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    padding-right: 3rem;
-    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
-    border-radius: 8px;
-    background: var(--card-bg, #16213e);
-    color: var(--text-header);
-    font-size: 0.9rem;
-    outline: none;
-    transition: all 0.3s ease;
-  }
-
-  .search-input:focus {
-    border-color: var(--primary-color, #4f46e5);
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-  }
-
-  .search-input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-  }
-
-  .search-btn {
-    position: absolute;
-    right: 0.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: var(--text-header);
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-  }
-
-  .search-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-  }
-
-  .careers-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.2rem;
-    margin-bottom: 2.5rem;
-  }
-
-  .career-card {
-    background: var(--card-bg, #16213e);
-    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
-    border-radius: 10px;
-    padding: 1.2rem;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .career-card:hover {
-    transform: translateY(-3px);
-    border-color: var(--primary-color, #4f46e5);
-    box-shadow: 0 8px 25px rgba(79, 70, 229, 0.15);
-  }
-
-  .career-header {
+  .author-section {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 0.8rem;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+    gap: 1rem;
   }
 
-  .career-title {
+  .author-image {
+    width: 60px;
+    height: 60px;
+  }
+
+  .author-image img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--text-header);
+  }
+
+  .author-info {
+    text-align: left;
+  }
+
+  .author-name {
+    display: block;
     font-size: 1.1rem;
     font-weight: 600;
     color: var(--text-header);
-    margin: 0;
-    flex: 1;
-    padding-right: 0.8rem;
   }
 
-  .career-type {
-    background: var(--primary-color, #4f46e5);
-    color: white;
-    padding: 0.2rem 0.6rem;
-    border-radius: 15px;
-    font-size: 0.7rem;
-    font-weight: 500;
-    white-space: nowrap;
-  }
-
-  .career-details {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    margin-bottom: 1.2rem;
-  }
-
-  .career-department,
-  .career-location {
-    font-size: 0.85rem;
+  .author-title {
+    font-size: 0.9rem;
     color: var(--text-header);
     opacity: 0.8;
   }
 
-  .career-department::before {
-    content: '📁 ';
-    margin-right: 0.4rem;
-  }
-
-  .career-location::before {
-    content: '📍 ';
-    margin-right: 0.4rem;
-  }
-
-  .apply-btn {
-    background: var(--primary-color, #4f46e5);
-    color: white;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 6px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: 100%;
-    font-size: 0.9rem;
-  }
-
-  .apply-btn:hover {
-    background: var(--secondary-color, #6366f1);
-    transform: translateY(-1px);
-  }
-
-  .pagination {
+  .stats-section {
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 0.4rem;
+    justify-content: center;
+    gap: 2rem;
   }
 
-  .pagination-btn {
-    background: var(--card-bg, #16213e);
-    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .stat-number {
+    font-size: 1.5rem;
+    font-weight: 700;
     color: var(--text-header);
-    padding: 0.6rem 0.8rem;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: 500;
-    min-width: 36px;
+  }
+
+  .stat-label {
     font-size: 0.9rem;
+    color: var(--text-header);
+    opacity: 0.8;
   }
 
-  .pagination-btn:hover:not(.disabled) {
-    background: var(--primary-color, #4f46e5);
-    border-color: var(--primary-color, #4f46e5);
-  }
-
-  .pagination-btn.active {
-    background: var(--primary-color, #4f46e5);
-    border-color: var(--primary-color, #4f46e5);
-  }
-
-  .pagination-btn.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  .stat-divider {
+    width: 1px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
   }
 
   /* Animations */
@@ -426,86 +172,37 @@
   .delay-2 {
     animation-delay: 0.4s;
   }
+  .delay-3 {
+    animation-delay: 0.6s;
+  }
+  .delay-4 {
+    animation-delay: 0.8s;
+  }
 
   /* Responsive Design */
   @media (max-width: 768px) {
-    .careers-hero {
-      padding: 2rem 1rem 1rem;
-      min-height: 30vh;
+    .blog-hero {
+      padding: 4rem 1rem;
+      min-height: 60vh;
     }
 
     .hero-title {
-      font-size: 1.7rem;
+      font-size: 2.5rem;
     }
 
     .hero-description {
-      font-size: 0.9rem;
+      font-size: 1.1rem;
     }
 
-    .careers-grid {
-      grid-template-columns: 1fr;
-      gap: 1rem;
+    .stats-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
     }
 
-    .career-header {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.4rem;
-    }
-
-    .career-title {
-      padding-right: 0;
-      font-size: 1rem;
-    }
-
-    .pagination-btn {
-      padding: 0.5rem 0.6rem;
-      min-width: 32px;
-      font-size: 0.85rem;
-    }
-
-    .search-container {
-      max-width: 100%;
-    }
-
-    .search-input {
-      font-size: 0.85rem;
-      padding: 0.65rem 0.9rem;
-      padding-right: 2.8rem;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .careers-list {
-      padding: 1rem 1rem 2.5rem;
-    }
-
-    .pagination {
-      gap: 0.2rem;
-    }
-
-    .pagination-btn {
-      padding: 0.4rem 0.5rem;
-      min-width: 28px;
-      font-size: 0.8rem;
-    }
-
-    .career-card {
-      padding: 1rem;
-    }
-
-    .career-title {
-      font-size: 0.95rem;
-    }
-
-    .career-department,
-    .career-location {
-      font-size: 0.8rem;
-    }
-
-    .apply-btn {
-      padding: 0.5rem 1rem;
-      font-size: 0.85rem;
+    .stat-divider {
+      display: none;
     }
   }
 </style>
