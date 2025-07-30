@@ -143,7 +143,6 @@ const displayText = formatSlugForDisplay(slug);
     const emailProgress = document.getElementById('email-progress');
 
     if (!form || !submitBtn || !status) {
-      console.error('Form elements tidak ditemukan');
       return;
     }
 
@@ -265,24 +264,19 @@ const displayText = formatSlugForDisplay(slug);
     }
 
     function syncHiddenFields(apiResponseData = null) {
-      // Sinkronisasi data untuk EmailJS
       document.getElementById('applicant_name').value = document.getElementById('nama').value;
       document.getElementById('applicant_email').value = document.getElementById('email').value;
       document.getElementById('phone_number').value = document.getElementById('nomorTelepon').value;
       document.getElementById('position').value = document.getElementById('posisi').value;
       document.getElementById('address').value = document.getElementById('alamat').value;
 
-      // Jika ada response dari API yang mengandung CV URL, gunakan itu
       if (apiResponseData && apiResponseData.cvUrl) {
         document.getElementById('cv_url').value = apiResponseData.cvUrl;
         document.getElementById('cv_filename').value = apiResponseData.cvFilename || '';
-        console.log('CV URL from API:', apiResponseData.cvUrl);
       } else {
-        // Jika tidak ada CV URL dari API, beri tahu bahwa CV diupload tapi URL tidak tersedia
         document.getElementById('cv_url').value = 'CV uploaded via API (URL not provided)';
         document.getElementById('cv_filename').value =
           document.getElementById('cv').files[0]?.name || 'CV file';
-        console.log('No CV URL from API, using placeholder');
       }
     }
 
@@ -293,8 +287,6 @@ const displayText = formatSlugForDisplay(slug);
 
     // Enhanced error handling for network issues
     function handleNetworkError(error) {
-      console.error('Network error details:', error);
-
       if (!checkConnectivity()) {
         return 'No internet connection. Please check your network and try again.';
       }
@@ -316,7 +308,7 @@ const displayText = formatSlugForDisplay(slug);
 
     // Submit ke API (dengan Cloudinary upload)
     async function submitToAPI() {
-      updateProgress(apiProgress, '⏳', 'Submitting and  uploading CV...', 'processing');
+      updateProgress(apiProgress, '⏳', 'Submitting and uploading CV...', 'processing');
 
       try {
         const formData = new FormData(form);
@@ -325,8 +317,6 @@ const displayText = formatSlugForDisplay(slug);
 
         const baseUrl = getApiBaseUrl();
         const endpoint = `${baseUrl}/api/v1/applicants/submit`;
-
-        console.log('Submitting to API:', endpoint);
 
         const response = await fetch(endpoint, {
           method: 'POST',
@@ -361,9 +351,6 @@ const displayText = formatSlugForDisplay(slug);
             'success',
           );
 
-          // Log the full response to see what we get back
-          console.log('API Response:', result);
-
           return {
             success: true,
             message: result.message,
@@ -381,9 +368,7 @@ const displayText = formatSlugForDisplay(slug);
           throw new Error(result.error || result.message || 'API submission failed');
         }
       } catch (error) {
-        console.error('API submission error:', error);
         updateProgress(apiProgress, '❌', 'Database submission failed', 'error');
-
         const errorMessage = handleNetworkError(error);
         return { success: false, message: errorMessage };
       }
@@ -394,7 +379,6 @@ const displayText = formatSlugForDisplay(slug);
       updateProgress(emailProgress, '⏳', 'Sending email notification...', 'processing');
 
       try {
-        // Sinkronisasi data hidden fields dengan data dari API response
         syncHiddenFields(apiResponseData);
 
         // Create a temporary form element untuk EmailJS
@@ -421,24 +405,12 @@ const displayText = formatSlugForDisplay(slug);
           tempForm.appendChild(input);
         });
 
-        console.log('Sending email with form data:', fieldsData);
-
         const response = await emailjs.sendForm('service_drhscig', 'template_sc48jkv', tempForm);
 
-        console.log('EmailJS SUCCESS!', response.status, response.text);
         updateProgress(emailProgress, '✅', 'Email notification sent', 'success');
         return { success: true, message: 'Email sent successfully' };
       } catch (error) {
-        console.error('EmailJS submission error:', error);
         updateProgress(emailProgress, '❌', 'Email notification failed', 'error');
-
-        // Log more details about the error
-        if (error.status) {
-          console.error('EmailJS error status:', error.status);
-        }
-        if (error.text) {
-          console.error('EmailJS error text:', error.text);
-        }
 
         return {
           success: false,
@@ -470,13 +442,11 @@ const displayText = formatSlugForDisplay(slug);
 
           if (emailResult.success) {
             // Kedua berhasil - ideal case
-            finalMessage =
-              "Application submitted successfully! We've saved your application, uploaded your CV, and sent email notifications. We'll contact you soon.";
+            finalMessage = "Application submitted successfully! We'll contact you soon.";
             finalStatus = 'success';
           } else {
             // API berhasil, email gagal - masih OK karena data tersimpan
-            finalMessage =
-              'Application submitted successfully! Your application and CV have been saved. (Email notification failed, but we have your application)';
+            finalMessage = 'Application submitted successfully! Your application has been saved.';
             finalStatus = 'success';
           }
 
@@ -496,7 +466,6 @@ const displayText = formatSlugForDisplay(slug);
           );
         }
       } catch (error) {
-        console.error('Submission error:', error);
         showStatus('An unexpected error occurred. Please try again.', 'error');
       } finally {
         setLoading(false);
@@ -552,8 +521,6 @@ const displayText = formatSlugForDisplay(slug);
     window.addEventListener('offline', function () {
       showStatus('No internet connection. Please check your network.', 'error');
     });
-
-    console.log('Job application form with API + EmailJS integration loaded successfully');
   });
 
   // Untuk compatibility dengan view transitions
