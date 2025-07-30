@@ -5,9 +5,10 @@ slug: "apa-itu-protectqube"
 description: "Solusi keamanan siber yang komprehensif yang dirancang untuk melindungi organisasi dari berbagai ancaman digital modern"
 heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1747194830/atm-9590813_1280_11zon_xlxigx.png"
 status: "published"
-pubDate: "2025-07-28T07:29:08.930Z"
+pubDate: "2025-07-30T03:11:30.010Z"
 
 ---
+
 
 
 
