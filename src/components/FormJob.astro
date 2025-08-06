@@ -418,53 +418,80 @@ const displayText = formatSlugForDisplay(slug);
   function parseDynamicFields() {
     const formData = new FormData(document.getElementById('job-form'));
 
-    // Parse education (3 forms)
+    // Parse education (3 forms) - format: Gelar - Institusi - TahunLulus
     const pendidikan = [];
     for (let i = 0; i < 3; i++) {
       const gelar = formData.get(`pendidikan_gelar_${i}`);
       const institusi = formData.get(`pendidikan_institusi_${i}`);
       const tahun = formData.get(`pendidikan_tahun_${i}`);
-      const jurusan = formData.get(`pendidikan_jurusan_${i}`);
 
+      // Hanya tambahkan jika gelar, institusi, dan tahun tersedia
       if (gelar && institusi && tahun) {
-        pendidikan.push(`${gelar} - ${institusi} - ${tahun}${jurusan ? ` - ${jurusan}` : ''}`);
+        pendidikan.push(`${gelar} - ${institusi} - ${tahun}`);
       }
     }
 
-    // Parse experience (3 forms)
+    // Parse experience (3 forms) - format: Jabatan - Perusahaan - Durasi
     const pengalaman = [];
     for (let i = 0; i < 3; i++) {
       const jabatan = formData.get(`pengalaman_jabatan_${i}`);
       const perusahaan = formData.get(`pengalaman_perusahaan_${i}`);
       const durasi = formData.get(`pengalaman_durasi_${i}`);
 
+      // Hanya tambahkan jika jabatan, perusahaan, dan durasi tersedia
       if (jabatan && perusahaan && durasi) {
         pengalaman.push(`${jabatan} - ${perusahaan} - ${durasi}`);
       }
     }
 
-    // Parse skills (single field)
+    // Parse skills (single field) - format: comma separated
     const skills = [];
     const skill = formData.get('skill_0');
-    if (skill) skills.push(skill);
+    if (skill && skill.trim()) {
+      // Split by comma and clean up
+      const skillList = skill.split(',').map(s => s.trim()).filter(s => s.length > 0);
+      skills.push(...skillList);
+    }
 
-    // Parse certifications (single field)
+    // Parse certifications (single field) - format: comma separated
     const sertifikasi = [];
     const cert = formData.get('sertifikasi_0');
-    if (cert) sertifikasi.push(cert);
+    if (cert && cert.trim()) {
+      // Split by comma and clean up
+      const certList = cert.split(',').map(s => s.trim()).filter(s => s.length > 0);
+      sertifikasi.push(...certList);
+    }
 
-    // Parse languages (single field)
+    // Parse languages (single field) - format: comma separated
     const bahasa = [];
     const lang = formData.get('bahasa_0');
-    if (lang) bahasa.push(lang);
+    if (lang && lang.trim()) {
+      // Split by comma and clean up
+      const langList = lang.split(',').map(s => s.trim()).filter(s => s.length > 0);
+      bahasa.push(...langList);
+    }
 
     return {
       pendidikan: pendidikan.join(';'),
       pengalaman: pengalaman.join(';'),
-      skills: skills.join(','),
-      sertifikasi: sertifikasi.join(','),
-      bahasa: bahasa.join(','),
+      skills: skills.join(', '),
+      sertifikasi: sertifikasi.join(', '),
+      bahasa: bahasa.join(', '),
     };
+  }
+
+  // Convert date format from YYYY-MM-DD to DD-MM-YYYY
+  function formatDateForBackend(dateString) {
+    if (!dateString) return '';
+
+    // Input format: YYYY-MM-DD (from HTML date input)
+    // Output format: DD-MM-YYYY (expected by backend)
+    const parts = dateString.split('-');
+    if (parts.length === 3) {
+      const [year, month, day] = parts;
+      return `${day}-${month}-${year}`;
+    }
+    return dateString;
   }
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -555,6 +582,7 @@ const displayText = formatSlugForDisplay(slug);
       }
     }
 
+    // Enhanced form validation
     function validateForm() {
       const nama = document.getElementById('nama').value.trim();
       const email = document.getElementById('email').value.trim();
@@ -564,6 +592,7 @@ const displayText = formatSlugForDisplay(slug);
       const tanggalLahir = document.getElementById('tanggalLahir').value;
       const cv = document.getElementById('cv').files[0];
 
+      // Check required fields
       if (!nama || !email || !nomorTelepon || !posisi || !alamat || !tanggalLahir || !cv) {
         showStatus(
           'Please fill in all required fields (marked with *) and upload your CV.',
@@ -572,42 +601,99 @@ const displayText = formatSlugForDisplay(slug);
         return false;
       }
 
+      // Validate email format
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
         showStatus('Please enter a valid email address.', 'error');
         return false;
       }
 
+      // Validate phone number format (Indonesian)
       const phoneRegex = /^(\+62|62|0)[0-9]{9,13}$/;
-      if (!phoneRegex.test(nomorTelepon.replace(/\s|-/g, ''))) {
+      const cleanPhone = nomorTelepon.replace(/\s|-/g, '');
+      if (!phoneRegex.test(cleanPhone)) {
         showStatus('Please enter a valid Indonesian phone number.', 'error');
         return false;
       }
 
-      const recaptchaResponse = grecaptcha.getResponse();
-      if (!recaptchaResponse) {
-        showStatus('Please complete the reCAPTCHA verification.', 'error');
+      // Validate education (at least first one must be complete)
+      const formData = new FormData(document.getElementById('job-form'));
+      const gelar0 = formData.get('pendidikan_gelar_0');
+      const institusi0 = formData.get('pendidikan_institusi_0');
+      const tahun0 = formData.get('pendidikan_tahun_0');
+
+      if (!gelar0 || !institusi0 || !tahun0) {
+        showStatus('Please complete at least the first education entry (degree, institution, and year).', 'error');
         return false;
+      }
+
+      // Validate experience (at least first one must be complete)
+      const jabatan0 = formData.get('pengalaman_jabatan_0');
+      const perusahaan0 = formData.get('pengalaman_perusahaan_0');
+      const durasi0 = formData.get('pengalaman_durasi_0');
+
+      if (!jabatan0 || !perusahaan0 || !durasi0) {
+        showStatus('Please complete at least the first work experience entry (job title, company, and duration).', 'error');
+        return false;
+      }
+
+      // Validate skills
+      const skill0 = formData.get('skill_0');
+      if (!skill0 || !skill0.trim()) {
+        showStatus('Please enter at least one skill.', 'error');
+        return false;
+      }
+
+      // Validate LinkedIn URL if provided
+      const linkedin = formData.get('linkedin');
+      if (linkedin && linkedin.trim()) {
+        const urlRegex = /^https?:\/\/(www\.)?(linkedin\.com|[\w\-]+\.\w+)/;
+        if (!urlRegex.test(linkedin.trim())) {
+          showStatus('Please enter a valid LinkedIn/Portfolio URL (must start with http:// or https://).', 'error');
+          return false;
+        }
+      }
+
+      // Validate reCAPTCHA
+      if (typeof grecaptcha !== 'undefined') {
+        const recaptchaResponse = grecaptcha.getResponse();
+        if (!recaptchaResponse) {
+          showStatus('Please complete the reCAPTCHA verification.', 'error');
+          return false;
+        }
       }
 
       return true;
     }
 
+    // Enhanced hidden fields sync for EmailJS
     function syncHiddenFields(apiResponseData = null) {
       const parsedData = parseDynamicFields();
+      const formData = new FormData(document.getElementById('job-form'));
 
-      document.getElementById('applicant_name').value = document.getElementById('nama').value;
-      document.getElementById('applicant_email').value = document.getElementById('email').value;
-      document.getElementById('phone_number').value = document.getElementById('nomorTelepon').value;
-      document.getElementById('position').value = document.getElementById('posisi').value;
-      document.getElementById('address').value = document.getElementById('alamat').value;
-      document.getElementById('birth_date').value = document.getElementById('tanggalLahir').value;
-      document.getElementById('education_data').value = parsedData.pendidikan;
-      document.getElementById('experience_data').value = parsedData.pengalaman;
-      document.getElementById('skills_data').value = parsedData.skills;
-      document.getElementById('certifications_data').value = parsedData.sertifikasi;
-      document.getElementById('languages_data').value = parsedData.bahasa;
+      // Sync all required fields
+      document.getElementById('applicant_name').value = formData.get('nama') || '';
+      document.getElementById('applicant_email').value = formData.get('email') || '';
+      document.getElementById('phone_number').value = formData.get('nomorTelepon') || '';
+      document.getElementById('position').value = formData.get('posisi') || '';
+      document.getElementById('address').value = formData.get('alamat') || '';
 
+      // Format date for email
+      const tanggalLahir = formData.get('tanggalLahir');
+      document.getElementById('birth_date').value = formatDateForBackend(tanggalLahir);
+
+      // Sync parsed data
+      document.getElementById('education_data').value = parsedData.pendidikan || 'Not provided';
+      document.getElementById('experience_data').value = parsedData.pengalaman || 'Not provided';
+      document.getElementById('skills_data').value = parsedData.skills || 'Not provided';
+      document.getElementById('certifications_data').value = parsedData.sertifikasi || 'Not provided';
+      document.getElementById('languages_data').value = parsedData.bahasa || 'Not provided';
+
+      // LinkedIn - get from the linkedin field directly
+      const linkedinField = document.getElementById('linkedin');
+      const linkedinValue = linkedinField ? linkedinField.value : '';
+
+      // CV information
       if (apiResponseData && apiResponseData.cvUrl) {
         document.getElementById('cv_url').value = apiResponseData.cvUrl;
         document.getElementById('cv_filename').value = apiResponseData.cvFilename || '';
@@ -623,18 +709,70 @@ const displayText = formatSlugForDisplay(slug);
       const formData = new FormData(form);
       const parsedData = parseDynamicFields();
 
-      // Add parsed data to FormData
-      formData.set('pendidikanTerakhir', parsedData.pendidikan);
-      formData.set('pengalamanKerja', parsedData.pengalaman);
-      formData.set('skill', parsedData.skills);
-      formData.set('sertifikasi', parsedData.sertifikasi);
-      formData.set('bahasa', parsedData.bahasa);
+      // Create new FormData with correct field names
+      const backendFormData = new FormData();
 
-      // Add jurusan from first education entry
-      const firstJurusan = formData.get('pendidikan_jurusan_0') || '';
-      formData.set('jurusan', firstJurusan);
+      // Basic information fields - exact field names from backend
+      backendFormData.set('nama', formData.get('nama') || '');
+      backendFormData.set('email', formData.get('email') || '');
+      backendFormData.set('alamat', formData.get('alamat') || '');
+      backendFormData.set('nomorTelepon', formData.get('nomorTelepon') || '');
+      backendFormData.set('posisi', formData.get('posisi') || '');
 
-      return formData;
+      // Format tanggal lahir from YYYY-MM-DD to DD-MM-YYYY
+      const tanggalLahir = formData.get('tanggalLahir');
+      backendFormData.set('tanggalLahir', formatDateForBackend(tanggalLahir));
+
+      // Parsed data fields - exact field names from backend
+      backendFormData.set('pendidikanTerakhir', parsedData.pendidikan);
+      backendFormData.set('pengalamanKerja', parsedData.pengalaman);
+      backendFormData.set('skill', parsedData.skills);
+      backendFormData.set('sertifikasi', parsedData.sertifikasi);
+      backendFormData.set('bahasa', parsedData.bahasa);
+      backendFormData.set('linkedin', formData.get('linkedin') || '');
+
+      // Add CV file if exists
+      const cvFile = formData.get('cv');
+      if (cvFile && cvFile.size > 0) {
+        backendFormData.set('cv', cvFile);
+      }
+
+      return backendFormData;
+    }
+
+    // Debug function to log data before submission
+    function debugFormData() {
+      const formData = prepareFormDataForBackend();
+
+      console.log('=== FORM DATA DEBUG ===');
+      for (let [key, value] of formData.entries()) {
+        if (value instanceof File) {
+          console.log(`${key}: [File] ${value.name} (${value.size} bytes)`);
+        } else {
+          console.log(`${key}: ${value}`);
+        }
+      }
+      console.log('=== END DEBUG ===');
+
+      // Also log the expected JSON structure
+      const jsonData = {
+        nama: formData.get('nama'),
+        email: formData.get('email'),
+        alamat: formData.get('alamat'),
+        nomorTelepon: formData.get('nomorTelepon'),
+        posisi: formData.get('posisi'),
+        tanggalLahir: formData.get('tanggalLahir'),
+        pendidikanTerakhir: formData.get('pendidikanTerakhir'),
+        pengalamanKerja: formData.get('pengalamanKerja'),
+        skill: formData.get('skill'),
+        sertifikasi: formData.get('sertifikasi'),
+        bahasa: formData.get('bahasa'),
+        linkedin: formData.get('linkedin')
+      };
+
+      console.log('=== EXPECTED JSON STRUCTURE ===');
+      console.log(JSON.stringify(jsonData, null, 2));
+      console.log('=== END JSON DEBUG ===');
     }
 
     // Network connectivity and error handling
@@ -655,15 +793,21 @@ const displayText = formatSlugForDisplay(slug);
       if (error.message.includes('Failed to fetch')) {
         return 'Unable to connect to server. Please check your connection and try again.';
       }
-      return 'Network error occurred. Please try again.';
+      return error.message || 'Network error occurred. Please try again.';
     }
 
-    // Submit to API
+    // Submit to API with enhanced error handling
     async function submitToAPI() {
       updateProgress(apiProgress, '⏳', 'Submitting and uploading CV...', 'processing');
 
       try {
         const formData = prepareFormDataForBackend();
+
+        // Debug: Log form data before submission (remove in production)
+        if (window.location.hostname === 'localhost' || window.location.hostname.includes('dev')) {
+          debugFormData();
+        }
+
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 60000);
 
@@ -674,12 +818,32 @@ const displayText = formatSlugForDisplay(slug);
           method: 'POST',
           body: formData,
           signal: controller.signal,
+          // Don't set Content-Type header - let browser set it for FormData
         });
 
         clearTimeout(timeoutId);
 
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          const errorText = await response.text();
+          let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+
+          try {
+            const errorJson = JSON.parse(errorText);
+            errorMessage = errorJson.error || errorJson.message || errorMessage;
+
+            // If validation errors exist, show them
+            if (errorJson.details && Array.isArray(errorJson.details)) {
+              const validationErrors = errorJson.details.map(err => err.message).join('; ');
+              errorMessage += ` - ${validationErrors}`;
+            }
+          } catch (e) {
+            // If response is not JSON, use the text
+            if (errorText) {
+              errorMessage = errorText;
+            }
+          }
+
+          throw new Error(errorMessage);
         }
 
         const contentType = response.headers.get('content-type');
@@ -699,17 +863,14 @@ const displayText = formatSlugForDisplay(slug);
             'Saved to database and CV uploaded successfully',
             'success',
           );
+
           return {
             success: true,
             message: result.message,
             data: {
-              cvUrl: result.cvUrl || result.data?.cvUrl || result.cv_url || '',
-              cvFilename:
-                result.cvFilename ||
-                result.data?.cvFilename ||
-                result.cv_filename ||
-                document.getElementById('cv').files[0]?.name ||
-                '',
+              cvUrl: result.data?.cvLink || result.cvUrl || result.cv_url || '',
+              cvFilename: result.data?.cvFileName || result.cvFilename || result.cv_filename ||
+                         document.getElementById('cv').files[0]?.name || '',
             },
           };
         } else {
@@ -718,6 +879,7 @@ const displayText = formatSlugForDisplay(slug);
       } catch (error) {
         updateProgress(apiProgress, '❌', 'Database submission failed', 'error');
         const errorMessage = handleNetworkError(error);
+        console.error('API submission error:', error);
         return { success: false, message: errorMessage };
       }
     }
@@ -744,6 +906,7 @@ const displayText = formatSlugForDisplay(slug);
           languages_data: document.getElementById('languages_data').value,
           cv_url: document.getElementById('cv_url').value,
           cv_filename: document.getElementById('cv_filename').value,
+          linkedin: document.getElementById('linkedin').value || 'Not provided',
           application_date: new Date().toLocaleDateString('id-ID'),
           submission_method: 'Website Form',
         };
@@ -811,6 +974,7 @@ const displayText = formatSlugForDisplay(slug);
         }
       } catch (error) {
         showStatus('An unexpected error occurred. Please try again.', 'error');
+        console.error('Submission error:', error);
       } finally {
         setLoading(false);
       }
