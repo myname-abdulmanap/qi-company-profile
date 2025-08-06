@@ -1,11 +1,12 @@
 ---
 const { slug } = Astro.props;
 
+// Function to format slug for display (remove dashes, numbers, and capitalize)
 function formatSlugForDisplay(slug) {
   return slug
     .split('-')
-    .map((word) => word.replace(/\d+/g, '').trim())
-    .filter((word) => word.length > 0)
+    .map((word) => word.replace(/\d+/g, '').trim()) // Remove numbers
+    .filter((word) => word.length > 0) // Remove empty strings
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 }
@@ -24,9 +25,10 @@ const displayText = formatSlugForDisplay(slug);
     </div>
 
     <form class="job-form fade-in" id="job-form" enctype="multipart/form-data" data-astro-reload>
-      <!-- Basic Information -->
+      <!-- Personal Information -->
       <div class="form-section">
-        <h3 class="form-section-title">📋 Basic Information</h3>
+        <h3 class="section-subtitle">Personal Information</h3>
+
         <div class="form-grid">
           <div class="form-group">
             <label for="nama">Full Name *</label>
@@ -50,294 +52,274 @@ const displayText = formatSlugForDisplay(slug);
             />
           </div>
           <div class="form-group">
-            <label for="posisi">Position *</label>
-            <select id="posisi" name="posisi" required>
-              <option value="">Select Position</option>
-              <option value={slug} selected>{displayText}</option>
-            </select>
+            <label for="tanggalLahir">Birth Date *</label>
+            <input
+              type="text"
+              id="tanggalLahir"
+              name="tanggalLahir"
+              placeholder="DD-MM-YYYY (e.g. 15-08-1995)"
+              pattern="^[0-9]{2}-[0-9]{2}-[0-9]{4}$"
+              required
+            />
+            <small class="form-note">Format: DD-MM-YYYY</small>
           </div>
         </div>
 
-        <div class="form-group full-width">
+        <div class="form-group">
           <label for="alamat">Address *</label>
-          <textarea id="alamat" name="alamat" placeholder="Enter your complete address" required
-          ></textarea>
+          <textarea id="alamat" name="alamat" placeholder="Enter your complete address" required></textarea>
         </div>
 
         <div class="form-group">
-          <label for="tanggalLahir">Date of Birth *</label>
-          <input type="date" id="tanggalLahir" name="tanggalLahir" required />
+          <label for="posisi">Position *</label>
+          <select id="posisi" name="posisi" required>
+            <option value="">Select Position</option>
+            <option value={slug} selected>{displayText}</option>
+          </select>
         </div>
       </div>
 
       <!-- Education -->
       <div class="form-section">
-        <h3 class="form-section-title">🎓 Education</h3>
+        <h3 class="section-subtitle">Education</h3>
 
-        <!-- Education 1 -->
-        <div class="static-item">
-          <div class="form-grid">
+        <div class="education-entry">
+          <h4 class="entry-title">Latest Education *</h4>
+          <div class="form-grid-3">
             <div class="form-group">
-              <label>Degree *</label>
+              <label for="gelar1">Degree *</label>
               <input
                 type="text"
-                name="pendidikan_gelar_0"
-                placeholder="e.g. S1, D3, SMA"
+                id="gelar1"
+                name="gelar1"
+                placeholder="e.g. S1 Teknik Informatika"
                 required
               />
             </div>
             <div class="form-group">
-              <label>Institution *</label>
+              <label for="institusi1">Institution *</label>
               <input
                 type="text"
-                name="pendidikan_institusi_0"
-                placeholder="University/School name"
+                id="institusi1"
+                name="institusi1"
+                placeholder="e.g. Universitas Indonesia"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="tahunLulus1">Graduation Year *</label>
+              <input
+                type="number"
+                id="tahunLulus1"
+                name="tahunLulus1"
+                placeholder="e.g. 2018"
+                min="1950"
+                max="2030"
                 required
               />
             </div>
           </div>
-          <div class="form-group">
-            <label>Graduation Year *</label>
-            <input
-              type="number"
-              name="pendidikan_tahun_0"
-              placeholder="e.g. 2023"
-              min="1980"
-              max="2030"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label>Major/Field of Study</label>
-            <input type="text" name="pendidikan_jurusan_0" placeholder="e.g. Computer Science" />
-          </div>
         </div>
 
-        <!-- Education 2 -->
-        <div class="static-item">
-          <div class="form-grid">
+        <div class="education-entry">
+          <h4 class="entry-title">Additional Education (Optional)</h4>
+          <div class="form-grid-3">
             <div class="form-group">
-              <label>Degree 2 <span class="optional">(Optional)</span></label>
+              <label for="gelar2">Degree</label>
               <input
                 type="text"
-                name="pendidikan_gelar_1"
-                placeholder="e.g. S1, D3, SMA"
+                id="gelar2"
+                name="gelar2"
+                placeholder="e.g. S2 Manajemen"
               />
             </div>
             <div class="form-group">
-              <label>Institution <span class="optional">(Optional)</span></label>
+              <label for="institusi2">Institution</label>
               <input
                 type="text"
-                name="pendidikan_institusi_1"
-                placeholder="University/School name"
-              />
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Graduation Year <span class="optional">(Optional)</span></label>
-            <input
-              type="number"
-              name="pendidikan_tahun_1"
-              placeholder="e.g. 2023"
-              min="1980"
-              max="2030"
-            />
-          </div>
-          <div class="form-group">
-            <label>Major/Field of Study <span class="optional">(Optional)</span></label>
-            <input type="text" name="pendidikan_jurusan_1" placeholder="e.g. Computer Science" />
-          </div>
-        </div>
-
-        <!-- Education 3 -->
-        <div class="static-item">
-          <div class="form-grid">
-            <div class="form-group">
-              <label>Degree 3 <span class="optional">(Optional)</span></label>
-              <input
-                type="text"
-                name="pendidikan_gelar_2"
-                placeholder="e.g. S1, D3, SMA"
+                id="institusi2"
+                name="institusi2"
+                placeholder="e.g. Institut Teknologi Bandung"
               />
             </div>
             <div class="form-group">
-              <label>Institution <span class="optional">(Optional)</span></label>
+              <label for="tahunLulus2">Graduation Year</label>
               <input
-                type="text"
-                name="pendidikan_institusi_2"
-                placeholder="University/School name"
+                type="number"
+                id="tahunLulus2"
+                name="tahunLulus2"
+                placeholder="e.g. 2020"
+                min="1950"
+                max="2030"
               />
             </div>
-          </div>
-          <div class="form-group">
-            <label>Graduation Year <span class="optional">(Optional)</span></label>
-            <input
-              type="number"
-              name="pendidikan_tahun_2"
-              placeholder="e.g. 2023"
-              min="1980"
-              max="2030"
-            />
-          </div>
-          <div class="form-group">
-            <label>Major/Field of Study <span class="optional">(Optional)</span></label>
-            <input type="text" name="pendidikan_jurusan_2" placeholder="e.g. Computer Science" />
           </div>
         </div>
       </div>
 
       <!-- Work Experience -->
       <div class="form-section">
-        <h3 class="form-section-title">💼 Work Experience</h3>
+        <h3 class="section-subtitle">Work Experience *</h3>
 
-        <!-- Experience 1 -->
-        <div class="static-item">
-          <div class="form-grid">
+        <div class="experience-entry">
+          <h4 class="entry-title">Work Experience 1 *</h4>
+          <div class="form-grid-3">
             <div class="form-group">
-              <label>Job Title *</label>
+              <label for="jabatan1">Position *</label>
               <input
                 type="text"
-                name="pengalaman_jabatan_0"
-                placeholder="e.g. Software Developer"
+                id="jabatan1"
+                name="jabatan1"
+                placeholder="e.g. Senior Developer"
                 required
               />
             </div>
             <div class="form-group">
-              <label>Company *</label>
+              <label for="perusahaan1">Company *</label>
               <input
                 type="text"
-                name="pengalaman_perusahaan_0"
-                placeholder="Company name"
+                id="perusahaan1"
+                name="perusahaan1"
+                placeholder="e.g. PT Teknologi Maju"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="durasi1">Duration *</label>
+              <input
+                type="text"
+                id="durasi1"
+                name="durasi1"
+                placeholder="e.g. 2020-2024"
                 required
               />
             </div>
           </div>
-          <div class="form-group">
-            <label>Duration *</label>
-            <input
-              type="text"
-              name="pengalaman_durasi_0"
-              placeholder="e.g. 2020-2023 or 3 years"
-              required
-            />
+        </div>
+
+        <div class="experience-entry">
+          <h4 class="entry-title">Work Experience 2 (Optional)</h4>
+          <div class="form-grid-3">
+            <div class="form-group">
+              <label for="jabatan2">Position</label>
+              <input
+                type="text"
+                id="jabatan2"
+                name="jabatan2"
+                placeholder="e.g. Junior Developer"
+              />
+            </div>
+            <div class="form-group">
+              <label for="perusahaan2">Company</label>
+              <input
+                type="text"
+                id="perusahaan2"
+                name="perusahaan2"
+                placeholder="e.g. PT StartUp Digital"
+              />
+            </div>
+            <div class="form-group">
+              <label for="durasi2">Duration</label>
+              <input
+                type="text"
+                id="durasi2"
+                name="durasi2"
+                placeholder="e.g. 2018-2020"
+              />
+            </div>
           </div>
         </div>
 
-        <!-- Experience 2 -->
-        <div class="static-item">
-          <div class="form-grid">
+        <div class="experience-entry">
+          <h4 class="entry-title">Work Experience 3 (Optional)</h4>
+          <div class="form-grid-3">
             <div class="form-group">
-              <label>Job Title 2 <span class="optional">(Optional)</span></label>
+              <label for="jabatan3">Position</label>
               <input
                 type="text"
-                name="pengalaman_jabatan_1"
-                placeholder="e.g. Software Developer"
+                id="jabatan3"
+                name="jabatan3"
+                placeholder="e.g. Intern Developer"
               />
             </div>
             <div class="form-group">
-              <label>Company <span class="optional">(Optional)</span></label>
+              <label for="perusahaan3">Company</label>
               <input
                 type="text"
-                name="pengalaman_perusahaan_1"
-                placeholder="Company name"
+                id="perusahaan3"
+                name="perusahaan3"
+                placeholder="e.g. PT Tech Startup"
               />
             </div>
-          </div>
-          <div class="form-group">
-            <label>Duration <span class="optional">(Optional)</span></label>
-            <input
-              type="text"
-              name="pengalaman_durasi_1"
-              placeholder="e.g. 2020-2023 or 3 years"
-            />
+            <div class="form-group">
+              <label for="durasi3">Duration</label>
+              <input
+                type="text"
+                id="durasi3"
+                name="durasi3"
+                placeholder="e.g. 2017-2018"
+              />
+            </div>
           </div>
         </div>
 
-        <!-- Experience 3 -->
-        <div class="static-item">
-          <div class="form-grid">
-            <div class="form-group">
-              <label>Job Title 3 <span class="optional">(Optional)</span></label>
-              <input
-                type="text"
-                name="pengalaman_jabatan_2"
-                placeholder="e.g. Software Developer"
-              />
-            </div>
-            <div class="form-group">
-              <label>Company <span class="optional">(Optional)</span></label>
-              <input
-                type="text"
-                name="pengalaman_perusahaan_2"
-                placeholder="Company name"
-              />
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Duration <span class="optional">(Optional)</span></label>
-            <input
-              type="text"
-              name="pengalaman_durasi_2"
-              placeholder="e.g. 2020-2023 or 3 years"
-            />
-          </div>
-        </div>
+        <small class="form-note">At least one work experience is required. Fill in Position, Company, and Duration for each experience.</small>
       </div>
 
-      <!-- Skills -->
+      <!-- Skills & Qualifications -->
       <div class="form-section">
-        <h3 class="form-section-title">🛠️ Skills</h3>
+        <h3 class="section-subtitle">Skills & Qualifications</h3>
+
         <div class="form-group">
+          <label for="skill">Skills *</label>
           <input
             type="text"
-            name="skill_0"
-            placeholder="e.g. JavaScript, Python, Leadership"
+            id="skill"
+            name="skill"
+            placeholder="e.g. JavaScript, Python, React, Node.js, PostgreSQL"
             required
           />
+          <small class="form-note">Separate multiple skills with commas</small>
         </div>
-      </div>
 
-      <!-- Certifications -->
-      <div class="form-section">
-        <h3 class="form-section-title">🏅 Certifications</h3>
-        <div class="form-group">
-          <input
-            type="text"
-            name="sertifikasi_0"
-            placeholder="e.g. AWS Certified, Google Analytics"
-          />
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="sertifikasi">Certifications (Optional)</label>
+            <input
+              type="text"
+              id="sertifikasi"
+              name="sertifikasi"
+              placeholder="e.g. AWS Certified Developer, Google Cloud Professional"
+            />
+            <small class="form-note">Separate multiple certifications with commas</small>
+          </div>
+          <div class="form-group">
+            <label for="bahasa">Languages (Optional)</label>
+            <input
+              type="text"
+              id="bahasa"
+              name="bahasa"
+              placeholder="e.g. Bahasa Indonesia, English, Mandarin"
+            />
+            <small class="form-note">Separate multiple languages with commas</small>
+          </div>
         </div>
-      </div>
 
-      <!-- Languages -->
-      <div class="form-section">
-        <h3 class="form-section-title">🌐 Languages</h3>
         <div class="form-group">
-          <input
-            type="text"
-            name="bahasa_0"
-            placeholder="e.g. English (Fluent), Mandarin (Basic)"
-          />
-        </div>
-      </div>
-
-      <!-- Additional Information -->
-      <div class="form-section">
-        <h3 class="form-section-title">🔗 Additional Information</h3>
-        <div class="form-group">
-          <label for="linkedin">LinkedIn/Portfolio URL</label>
+          <label for="linkedin">LinkedIn/Portfolio URL (Optional)</label>
           <input
             type="url"
             id="linkedin"
             name="linkedin"
-            placeholder="https://linkedin.com/in/yourprofile"
+            placeholder="https://www.linkedin.com/in/your-profile"
           />
         </div>
       </div>
 
       <!-- CV Upload -->
       <div class="form-section">
-        <h3 class="form-section-title">📄 CV/Resume</h3>
+        <h3 class="section-subtitle">CV/Resume</h3>
+
         <div class="form-group">
           <label for="cv">Upload CV/Resume *</label>
           <div class="file-upload-container">
@@ -351,40 +333,37 @@ const displayText = formatSlugForDisplay(slug);
             />
             <label for="cv" class="file-label">
               <span class="file-icon">📄</span>
-              <span class="file-text">Choose CV file (PDF, DOC, DOCX, JPG, PNG)</span>
+              <span class="file-text">Choose CV file (PDF, DOC, DOCX)</span>
             </label>
             <div class="file-info" id="file-info"></div>
           </div>
-          <small class="form-note"
-            >Maximum file size: 2MB. Supported formats: PDF, DOC, DOCX, JPG, PNG</small
-          >
+          <small class="form-note">Maximum file size: 2MB. Supported formats: PDF, DOC, DOCX</small>
         </div>
       </div>
 
-      <!-- Hidden fields for EmailJS -->
+      <!-- Hidden fields untuk EmailJS -->
       <input type="hidden" name="applicant_name" id="applicant_name" />
       <input type="hidden" name="applicant_email" id="applicant_email" />
       <input type="hidden" name="phone_number" id="phone_number" />
       <input type="hidden" name="position" id="position" />
       <input type="hidden" name="address" id="address" />
       <input type="hidden" name="birth_date" id="birth_date" />
-      <input type="hidden" name="education_data" id="education_data" />
-      <input type="hidden" name="experience_data" id="experience_data" />
-      <input type="hidden" name="skills_data" id="skills_data" />
-      <input type="hidden" name="certifications_data" id="certifications_data" />
-      <input type="hidden" name="languages_data" id="languages_data" />
+      <input type="hidden" name="education" id="education" />
+      <input type="hidden" name="work_experience" id="work_experience" />
+      <input type="hidden" name="skills" id="skills" />
+      <input type="hidden" name="certifications" id="certifications" />
+      <input type="hidden" name="languages" id="languages" />
+      <input type="hidden" name="linkedin_url" id="linkedin_url" />
       <input type="hidden" name="cv_url" id="cv_url" />
       <input type="hidden" name="cv_filename" id="cv_filename" />
 
-      <!-- reCAPTCHA -->
       <div class="form-group">
         <div class="g-recaptcha" data-sitekey="6LcSPkYrAAAAAA3TN5ptXfbY_nsfOOCCPXjMMESG"></div>
       </div>
-      <p class="captcha-warning">
+      <p class="captcha-warning" style="margin-top: 1rem; color: #d9534f; font-size: 0.9rem;">
         * Jika captcha tidak muncul, silakan refresh halaman terlebih dahulu.
       </p>
 
-      <!-- Form Actions -->
       <div class="form-actions">
         <button type="submit" class="btn primary" id="submit-btn">Submit Application</button>
       </div>
@@ -393,7 +372,7 @@ const displayText = formatSlugForDisplay(slug);
         <a href={`/careers/${slug}`} class="btn secondary">Back to Detail</a>
       </div>
 
-      <!-- Status and Progress -->
+      <!-- Status dan progress -->
       <div class="status" id="status"></div>
       <div class="submission-progress" id="submission-progress" style="display: none;">
         <div class="progress-item" id="api-progress">
@@ -409,91 +388,11 @@ const displayText = formatSlugForDisplay(slug);
   </div>
 </section>
 
-<!-- Scripts -->
+<!-- EmailJS Script -->
 <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <script>
-  // Parse dynamic fields for backend
-  function parseDynamicFields() {
-    const formData = new FormData(document.getElementById('job-form'));
-
-    // Parse education (3 forms) - format: Gelar - Institusi - TahunLulus
-    const pendidikan = [];
-    for (let i = 0; i < 3; i++) {
-      const gelar = formData.get(`pendidikan_gelar_${i}`);
-      const institusi = formData.get(`pendidikan_institusi_${i}`);
-      const tahun = formData.get(`pendidikan_tahun_${i}`);
-
-      // Hanya tambahkan jika gelar, institusi, dan tahun tersedia
-      if (gelar && institusi && tahun) {
-        pendidikan.push(`${gelar} - ${institusi} - ${tahun}`);
-      }
-    }
-
-    // Parse experience (3 forms) - format: Jabatan - Perusahaan - Durasi
-    const pengalaman = [];
-    for (let i = 0; i < 3; i++) {
-      const jabatan = formData.get(`pengalaman_jabatan_${i}`);
-      const perusahaan = formData.get(`pengalaman_perusahaan_${i}`);
-      const durasi = formData.get(`pengalaman_durasi_${i}`);
-
-      // Hanya tambahkan jika jabatan, perusahaan, dan durasi tersedia
-      if (jabatan && perusahaan && durasi) {
-        pengalaman.push(`${jabatan} - ${perusahaan} - ${durasi}`);
-      }
-    }
-
-    // Parse skills (single field) - format: comma separated
-    const skills = [];
-    const skill = formData.get('skill_0');
-    if (skill && skill.trim()) {
-      // Split by comma and clean up
-      const skillList = skill.split(',').map(s => s.trim()).filter(s => s.length > 0);
-      skills.push(...skillList);
-    }
-
-    // Parse certifications (single field) - format: comma separated
-    const sertifikasi = [];
-    const cert = formData.get('sertifikasi_0');
-    if (cert && cert.trim()) {
-      // Split by comma and clean up
-      const certList = cert.split(',').map(s => s.trim()).filter(s => s.length > 0);
-      sertifikasi.push(...certList);
-    }
-
-    // Parse languages (single field) - format: comma separated
-    const bahasa = [];
-    const lang = formData.get('bahasa_0');
-    if (lang && lang.trim()) {
-      // Split by comma and clean up
-      const langList = lang.split(',').map(s => s.trim()).filter(s => s.length > 0);
-      bahasa.push(...langList);
-    }
-
-    return {
-      pendidikan: pendidikan.join(';'),
-      pengalaman: pengalaman.join(';'),
-      skills: skills.join(', '),
-      sertifikasi: sertifikasi.join(', '),
-      bahasa: bahasa.join(', '),
-    };
-  }
-
-  // Convert date format from YYYY-MM-DD to DD-MM-YYYY
-  function formatDateForBackend(dateString) {
-    if (!dateString) return '';
-
-    // Input format: YYYY-MM-DD (from HTML date input)
-    // Output format: DD-MM-YYYY (expected by backend)
-    const parts = dateString.split('-');
-    if (parts.length === 3) {
-      const [year, month, day] = parts;
-      return `${day}-${month}-${year}`;
-    }
-    return dateString;
-  }
-
   document.addEventListener('DOMContentLoaded', function () {
     // Initialize EmailJS
     emailjs.init('4-iOyCns2viav_IW_');
@@ -519,6 +418,7 @@ const displayText = formatSlugForDisplay(slug);
     fileInput.addEventListener('change', function (e) {
       const file = e.target.files[0];
       if (file) {
+        // Validate file size (2MB)
         if (file.size > 2 * 1024 * 1024) {
           showStatus('File size must be less than 2MB', 'error');
           fileInput.value = '';
@@ -526,6 +426,7 @@ const displayText = formatSlugForDisplay(slug);
           return;
         }
 
+        // Validate file type
         const allowedTypes = [
           'application/pdf',
           'application/msword',
@@ -582,18 +483,30 @@ const displayText = formatSlugForDisplay(slug);
       }
     }
 
-    // Enhanced form validation
     function validateForm() {
       const nama = document.getElementById('nama').value.trim();
       const email = document.getElementById('email').value.trim();
       const nomorTelepon = document.getElementById('nomorTelepon').value.trim();
       const posisi = document.getElementById('posisi').value;
       const alamat = document.getElementById('alamat').value.trim();
-      const tanggalLahir = document.getElementById('tanggalLahir').value;
+      const tanggalLahir = document.getElementById('tanggalLahir').value.trim();
+
+      // Education validation
+      const gelar1 = document.getElementById('gelar1').value.trim();
+      const institusi1 = document.getElementById('institusi1').value.trim();
+      const tahunLulus1 = document.getElementById('tahunLulus1').value.trim();
+
+      // Work experience validation
+      const jabatan1 = document.getElementById('jabatan1').value.trim();
+      const perusahaan1 = document.getElementById('perusahaan1').value.trim();
+      const durasi1 = document.getElementById('durasi1').value.trim();
+
+      const skill = document.getElementById('skill').value.trim();
       const cv = document.getElementById('cv').files[0];
 
       // Check required fields
-      if (!nama || !email || !nomorTelepon || !posisi || !alamat || !tanggalLahir || !cv) {
+      if (!nama || !email || !nomorTelepon || !posisi || !alamat || !tanggalLahir ||
+          !gelar1 || !institusi1 || !tahunLulus1 || !jabatan1 || !perusahaan1 || !durasi1 || !skill || !cv) {
         showStatus(
           'Please fill in all required fields (marked with *) and upload your CV.',
           'error',
@@ -608,92 +521,124 @@ const displayText = formatSlugForDisplay(slug);
         return false;
       }
 
-      // Validate phone number format (Indonesian)
+      // Validate Indonesian phone number
       const phoneRegex = /^(\+62|62|0)[0-9]{9,13}$/;
-      const cleanPhone = nomorTelepon.replace(/\s|-/g, '');
-      if (!phoneRegex.test(cleanPhone)) {
-        showStatus('Please enter a valid Indonesian phone number.', 'error');
+      if (!phoneRegex.test(nomorTelepon.replace(/\s|-/g, ''))) {
+        showStatus(
+          'Please enter a valid Indonesian phone number (e.g., +62812345678 or 08123456789).',
+          'error',
+        );
         return false;
       }
 
-      // Validate education (at least first one must be complete)
-      const formData = new FormData(document.getElementById('job-form'));
-      const gelar0 = formData.get('pendidikan_gelar_0');
-      const institusi0 = formData.get('pendidikan_institusi_0');
-      const tahun0 = formData.get('pendidikan_tahun_0');
-
-      if (!gelar0 || !institusi0 || !tahun0) {
-        showStatus('Please complete at least the first education entry (degree, institution, and year).', 'error');
+      // Validate birth date format
+      const birthDateRegex = /^[0-9]{2}-[0-9]{2}-[0-9]{4}$/;
+      if (!birthDateRegex.test(tanggalLahir)) {
+        showStatus('Please enter birth date in DD-MM-YYYY format (e.g., 15-08-1995).', 'error');
         return false;
       }
 
-      // Validate experience (at least first one must be complete)
-      const jabatan0 = formData.get('pengalaman_jabatan_0');
-      const perusahaan0 = formData.get('pengalaman_perusahaan_0');
-      const durasi0 = formData.get('pengalaman_durasi_0');
-
-      if (!jabatan0 || !perusahaan0 || !durasi0) {
-        showStatus('Please complete at least the first work experience entry (job title, company, and duration).', 'error');
+      // Validate graduation year
+      const currentYear = new Date().getFullYear();
+      const graduationYear = parseInt(tahunLulus1);
+      if (graduationYear < 1950 || graduationYear > currentYear + 10) {
+        showStatus('Please enter a valid graduation year.', 'error');
         return false;
-      }
-
-      // Validate skills
-      const skill0 = formData.get('skill_0');
-      if (!skill0 || !skill0.trim()) {
-        showStatus('Please enter at least one skill.', 'error');
-        return false;
-      }
-
-      // Validate LinkedIn URL if provided
-      const linkedin = formData.get('linkedin');
-      if (linkedin && linkedin.trim()) {
-        const urlRegex = /^https?:\/\/(www\.)?(linkedin\.com|[\w\-]+\.\w+)/;
-        if (!urlRegex.test(linkedin.trim())) {
-          showStatus('Please enter a valid LinkedIn/Portfolio URL (must start with http:// or https://).', 'error');
-          return false;
-        }
       }
 
       // Validate reCAPTCHA
-      if (typeof grecaptcha !== 'undefined') {
-        const recaptchaResponse = grecaptcha.getResponse();
-        if (!recaptchaResponse) {
-          showStatus('Please complete the reCAPTCHA verification.', 'error');
-          return false;
-        }
+      const recaptchaResponse = grecaptcha.getResponse();
+      if (!recaptchaResponse) {
+        showStatus('Please complete the reCAPTCHA verification.', 'error');
+        return false;
       }
 
       return true;
     }
 
-    // Enhanced hidden fields sync for EmailJS
+    function prepareFormData() {
+      // Combine education entries
+      const educationEntries = [];
+
+      // Education 1 (required)
+      const gelar1 = document.getElementById('gelar1').value.trim();
+      const institusi1 = document.getElementById('institusi1').value.trim();
+      const tahunLulus1 = document.getElementById('tahunLulus1').value.trim();
+      if (gelar1 && institusi1 && tahunLulus1) {
+        educationEntries.push(`${gelar1} - ${institusi1} - ${tahunLulus1}`);
+      }
+
+      // Education 2 (optional)
+      const gelar2 = document.getElementById('gelar2').value.trim();
+      const institusi2 = document.getElementById('institusi2').value.trim();
+      const tahunLulus2 = document.getElementById('tahunLulus2').value.trim();
+      if (gelar2 && institusi2 && tahunLulus2) {
+        educationEntries.push(`${gelar2} - ${institusi2} - ${tahunLulus2}`);
+      }
+
+      const pendidikanTerakhir = educationEntries.join('; ');
+
+      // Combine work experiences
+      const workEntries = [];
+
+      // Work Experience 1 (required)
+      const jabatan1 = document.getElementById('jabatan1').value.trim();
+      const perusahaan1 = document.getElementById('perusahaan1').value.trim();
+      const durasi1 = document.getElementById('durasi1').value.trim();
+      if (jabatan1 && perusahaan1 && durasi1) {
+        workEntries.push(`${jabatan1} - ${perusahaan1} - ${durasi1}`);
+      }
+
+      // Work Experience 2 (optional)
+      const jabatan2 = document.getElementById('jabatan2').value.trim();
+      const perusahaan2 = document.getElementById('perusahaan2').value.trim();
+      const durasi2 = document.getElementById('durasi2').value.trim();
+      if (jabatan2 && perusahaan2 && durasi2) {
+        workEntries.push(`${jabatan2} - ${perusahaan2} - ${durasi2}`);
+      }
+
+      // Work Experience 3 (optional)
+      const jabatan3 = document.getElementById('jabatan3').value.trim();
+      const perusahaan3 = document.getElementById('perusahaan3').value.trim();
+      const durasi3 = document.getElementById('durasi3').value.trim();
+      if (jabatan3 && perusahaan3 && durasi3) {
+        workEntries.push(`${jabatan3} - ${perusahaan3} - ${durasi3}`);
+      }
+
+      const pengalamanKerja = workEntries.join('; ');
+
+      return {
+        nama: document.getElementById('nama').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        alamat: document.getElementById('alamat').value.trim(),
+        nomorTelepon: document.getElementById('nomorTelepon').value.trim(),
+        posisi: document.getElementById('posisi').value,
+        tanggalLahir: document.getElementById('tanggalLahir').value.trim(),
+        pendidikanTerakhir: pendidikanTerakhir,
+        pengalamanKerja: pengalamanKerja,
+        skill: document.getElementById('skill').value.trim(),
+        sertifikasi: document.getElementById('sertifikasi').value.trim(),
+        bahasa: document.getElementById('bahasa').value.trim(),
+        linkedin: document.getElementById('linkedin').value.trim()
+      };
+    }
+
     function syncHiddenFields(apiResponseData = null) {
-      const parsedData = parseDynamicFields();
-      const formData = new FormData(document.getElementById('job-form'));
+      const formData = prepareFormData();
 
-      // Sync all required fields
-      document.getElementById('applicant_name').value = formData.get('nama') || '';
-      document.getElementById('applicant_email').value = formData.get('email') || '';
-      document.getElementById('phone_number').value = formData.get('nomorTelepon') || '';
-      document.getElementById('position').value = formData.get('posisi') || '';
-      document.getElementById('address').value = formData.get('alamat') || '';
+      document.getElementById('applicant_name').value = formData.nama;
+      document.getElementById('applicant_email').value = formData.email;
+      document.getElementById('phone_number').value = formData.nomorTelepon;
+      document.getElementById('position').value = formData.posisi;
+      document.getElementById('address').value = formData.alamat;
+      document.getElementById('birth_date').value = formData.tanggalLahir;
+      document.getElementById('education').value = formData.pendidikanTerakhir;
+      document.getElementById('work_experience').value = formData.pengalamanKerja;
+      document.getElementById('skills').value = formData.skill;
+      document.getElementById('certifications').value = formData.sertifikasi;
+      document.getElementById('languages').value = formData.bahasa;
+      document.getElementById('linkedin_url').value = formData.linkedin;
 
-      // Format date for email
-      const tanggalLahir = formData.get('tanggalLahir');
-      document.getElementById('birth_date').value = formatDateForBackend(tanggalLahir);
-
-      // Sync parsed data
-      document.getElementById('education_data').value = parsedData.pendidikan || 'Not provided';
-      document.getElementById('experience_data').value = parsedData.pengalaman || 'Not provided';
-      document.getElementById('skills_data').value = parsedData.skills || 'Not provided';
-      document.getElementById('certifications_data').value = parsedData.sertifikasi || 'Not provided';
-      document.getElementById('languages_data').value = parsedData.bahasa || 'Not provided';
-
-      // LinkedIn - get from the linkedin field directly
-      const linkedinField = document.getElementById('linkedin');
-      const linkedinValue = linkedinField ? linkedinField.value : '';
-
-      // CV information
       if (apiResponseData && apiResponseData.cvUrl) {
         document.getElementById('cv_url').value = apiResponseData.cvUrl;
         document.getElementById('cv_filename').value = apiResponseData.cvFilename || '';
@@ -704,112 +649,53 @@ const displayText = formatSlugForDisplay(slug);
       }
     }
 
-    // Enhanced form data preparation for backend
-    function prepareFormDataForBackend() {
-      const formData = new FormData(form);
-      const parsedData = parseDynamicFields();
-
-      // Create new FormData with correct field names
-      const backendFormData = new FormData();
-
-      // Basic information fields - exact field names from backend
-      backendFormData.set('nama', formData.get('nama') || '');
-      backendFormData.set('email', formData.get('email') || '');
-      backendFormData.set('alamat', formData.get('alamat') || '');
-      backendFormData.set('nomorTelepon', formData.get('nomorTelepon') || '');
-      backendFormData.set('posisi', formData.get('posisi') || '');
-
-      // Format tanggal lahir from YYYY-MM-DD to DD-MM-YYYY
-      const tanggalLahir = formData.get('tanggalLahir');
-      backendFormData.set('tanggalLahir', formatDateForBackend(tanggalLahir));
-
-      // Parsed data fields - exact field names from backend
-      backendFormData.set('pendidikanTerakhir', parsedData.pendidikan);
-      backendFormData.set('pengalamanKerja', parsedData.pengalaman);
-      backendFormData.set('skill', parsedData.skills);
-      backendFormData.set('sertifikasi', parsedData.sertifikasi);
-      backendFormData.set('bahasa', parsedData.bahasa);
-      backendFormData.set('linkedin', formData.get('linkedin') || '');
-
-      // Add CV file if exists
-      const cvFile = formData.get('cv');
-      if (cvFile && cvFile.size > 0) {
-        backendFormData.set('cv', cvFile);
-      }
-
-      return backendFormData;
-    }
-
-    // Debug function to log data before submission
-    function debugFormData() {
-      const formData = prepareFormDataForBackend();
-
-      console.log('=== FORM DATA DEBUG ===');
-      for (let [key, value] of formData.entries()) {
-        if (value instanceof File) {
-          console.log(`${key}: [File] ${value.name} (${value.size} bytes)`);
-        } else {
-          console.log(`${key}: ${value}`);
-        }
-      }
-      console.log('=== END DEBUG ===');
-
-      // Also log the expected JSON structure
-      const jsonData = {
-        nama: formData.get('nama'),
-        email: formData.get('email'),
-        alamat: formData.get('alamat'),
-        nomorTelepon: formData.get('nomorTelepon'),
-        posisi: formData.get('posisi'),
-        tanggalLahir: formData.get('tanggalLahir'),
-        pendidikanTerakhir: formData.get('pendidikanTerakhir'),
-        pengalamanKerja: formData.get('pengalamanKerja'),
-        skill: formData.get('skill'),
-        sertifikasi: formData.get('sertifikasi'),
-        bahasa: formData.get('bahasa'),
-        linkedin: formData.get('linkedin')
-      };
-
-      console.log('=== EXPECTED JSON STRUCTURE ===');
-      console.log(JSON.stringify(jsonData, null, 2));
-      console.log('=== END JSON DEBUG ===');
-    }
-
-    // Network connectivity and error handling
+    // Network connectivity check
     function checkConnectivity() {
       return navigator.onLine;
     }
 
+    // Enhanced error handling for network issues
     function handleNetworkError(error) {
       if (!checkConnectivity()) {
         return 'No internet connection. Please check your network and try again.';
       }
+
       if (error.name === 'AbortError') {
         return 'Request timeout. Please try again.';
       }
+
       if (error.code === 'ECONNREFUSED' || error.message.includes('ECONNREFUSED')) {
         return 'Server is not responding. Please try again later or contact support.';
       }
+
       if (error.message.includes('Failed to fetch')) {
         return 'Unable to connect to server. Please check your connection and try again.';
       }
-      return error.message || 'Network error occurred. Please try again.';
+
+      return 'Network error occurred. Please try again.';
     }
 
-    // Submit to API with enhanced error handling
+    // Submit ke API (dengan Cloudinary upload)
     async function submitToAPI() {
       updateProgress(apiProgress, '⏳', 'Submitting and uploading CV...', 'processing');
 
       try {
-        const formData = prepareFormDataForBackend();
+        const formData = new FormData();
+        const preparedData = prepareFormData();
 
-        // Debug: Log form data before submission (remove in production)
-        if (window.location.hostname === 'localhost' || window.location.hostname.includes('dev')) {
-          debugFormData();
+        // Add all form data
+        Object.keys(preparedData).forEach(key => {
+          formData.append(key, preparedData[key]);
+        });
+
+        // Add CV file
+        const cvFile = document.getElementById('cv').files[0];
+        if (cvFile) {
+          formData.append('cv', cvFile);
         }
 
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 60000);
+        const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 detik untuk upload
 
         const baseUrl = getApiBaseUrl();
         const endpoint = `${baseUrl}/api/v1/applicants/submit`;
@@ -818,32 +704,12 @@ const displayText = formatSlugForDisplay(slug);
           method: 'POST',
           body: formData,
           signal: controller.signal,
-          // Don't set Content-Type header - let browser set it for FormData
         });
 
         clearTimeout(timeoutId);
 
         if (!response.ok) {
-          const errorText = await response.text();
-          let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
-
-          try {
-            const errorJson = JSON.parse(errorText);
-            errorMessage = errorJson.error || errorJson.message || errorMessage;
-
-            // If validation errors exist, show them
-            if (errorJson.details && Array.isArray(errorJson.details)) {
-              const validationErrors = errorJson.details.map(err => err.message).join('; ');
-              errorMessage += ` - ${validationErrors}`;
-            }
-          } catch (e) {
-            // If response is not JSON, use the text
-            if (errorText) {
-              errorMessage = errorText;
-            }
-          }
-
-          throw new Error(errorMessage);
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const contentType = response.headers.get('content-type');
@@ -868,9 +734,13 @@ const displayText = formatSlugForDisplay(slug);
             success: true,
             message: result.message,
             data: {
-              cvUrl: result.data?.cvLink || result.cvUrl || result.cv_url || '',
-              cvFilename: result.data?.cvFileName || result.cvFilename || result.cv_filename ||
-                         document.getElementById('cv').files[0]?.name || '',
+              cvUrl: result.cvUrl || result.data?.cvUrl || result.cv_url || '',
+              cvFilename:
+                result.cvFilename ||
+                result.data?.cvFilename ||
+                result.cv_filename ||
+                document.getElementById('cv').files[0]?.name ||
+                '',
             },
           };
         } else {
@@ -879,19 +749,21 @@ const displayText = formatSlugForDisplay(slug);
       } catch (error) {
         updateProgress(apiProgress, '❌', 'Database submission failed', 'error');
         const errorMessage = handleNetworkError(error);
-        console.error('API submission error:', error);
         return { success: false, message: errorMessage };
       }
     }
 
-    // Submit to EmailJS
+    // Submit ke EmailJS (sebagai notifikasi)
     async function submitToEmailJS(apiResponseData = null) {
       updateProgress(emailProgress, '⏳', 'Sending email notification...', 'processing');
 
       try {
         syncHiddenFields(apiResponseData);
 
+        // Create a temporary form element untuk EmailJS
         const tempForm = document.createElement('form');
+
+        // Add fields to temp form
         const fieldsData = {
           applicant_name: document.getElementById('applicant_name').value,
           applicant_email: document.getElementById('applicant_email').value,
@@ -899,14 +771,14 @@ const displayText = formatSlugForDisplay(slug);
           position: document.getElementById('position').value,
           address: document.getElementById('address').value,
           birth_date: document.getElementById('birth_date').value,
-          education_data: document.getElementById('education_data').value,
-          experience_data: document.getElementById('experience_data').value,
-          skills_data: document.getElementById('skills_data').value,
-          certifications_data: document.getElementById('certifications_data').value,
-          languages_data: document.getElementById('languages_data').value,
+          education: document.getElementById('education').value,
+          work_experience: document.getElementById('work_experience').value,
+          skills: document.getElementById('skills').value,
+          certifications: document.getElementById('certifications').value,
+          languages: document.getElementById('languages').value,
+          linkedin_url: document.getElementById('linkedin_url').value,
           cv_url: document.getElementById('cv_url').value,
           cv_filename: document.getElementById('cv_filename').value,
-          linkedin: document.getElementById('linkedin').value || 'Not provided',
           application_date: new Date().toLocaleDateString('id-ID'),
           submission_method: 'Website Form',
         };
@@ -925,6 +797,7 @@ const displayText = formatSlugForDisplay(slug);
         return { success: true, message: 'Email sent successfully' };
       } catch (error) {
         updateProgress(emailProgress, '❌', 'Email notification failed', 'error');
+
         return {
           success: false,
           message: `Failed to send email notification: ${error.text || error.message}`,
@@ -932,7 +805,7 @@ const displayText = formatSlugForDisplay(slug);
       }
     }
 
-    // Main submission function
+    // Main submission function - API first, then EmailJS
     async function submitApplication() {
       if (!validateForm()) return;
       if (!checkConnectivity()) {
@@ -943,22 +816,27 @@ const displayText = formatSlugForDisplay(slug);
       setLoading(true);
 
       try {
+        // Step 1: Submit ke API dulu (upload CV + save to database)
         const apiResult = await submitToAPI();
 
         if (apiResult.success) {
+          // Step 2: Jika API berhasil, kirim email notification
           const emailResult = await submitToEmailJS(apiResult.data);
 
           let finalMessage = '';
           let finalStatus = '';
 
           if (emailResult.success) {
+            // Kedua berhasil - ideal case
             finalMessage = "Application submitted successfully! We'll contact you soon.";
             finalStatus = 'success';
           } else {
+            // API berhasil, email gagal - masih OK karena data tersimpan
             finalMessage = 'Application submitted successfully! Your application has been saved.';
             finalStatus = 'success';
           }
 
+          // Reset form hanya jika API berhasil
           form.reset();
           fileInfo.textContent = '';
           if (typeof grecaptcha !== 'undefined') {
@@ -967,6 +845,7 @@ const displayText = formatSlugForDisplay(slug);
 
           showStatus(finalMessage, finalStatus);
         } else {
+          // API gagal - tidak perlu coba email
           showStatus(
             apiResult.message || 'Application submission failed. Please try again.',
             'error',
@@ -974,13 +853,12 @@ const displayText = formatSlugForDisplay(slug);
         }
       } catch (error) {
         showStatus('An unexpected error occurred. Please try again.', 'error');
-        console.error('Submission error:', error);
       } finally {
         setLoading(false);
       }
     }
 
-    // Event listener for form submit
+    // Event listener untuk form submit
     submitBtn.addEventListener('click', function (e) {
       e.preventDefault();
       submitApplication();
@@ -991,6 +869,7 @@ const displayText = formatSlugForDisplay(slug);
       '#job-form input, #job-form textarea, #job-form select',
     );
     inputs.forEach((input) => {
+      // Focus effects
       input.addEventListener('focus', function () {
         this.parentElement.style.transform = 'scale(1.01)';
         this.parentElement.style.transition = 'transform 0.2s ease';
@@ -1000,6 +879,7 @@ const displayText = formatSlugForDisplay(slug);
         this.parentElement.style.transform = 'scale(1)';
       });
 
+      // Real-time validation
       input.addEventListener('input', function () {
         if (this.hasAttribute('required') && this.value.trim() === '') {
           this.style.borderColor = '#f56565';
@@ -1029,7 +909,7 @@ const displayText = formatSlugForDisplay(slug);
     });
   });
 
-  // For compatibility with view transitions
+  // Untuk compatibility dengan view transitions
   document.addEventListener('astro:page-load', function () {
     if (typeof emailjs !== 'undefined') {
       emailjs.init('4-iOyCns2viav_IW_');
@@ -1054,46 +934,19 @@ const displayText = formatSlugForDisplay(slug);
 
   /* Form sections */
   .form-section {
-    margin-bottom: 2rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   }
 
-  .form-section:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-  }
-
-  .form-section-title {
-    font-size: 1.2rem;
-    font-weight: 600;
+  .section-subtitle {
+    font-size: 1.5rem;
     color: var(--text-color);
     margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  /* Static sections (replacing dynamic sections) */
-  .static-item {
-    background: #f8f9fa;
-    border: 1px solid #e2e8f0;
-    border-radius: 0.5rem;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    position: relative;
-  }
-
-  .static-item:last-child {
-    margin-bottom: 0;
-  }
-
-  /* Optional label styling */
-  .optional {
-    font-size: 0.85rem;
-    color: #6b7280;
-    font-weight: 400;
-    font-style: italic;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e2e8f0;
   }
 
   .form-grid {
@@ -1105,10 +958,6 @@ const displayText = formatSlugForDisplay(slug);
 
   .form-group {
     margin-bottom: 1.5rem;
-  }
-
-  .form-group.full-width {
-    grid-column: 1 / -1;
   }
 
   .form-group label {
@@ -1347,6 +1196,10 @@ const displayText = formatSlugForDisplay(slug);
       grid-template-columns: 1fr;
     }
 
+    .form-grid-3 {
+      grid-template-columns: 1fr;
+    }
+
     .job-application {
       padding: 4rem 1rem;
     }
@@ -1361,8 +1214,21 @@ const displayText = formatSlugForDisplay(slug);
       max-width: 300px;
     }
 
-    .static-item {
-      padding: 0.75rem;
+    .form-section {
+      padding: 1.5rem;
+    }
+
+    .section-subtitle {
+      font-size: 1.25rem;
+    }
+
+    .education-entry,
+    .experience-entry {
+      padding: 1rem;
+    }
+
+    .entry-title {
+      font-size: 1rem;
     }
   }
 
@@ -1375,6 +1241,15 @@ const displayText = formatSlugForDisplay(slug);
     .form-group textarea,
     .form-group select {
       font-size: 0.9rem;
+    }
+
+    .form-section {
+      padding: 1rem;
+    }
+
+    .education-entry,
+    .experience-entry {
+      padding: 0.75rem;
     }
   }
 
