@@ -28,7 +28,7 @@ const displayText = formatSlugForDisplay(slug);
       <!-- Personal Information -->
       <div class="form-section">
         <h3 class="section-subtitle">Personal Information</h3>
-
+        
         <div class="form-grid">
           <div class="form-group">
             <label for="nama">Full Name *</label>
@@ -82,7 +82,7 @@ const displayText = formatSlugForDisplay(slug);
       <!-- Education -->
       <div class="form-section">
         <h3 class="section-subtitle">Education</h3>
-
+        
         <div class="education-entry">
           <h4 class="entry-title">Latest Education *</h4>
           <div class="form-grid-3">
@@ -160,7 +160,7 @@ const displayText = formatSlugForDisplay(slug);
       <!-- Work Experience -->
       <div class="form-section">
         <h3 class="section-subtitle">Work Experience *</h3>
-
+        
         <div class="experience-entry">
           <h4 class="entry-title">Work Experience 1 *</h4>
           <div class="form-grid-3">
@@ -262,14 +262,14 @@ const displayText = formatSlugForDisplay(slug);
             </div>
           </div>
         </div>
-
+        
         <small class="form-note">At least one work experience is required. Fill in Position, Company, and Duration for each experience.</small>
       </div>
 
       <!-- Skills & Qualifications -->
       <div class="form-section">
         <h3 class="section-subtitle">Skills & Qualifications</h3>
-
+        
         <div class="form-group">
           <label for="skill">Skills *</label>
           <input
@@ -319,7 +319,7 @@ const displayText = formatSlugForDisplay(slug);
       <!-- CV Upload -->
       <div class="form-section">
         <h3 class="section-subtitle">CV/Resume</h3>
-
+        
         <div class="form-group">
           <label for="cv">Upload CV/Resume *</label>
           <div class="file-upload-container">
@@ -490,22 +490,22 @@ const displayText = formatSlugForDisplay(slug);
       const posisi = document.getElementById('posisi').value;
       const alamat = document.getElementById('alamat').value.trim();
       const tanggalLahir = document.getElementById('tanggalLahir').value.trim();
-
+      
       // Education validation
       const gelar1 = document.getElementById('gelar1').value.trim();
       const institusi1 = document.getElementById('institusi1').value.trim();
       const tahunLulus1 = document.getElementById('tahunLulus1').value.trim();
-
+      
       // Work experience validation
       const jabatan1 = document.getElementById('jabatan1').value.trim();
       const perusahaan1 = document.getElementById('perusahaan1').value.trim();
       const durasi1 = document.getElementById('durasi1').value.trim();
-
+      
       const skill = document.getElementById('skill').value.trim();
       const cv = document.getElementById('cv').files[0];
 
       // Check required fields
-      if (!nama || !email || !nomorTelepon || !posisi || !alamat || !tanggalLahir ||
+      if (!nama || !email || !nomorTelepon || !posisi || !alamat || !tanggalLahir || 
           !gelar1 || !institusi1 || !tahunLulus1 || !jabatan1 || !perusahaan1 || !durasi1 || !skill || !cv) {
         showStatus(
           'Please fill in all required fields (marked with *) and upload your CV.',
@@ -559,7 +559,7 @@ const displayText = formatSlugForDisplay(slug);
     function prepareFormData() {
       // Combine education entries
       const educationEntries = [];
-
+      
       // Education 1 (required)
       const gelar1 = document.getElementById('gelar1').value.trim();
       const institusi1 = document.getElementById('institusi1').value.trim();
@@ -567,7 +567,7 @@ const displayText = formatSlugForDisplay(slug);
       if (gelar1 && institusi1 && tahunLulus1) {
         educationEntries.push(`${gelar1} - ${institusi1} - ${tahunLulus1}`);
       }
-
+      
       // Education 2 (optional)
       const gelar2 = document.getElementById('gelar2').value.trim();
       const institusi2 = document.getElementById('institusi2').value.trim();
@@ -575,12 +575,12 @@ const displayText = formatSlugForDisplay(slug);
       if (gelar2 && institusi2 && tahunLulus2) {
         educationEntries.push(`${gelar2} - ${institusi2} - ${tahunLulus2}`);
       }
-
+      
       const pendidikanTerakhir = educationEntries.join('; ');
 
       // Combine work experiences
       const workEntries = [];
-
+      
       // Work Experience 1 (required)
       const jabatan1 = document.getElementById('jabatan1').value.trim();
       const perusahaan1 = document.getElementById('perusahaan1').value.trim();
@@ -588,7 +588,7 @@ const displayText = formatSlugForDisplay(slug);
       if (jabatan1 && perusahaan1 && durasi1) {
         workEntries.push(`${jabatan1} - ${perusahaan1} - ${durasi1}`);
       }
-
+      
       // Work Experience 2 (optional)
       const jabatan2 = document.getElementById('jabatan2').value.trim();
       const perusahaan2 = document.getElementById('perusahaan2').value.trim();
@@ -596,7 +596,7 @@ const displayText = formatSlugForDisplay(slug);
       if (jabatan2 && perusahaan2 && durasi2) {
         workEntries.push(`${jabatan2} - ${perusahaan2} - ${durasi2}`);
       }
-
+      
       // Work Experience 3 (optional)
       const jabatan3 = document.getElementById('jabatan3').value.trim();
       const perusahaan3 = document.getElementById('perusahaan3').value.trim();
@@ -604,7 +604,7 @@ const displayText = formatSlugForDisplay(slug);
       if (jabatan3 && perusahaan3 && durasi3) {
         workEntries.push(`${jabatan3} - ${perusahaan3} - ${durasi3}`);
       }
-
+      
       const pengalamanKerja = workEntries.join('; ');
 
       return {
@@ -625,7 +625,129 @@ const displayText = formatSlugForDisplay(slug);
 
     function syncHiddenFields(apiResponseData = null) {
       const formData = prepareFormData();
+      
+      document.getElementById('applicant_name').value = formData.nama;
+      document.getElementById('applicant_email').value = formData.email;
+      document.getElementById('phone_number').value = formData.nomorTelepon;
+      document.getElementById('position').value = formData.posisi;
+      document.getElementById('address').value = formData.alamat;
+      document.getElementById('birth_date').value = formData.tanggalLahir;
+      document.getElementById('education').value = formData.pendidikanTerakhir;
+      document.getElementById('work_experience').value = formData.pengalamanKerja;
+      document.getElementById('skills').value = formData.skill;
+      document.getElementById('certifications').value = formData.sertifikasi;
+      document.getElementById('languages').value = formData.bahasa;
+      document.getElementById('linkedin_url').value = formData.linkedin;
 
+      if (apiResponseData && apiResponseData.cvUrl) {
+        document.getElementById('cv_url').value = apiResponseData.cvUrl;
+        document.getElementById('cv_filename').value = apiResponseData.cvFilename || '';
+      } else {
+        document.getElementById('cv_url').value = 'CV uploaded via API (URL not provided)';
+        document.getElementById('cv_filename').value =
+          document.getElementById('cv').files[0]?.name || 'CV file';
+      }
+    }
+
+    // Submit ke API (dengan Cloudinary upload)
+    async function submitToAPI() {
+      updateProgress(apiProgress, '⏳', 'Submitting and uploading CV...', 'processing');
+
+      try {
+        const formData = new FormData();
+        const preparedData = prepareFormData();
+        
+        // Add all form data with exact field names expected by backend
+        formData.append('nama', preparedData.nama);
+        formData.append('email', preparedData.email);
+        formData.append('alamat', preparedData.alamat);
+        formData.append('nomorTelepon', preparedData.nomorTelepon);
+        formData.append('posisi', preparedData.posisi);
+        formData.append('tanggalLahir', preparedData.tanggalLahir);
+        formData.append('pendidikanTerakhir', preparedData.pendidikanTerakhir);
+        formData.append('pengalamanKerja', preparedData.pengalamanKerja);
+        formData.append('skill', preparedData.skill);
+        formData.append('sertifikasi', preparedData.sertifikasi);
+        formData.append('bahasa', preparedData.bahasa);
+        formData.append('linkedin', preparedData.linkedin);
+        
+        // Add CV file
+        const cvFile = document.getElementById('cv').files[0];
+        if (cvFile) {
+          formData.append('cv', cvFile);
+        }
+
+        console.log('Sending data to API:');
+        for (let [key, value] of formData.entries()) {
+          if (key !== 'cv') {
+            console.log(key + ':', value);
+          } else {
+            console.log(key + ':', value.name);
+          }
+        }
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 60000);
+
+        const baseUrl = getApiBaseUrl();
+        const endpoint = `${baseUrl}/api/v1/applicants/submit`;
+
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          body: formData,
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('API Error Response:', errorText);
+          throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
+        }
+
+        const contentType = response.headers.get('content-type');
+        let result;
+
+        if (contentType && contentType.includes('application/json')) {
+          result = await response.json();
+        } else {
+          const text = await response.text();
+          result = { success: response.ok, message: text };
+        }
+
+        console.log('API Response:', result);
+
+        if (result.success) {
+          updateProgress(
+            apiProgress,
+            '✅',
+            'Saved to database and CV uploaded successfully',
+            'success',
+          );
+
+          return {
+            success: true,
+            message: result.message,
+            data: {
+              cvUrl: result.data?.cloudinaryFile?.viewLink || result.cvUrl || result.cv_url || '',
+              cvFilename: result.data?.cloudinaryFile?.fileName || result.cvFilename || result.cv_filename || document.getElementById('cv').files[0]?.name || '',
+            },
+          };
+        } else {
+          throw new Error(result.error || result.message || 'API submission failed');
+        }
+      } catch (error) {
+        console.error('API Submission Error:', error);
+        updateProgress(apiProgress, '❌', 'Database submission failed', 'error');
+        const errorMessage = handleNetworkError(error);
+        return { success: false, message: errorMessage };
+      }
+    }
+
+    function syncHiddenFields(apiResponseData = null) {
+      const formData = prepareFormData();
+      
       document.getElementById('applicant_name').value = formData.nama;
       document.getElementById('applicant_email').value = formData.email;
       document.getElementById('phone_number').value = formData.nomorTelepon;
@@ -682,12 +804,12 @@ const displayText = formatSlugForDisplay(slug);
       try {
         const formData = new FormData();
         const preparedData = prepareFormData();
-
+        
         // Add all form data
         Object.keys(preparedData).forEach(key => {
           formData.append(key, preparedData[key]);
         });
-
+        
         // Add CV file
         const cvFile = document.getElementById('cv').files[0];
         if (cvFile) {
