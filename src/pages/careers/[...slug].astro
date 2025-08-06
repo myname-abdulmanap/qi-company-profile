@@ -1,9 +1,8 @@
 ---
-// Import
+
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BlogPost from '../../layouts/Careers.astro';
 
-// 1. Static paths: hanya post kategori "careers" dan status "published"
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
 
@@ -24,7 +23,7 @@ export async function getStaticPaths() {
     }));
 }
 
-// 2. Props dan render markdown
+
 const post: CollectionEntry<'blog'> = Astro.props;
 
 // 3. Proteksi runtime untuk akses langsung ke draft
