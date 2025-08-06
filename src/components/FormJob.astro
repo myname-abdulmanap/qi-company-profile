@@ -28,7 +28,7 @@ const displayText = formatSlugForDisplay(slug);
       <!-- Personal Information -->
       <div class="form-section">
         <h3 class="section-subtitle">Personal Information</h3>
-        
+
         <div class="form-grid">
           <div class="form-group">
             <label for="nama">Full Name *</label>
@@ -67,7 +67,8 @@ const displayText = formatSlugForDisplay(slug);
 
         <div class="form-group">
           <label for="alamat">Address *</label>
-          <textarea id="alamat" name="alamat" placeholder="Enter your complete address" required></textarea>
+          <textarea id="alamat" name="alamat" placeholder="Enter your complete address" required
+          ></textarea>
         </div>
 
         <div class="form-group">
@@ -82,7 +83,7 @@ const displayText = formatSlugForDisplay(slug);
       <!-- Education -->
       <div class="form-section">
         <h3 class="section-subtitle">Education</h3>
-        
+
         <div class="education-entry">
           <h4 class="entry-title">Latest Education *</h4>
           <div class="form-grid-3">
@@ -126,12 +127,7 @@ const displayText = formatSlugForDisplay(slug);
           <div class="form-grid-3">
             <div class="form-group">
               <label for="gelar2">Degree</label>
-              <input
-                type="text"
-                id="gelar2"
-                name="gelar2"
-                placeholder="e.g. S2 Manajemen"
-              />
+              <input type="text" id="gelar2" name="gelar2" placeholder="e.g. S2 Manajemen" />
             </div>
             <div class="form-group">
               <label for="institusi2">Institution</label>
@@ -160,7 +156,7 @@ const displayText = formatSlugForDisplay(slug);
       <!-- Work Experience -->
       <div class="form-section">
         <h3 class="section-subtitle">Work Experience *</h3>
-        
+
         <div class="experience-entry">
           <h4 class="entry-title">Work Experience 1 *</h4>
           <div class="form-grid-3">
@@ -220,12 +216,7 @@ const displayText = formatSlugForDisplay(slug);
             </div>
             <div class="form-group">
               <label for="durasi2">Duration</label>
-              <input
-                type="text"
-                id="durasi2"
-                name="durasi2"
-                placeholder="e.g. 2018-2020"
-              />
+              <input type="text" id="durasi2" name="durasi2" placeholder="e.g. 2018-2020" />
             </div>
           </div>
         </div>
@@ -253,23 +244,21 @@ const displayText = formatSlugForDisplay(slug);
             </div>
             <div class="form-group">
               <label for="durasi3">Duration</label>
-              <input
-                type="text"
-                id="durasi3"
-                name="durasi3"
-                placeholder="e.g. 2017-2018"
-              />
+              <input type="text" id="durasi3" name="durasi3" placeholder="e.g. 2017-2018" />
             </div>
           </div>
         </div>
-        
-        <small class="form-note">At least one work experience is required. Fill in Position, Company, and Duration for each experience.</small>
+
+        <small class="form-note"
+          >At least one work experience is required. Fill in Position, Company, and Duration for
+          each experience.</small
+        >
       </div>
 
       <!-- Skills & Qualifications -->
       <div class="form-section">
         <h3 class="section-subtitle">Skills & Qualifications</h3>
-        
+
         <div class="form-group">
           <label for="skill">Skills *</label>
           <input
@@ -319,7 +308,7 @@ const displayText = formatSlugForDisplay(slug);
       <!-- CV Upload -->
       <div class="form-section">
         <h3 class="section-subtitle">CV/Resume</h3>
-        
+
         <div class="form-group">
           <label for="cv">Upload CV/Resume *</label>
           <div class="file-upload-container">
@@ -393,651 +382,698 @@ const displayText = formatSlugForDisplay(slug);
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    // Initialize EmailJS
-    emailjs.init('4-iOyCns2viav_IW_');
+document.addEventListener('DOMContentLoaded', function () {
+  // Initialize EmailJS
+  emailjs.init('4-iOyCns2viav_IW_');
 
-    const form = document.getElementById('job-form');
-    const submitBtn = document.getElementById('submit-btn');
-    const status = document.getElementById('status');
-    const fileInput = document.getElementById('cv');
-    const fileInfo = document.getElementById('file-info');
-    const progressContainer = document.getElementById('submission-progress');
-    const apiProgress = document.getElementById('api-progress');
-    const emailProgress = document.getElementById('email-progress');
+  const form = document.getElementById('job-form');
+  const submitBtn = document.getElementById('submit-btn');
+  const status = document.getElementById('status');
+  const fileInput = document.getElementById('cv');
+  const fileInfo = document.getElementById('file-info');
+  const progressContainer = document.getElementById('submission-progress');
+  const apiProgress = document.getElementById('api-progress');
+  const emailProgress = document.getElementById('email-progress');
 
-    if (!form || !submitBtn || !status) {
-      return;
-    }
+  if (!form || !submitBtn || !status) {
+    return;
+  }
 
-    const getApiBaseUrl = () => {
-      return '/api';
-    };
+  const getApiBaseUrl = () => {
+    return '/api';
+  };
 
-    // File upload handling
-    fileInput.addEventListener('change', function (e) {
-      const file = e.target.files[0];
-      if (file) {
-        // Validate file size (2MB)
-        if (file.size > 2 * 1024 * 1024) {
-          showStatus('File size must be less than 2MB', 'error');
-          fileInput.value = '';
-          fileInfo.textContent = '';
-          return;
-        }
-
-        // Validate file type
-        const allowedTypes = [
-          'application/pdf',
-          'application/msword',
-          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-          'image/jpeg',
-          'image/jpg',
-          'image/png',
-        ];
-        if (!allowedTypes.includes(file.type)) {
-          showStatus(
-            'Invalid file type. Please upload PDF, DOC, DOCX, JPG, or PNG files only.',
-            'error',
-          );
-          fileInput.value = '';
-          fileInfo.textContent = '';
-          return;
-        }
-
-        fileInfo.textContent = `Selected: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
-        fileInfo.style.color = '#48bb78';
-      } else {
+  // File upload handling
+  fileInput.addEventListener('change', function (e) {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file size (2MB)
+      if (file.size > 2 * 1024 * 1024) {
+        showStatus('File size must be less than 2MB', 'error');
+        fileInput.value = '';
         fileInfo.textContent = '';
-      }
-    });
-
-    function showStatus(message, type) {
-      status.textContent = message;
-      status.className = `status ${type}`;
-      status.style.display = 'block';
-
-      setTimeout(() => {
-        status.style.display = 'none';
-      }, 8000);
-    }
-
-    function updateProgress(element, icon, text, status) {
-      const iconSpan = element.querySelector('.progress-icon');
-      const textSpan = element.querySelector('.progress-text');
-
-      iconSpan.textContent = icon;
-      textSpan.textContent = text;
-      element.className = `progress-item ${status}`;
-    }
-
-    function setLoading(isLoading) {
-      if (isLoading) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span class="loading"></span>Submitting...';
-        progressContainer.style.display = 'block';
-      } else {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = 'Submit Application';
-        progressContainer.style.display = 'none';
-      }
-    }
-
-    function validateForm() {
-      const nama = document.getElementById('nama').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const nomorTelepon = document.getElementById('nomorTelepon').value.trim();
-      const posisi = document.getElementById('posisi').value;
-      const alamat = document.getElementById('alamat').value.trim();
-      const tanggalLahir = document.getElementById('tanggalLahir').value.trim();
-      
-      // Education validation
-      const gelar1 = document.getElementById('gelar1').value.trim();
-      const institusi1 = document.getElementById('institusi1').value.trim();
-      const tahunLulus1 = document.getElementById('tahunLulus1').value.trim();
-      
-      // Work experience validation
-      const jabatan1 = document.getElementById('jabatan1').value.trim();
-      const perusahaan1 = document.getElementById('perusahaan1').value.trim();
-      const durasi1 = document.getElementById('durasi1').value.trim();
-      
-      const skill = document.getElementById('skill').value.trim();
-      const cv = document.getElementById('cv').files[0];
-
-      // Check required fields
-      if (!nama || !email || !nomorTelepon || !posisi || !alamat || !tanggalLahir || 
-          !gelar1 || !institusi1 || !tahunLulus1 || !jabatan1 || !perusahaan1 || !durasi1 || !skill || !cv) {
-        showStatus(
-          'Please fill in all required fields (marked with *) and upload your CV.',
-          'error',
-        );
-        return false;
-      }
-
-      // Validate email format
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        showStatus('Please enter a valid email address.', 'error');
-        return false;
-      }
-
-      // Validate Indonesian phone number
-      const phoneRegex = /^(\+62|62|0)[0-9]{9,13}$/;
-      if (!phoneRegex.test(nomorTelepon.replace(/\s|-/g, ''))) {
-        showStatus(
-          'Please enter a valid Indonesian phone number (e.g., +62812345678 or 08123456789).',
-          'error',
-        );
-        return false;
-      }
-
-      // Validate birth date format
-      const birthDateRegex = /^[0-9]{2}-[0-9]{2}-[0-9]{4}$/;
-      if (!birthDateRegex.test(tanggalLahir)) {
-        showStatus('Please enter birth date in DD-MM-YYYY format (e.g., 15-08-1995).', 'error');
-        return false;
-      }
-
-      // Validate graduation year
-      const currentYear = new Date().getFullYear();
-      const graduationYear = parseInt(tahunLulus1);
-      if (graduationYear < 1950 || graduationYear > currentYear + 10) {
-        showStatus('Please enter a valid graduation year.', 'error');
-        return false;
-      }
-
-      // Validate reCAPTCHA
-      const recaptchaResponse = grecaptcha.getResponse();
-      if (!recaptchaResponse) {
-        showStatus('Please complete the reCAPTCHA verification.', 'error');
-        return false;
-      }
-
-      return true;
-    }
-
-    function prepareFormData() {
-      // Combine education entries
-      const educationEntries = [];
-      
-      // Education 1 (required)
-      const gelar1 = document.getElementById('gelar1').value.trim();
-      const institusi1 = document.getElementById('institusi1').value.trim();
-      const tahunLulus1 = document.getElementById('tahunLulus1').value.trim();
-      if (gelar1 && institusi1 && tahunLulus1) {
-        educationEntries.push(`${gelar1} - ${institusi1} - ${tahunLulus1}`);
-      }
-      
-      // Education 2 (optional)
-      const gelar2 = document.getElementById('gelar2').value.trim();
-      const institusi2 = document.getElementById('institusi2').value.trim();
-      const tahunLulus2 = document.getElementById('tahunLulus2').value.trim();
-      if (gelar2 && institusi2 && tahunLulus2) {
-        educationEntries.push(`${gelar2} - ${institusi2} - ${tahunLulus2}`);
-      }
-      
-      const pendidikanTerakhir = educationEntries.join('; ');
-
-      // Combine work experiences
-      const workEntries = [];
-      
-      // Work Experience 1 (required)
-      const jabatan1 = document.getElementById('jabatan1').value.trim();
-      const perusahaan1 = document.getElementById('perusahaan1').value.trim();
-      const durasi1 = document.getElementById('durasi1').value.trim();
-      if (jabatan1 && perusahaan1 && durasi1) {
-        workEntries.push(`${jabatan1} - ${perusahaan1} - ${durasi1}`);
-      }
-      
-      // Work Experience 2 (optional)
-      const jabatan2 = document.getElementById('jabatan2').value.trim();
-      const perusahaan2 = document.getElementById('perusahaan2').value.trim();
-      const durasi2 = document.getElementById('durasi2').value.trim();
-      if (jabatan2 && perusahaan2 && durasi2) {
-        workEntries.push(`${jabatan2} - ${perusahaan2} - ${durasi2}`);
-      }
-      
-      // Work Experience 3 (optional)
-      const jabatan3 = document.getElementById('jabatan3').value.trim();
-      const perusahaan3 = document.getElementById('perusahaan3').value.trim();
-      const durasi3 = document.getElementById('durasi3').value.trim();
-      if (jabatan3 && perusahaan3 && durasi3) {
-        workEntries.push(`${jabatan3} - ${perusahaan3} - ${durasi3}`);
-      }
-      
-      const pengalamanKerja = workEntries.join('; ');
-
-      return {
-        nama: document.getElementById('nama').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        alamat: document.getElementById('alamat').value.trim(),
-        nomorTelepon: document.getElementById('nomorTelepon').value.trim(),
-        posisi: document.getElementById('posisi').value,
-        tanggalLahir: document.getElementById('tanggalLahir').value.trim(),
-        pendidikanTerakhir: pendidikanTerakhir,
-        pengalamanKerja: pengalamanKerja,
-        skill: document.getElementById('skill').value.trim(),
-        sertifikasi: document.getElementById('sertifikasi').value.trim(),
-        bahasa: document.getElementById('bahasa').value.trim(),
-        linkedin: document.getElementById('linkedin').value.trim()
-      };
-    }
-
-    function syncHiddenFields(apiResponseData = null) {
-      const formData = prepareFormData();
-      
-      document.getElementById('applicant_name').value = formData.nama;
-      document.getElementById('applicant_email').value = formData.email;
-      document.getElementById('phone_number').value = formData.nomorTelepon;
-      document.getElementById('position').value = formData.posisi;
-      document.getElementById('address').value = formData.alamat;
-      document.getElementById('birth_date').value = formData.tanggalLahir;
-      document.getElementById('education').value = formData.pendidikanTerakhir;
-      document.getElementById('work_experience').value = formData.pengalamanKerja;
-      document.getElementById('skills').value = formData.skill;
-      document.getElementById('certifications').value = formData.sertifikasi;
-      document.getElementById('languages').value = formData.bahasa;
-      document.getElementById('linkedin_url').value = formData.linkedin;
-
-      if (apiResponseData && apiResponseData.cvUrl) {
-        document.getElementById('cv_url').value = apiResponseData.cvUrl;
-        document.getElementById('cv_filename').value = apiResponseData.cvFilename || '';
-      } else {
-        document.getElementById('cv_url').value = 'CV uploaded via API (URL not provided)';
-        document.getElementById('cv_filename').value =
-          document.getElementById('cv').files[0]?.name || 'CV file';
-      }
-    }
-
-    // Submit ke API (dengan Cloudinary upload)
-    async function submitToAPI() {
-      updateProgress(apiProgress, '⏳', 'Submitting and uploading CV...', 'processing');
-
-      try {
-        const formData = new FormData();
-        const preparedData = prepareFormData();
-        
-        // Add all form data with exact field names expected by backend
-        formData.append('nama', preparedData.nama);
-        formData.append('email', preparedData.email);
-        formData.append('alamat', preparedData.alamat);
-        formData.append('nomorTelepon', preparedData.nomorTelepon);
-        formData.append('posisi', preparedData.posisi);
-        formData.append('tanggalLahir', preparedData.tanggalLahir);
-        formData.append('pendidikanTerakhir', preparedData.pendidikanTerakhir);
-        formData.append('pengalamanKerja', preparedData.pengalamanKerja);
-        formData.append('skill', preparedData.skill);
-        formData.append('sertifikasi', preparedData.sertifikasi);
-        formData.append('bahasa', preparedData.bahasa);
-        formData.append('linkedin', preparedData.linkedin);
-        
-        // Add CV file
-        const cvFile = document.getElementById('cv').files[0];
-        if (cvFile) {
-          formData.append('cv', cvFile);
-        }
-
-        console.log('Sending data to API:');
-        for (let [key, value] of formData.entries()) {
-          if (key !== 'cv') {
-            console.log(key + ':', value);
-          } else {
-            console.log(key + ':', value.name);
-          }
-        }
-
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 60000);
-
-        const baseUrl = getApiBaseUrl();
-        const endpoint = `${baseUrl}/api/v1/applicants/submit`;
-
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          body: formData,
-          signal: controller.signal,
-        });
-
-        clearTimeout(timeoutId);
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          console.error('API Error Response:', errorText);
-          throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
-        }
-
-        const contentType = response.headers.get('content-type');
-        let result;
-
-        if (contentType && contentType.includes('application/json')) {
-          result = await response.json();
-        } else {
-          const text = await response.text();
-          result = { success: response.ok, message: text };
-        }
-
-        console.log('API Response:', result);
-
-        if (result.success) {
-          updateProgress(
-            apiProgress,
-            '✅',
-            'Saved to database and CV uploaded successfully',
-            'success',
-          );
-
-          return {
-            success: true,
-            message: result.message,
-            data: {
-              cvUrl: result.data?.cloudinaryFile?.viewLink || result.cvUrl || result.cv_url || '',
-              cvFilename: result.data?.cloudinaryFile?.fileName || result.cvFilename || result.cv_filename || document.getElementById('cv').files[0]?.name || '',
-            },
-          };
-        } else {
-          throw new Error(result.error || result.message || 'API submission failed');
-        }
-      } catch (error) {
-        console.error('API Submission Error:', error);
-        updateProgress(apiProgress, '❌', 'Database submission failed', 'error');
-        const errorMessage = handleNetworkError(error);
-        return { success: false, message: errorMessage };
-      }
-    }
-
-    function syncHiddenFields(apiResponseData = null) {
-      const formData = prepareFormData();
-      
-      document.getElementById('applicant_name').value = formData.nama;
-      document.getElementById('applicant_email').value = formData.email;
-      document.getElementById('phone_number').value = formData.nomorTelepon;
-      document.getElementById('position').value = formData.posisi;
-      document.getElementById('address').value = formData.alamat;
-      document.getElementById('birth_date').value = formData.tanggalLahir;
-      document.getElementById('education').value = formData.pendidikanTerakhir;
-      document.getElementById('work_experience').value = formData.pengalamanKerja;
-      document.getElementById('skills').value = formData.skill;
-      document.getElementById('certifications').value = formData.sertifikasi;
-      document.getElementById('languages').value = formData.bahasa;
-      document.getElementById('linkedin_url').value = formData.linkedin;
-
-      if (apiResponseData && apiResponseData.cvUrl) {
-        document.getElementById('cv_url').value = apiResponseData.cvUrl;
-        document.getElementById('cv_filename').value = apiResponseData.cvFilename || '';
-      } else {
-        document.getElementById('cv_url').value = 'CV uploaded via API (URL not provided)';
-        document.getElementById('cv_filename').value =
-          document.getElementById('cv').files[0]?.name || 'CV file';
-      }
-    }
-
-    // Network connectivity check
-    function checkConnectivity() {
-      return navigator.onLine;
-    }
-
-    // Enhanced error handling for network issues
-    function handleNetworkError(error) {
-      if (!checkConnectivity()) {
-        return 'No internet connection. Please check your network and try again.';
-      }
-
-      if (error.name === 'AbortError') {
-        return 'Request timeout. Please try again.';
-      }
-
-      if (error.code === 'ECONNREFUSED' || error.message.includes('ECONNREFUSED')) {
-        return 'Server is not responding. Please try again later or contact support.';
-      }
-
-      if (error.message.includes('Failed to fetch')) {
-        return 'Unable to connect to server. Please check your connection and try again.';
-      }
-
-      return 'Network error occurred. Please try again.';
-    }
-
-    // Submit ke API (dengan Cloudinary upload)
-    async function submitToAPI() {
-      updateProgress(apiProgress, '⏳', 'Submitting and uploading CV...', 'processing');
-
-      try {
-        const formData = new FormData();
-        const preparedData = prepareFormData();
-        
-        // Add all form data
-        Object.keys(preparedData).forEach(key => {
-          formData.append(key, preparedData[key]);
-        });
-        
-        // Add CV file
-        const cvFile = document.getElementById('cv').files[0];
-        if (cvFile) {
-          formData.append('cv', cvFile);
-        }
-
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 detik untuk upload
-
-        const baseUrl = getApiBaseUrl();
-        const endpoint = `${baseUrl}/api/v1/applicants/submit`;
-
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          body: formData,
-          signal: controller.signal,
-        });
-
-        clearTimeout(timeoutId);
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const contentType = response.headers.get('content-type');
-        let result;
-
-        if (contentType && contentType.includes('application/json')) {
-          result = await response.json();
-        } else {
-          const text = await response.text();
-          result = { success: response.ok, message: text };
-        }
-
-        if (result.success) {
-          updateProgress(
-            apiProgress,
-            '✅',
-            'Saved to database and CV uploaded successfully',
-            'success',
-          );
-
-          return {
-            success: true,
-            message: result.message,
-            data: {
-              cvUrl: result.cvUrl || result.data?.cvUrl || result.cv_url || '',
-              cvFilename:
-                result.cvFilename ||
-                result.data?.cvFilename ||
-                result.cv_filename ||
-                document.getElementById('cv').files[0]?.name ||
-                '',
-            },
-          };
-        } else {
-          throw new Error(result.error || result.message || 'API submission failed');
-        }
-      } catch (error) {
-        updateProgress(apiProgress, '❌', 'Database submission failed', 'error');
-        const errorMessage = handleNetworkError(error);
-        return { success: false, message: errorMessage };
-      }
-    }
-
-    // Submit ke EmailJS (sebagai notifikasi)
-    async function submitToEmailJS(apiResponseData = null) {
-      updateProgress(emailProgress, '⏳', 'Sending email notification...', 'processing');
-
-      try {
-        syncHiddenFields(apiResponseData);
-
-        // Create a temporary form element untuk EmailJS
-        const tempForm = document.createElement('form');
-
-        // Add fields to temp form
-        const fieldsData = {
-          applicant_name: document.getElementById('applicant_name').value,
-          applicant_email: document.getElementById('applicant_email').value,
-          phone_number: document.getElementById('phone_number').value,
-          position: document.getElementById('position').value,
-          address: document.getElementById('address').value,
-          birth_date: document.getElementById('birth_date').value,
-          education: document.getElementById('education').value,
-          work_experience: document.getElementById('work_experience').value,
-          skills: document.getElementById('skills').value,
-          certifications: document.getElementById('certifications').value,
-          languages: document.getElementById('languages').value,
-          linkedin_url: document.getElementById('linkedin_url').value,
-          cv_url: document.getElementById('cv_url').value,
-          cv_filename: document.getElementById('cv_filename').value,
-          application_date: new Date().toLocaleDateString('id-ID'),
-          submission_method: 'Website Form',
-        };
-
-        Object.keys(fieldsData).forEach((fieldName) => {
-          const input = document.createElement('input');
-          input.type = 'hidden';
-          input.name = fieldName;
-          input.value = fieldsData[fieldName] || '';
-          tempForm.appendChild(input);
-        });
-
-        const response = await emailjs.sendForm('service_drhscig', 'template_sc48jkv', tempForm);
-
-        updateProgress(emailProgress, '✅', 'Email notification sent', 'success');
-        return { success: true, message: 'Email sent successfully' };
-      } catch (error) {
-        updateProgress(emailProgress, '❌', 'Email notification failed', 'error');
-
-        return {
-          success: false,
-          message: `Failed to send email notification: ${error.text || error.message}`,
-        };
-      }
-    }
-
-    // Main submission function - API first, then EmailJS
-    async function submitApplication() {
-      if (!validateForm()) return;
-      if (!checkConnectivity()) {
-        showStatus('No internet connection. Please check your network and try again.', 'error');
         return;
       }
 
-      setLoading(true);
-
-      try {
-        // Step 1: Submit ke API dulu (upload CV + save to database)
-        const apiResult = await submitToAPI();
-
-        if (apiResult.success) {
-          // Step 2: Jika API berhasil, kirim email notification
-          const emailResult = await submitToEmailJS(apiResult.data);
-
-          let finalMessage = '';
-          let finalStatus = '';
-
-          if (emailResult.success) {
-            // Kedua berhasil - ideal case
-            finalMessage = "Application submitted successfully! We'll contact you soon.";
-            finalStatus = 'success';
-          } else {
-            // API berhasil, email gagal - masih OK karena data tersimpan
-            finalMessage = 'Application submitted successfully! Your application has been saved.';
-            finalStatus = 'success';
-          }
-
-          // Reset form hanya jika API berhasil
-          form.reset();
-          fileInfo.textContent = '';
-          if (typeof grecaptcha !== 'undefined') {
-            grecaptcha.reset();
-          }
-
-          showStatus(finalMessage, finalStatus);
-        } else {
-          // API gagal - tidak perlu coba email
-          showStatus(
-            apiResult.message || 'Application submission failed. Please try again.',
-            'error',
-          );
-        }
-      } catch (error) {
-        showStatus('An unexpected error occurred. Please try again.', 'error');
-      } finally {
-        setLoading(false);
+      // Validate file type
+      const allowedTypes = [
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'image/jpeg',
+        'image/jpg',
+        'image/png',
+      ];
+      if (!allowedTypes.includes(file.type)) {
+        showStatus(
+          'Invalid file type. Please upload PDF, DOC, DOCX, JPG, or PNG files only.',
+          'error',
+        );
+        fileInput.value = '';
+        fileInfo.textContent = '';
+        return;
       }
+
+      fileInfo.textContent = `Selected: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+      fileInfo.style.color = '#48bb78';
+    } else {
+      fileInfo.textContent = '';
+    }
+  });
+
+  function showStatus(message, type) {
+    status.textContent = message;
+    status.className = `status ${type}`;
+    status.style.display = 'block';
+
+    setTimeout(() => {
+      status.style.display = 'none';
+    }, 8000);
+  }
+
+  function updateProgress(element, icon, text, status) {
+    const iconSpan = element.querySelector('.progress-icon');
+    const textSpan = element.querySelector('.progress-text');
+
+    iconSpan.textContent = icon;
+    textSpan.textContent = text;
+    element.className = `progress-item ${status}`;
+  }
+
+  function setLoading(isLoading) {
+    if (isLoading) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="loading"></span>Submitting...';
+      progressContainer.style.display = 'block';
+    } else {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Submit Application';
+      progressContainer.style.display = 'none';
+    }
+  }
+
+  function validateForm() {
+    // Ambil nilai langsung dari DOM
+    const nama = document.getElementById('nama')?.value?.trim() || '';
+    const email = document.getElementById('email')?.value?.trim() || '';
+    const nomorTelepon = document.getElementById('nomorTelepon')?.value?.trim() || '';
+    const posisi = document.getElementById('posisi')?.value || '';
+    const alamat = document.getElementById('alamat')?.value?.trim() || '';
+    const tanggalLahir = document.getElementById('tanggalLahir')?.value?.trim() || '';
+
+    // Education validation
+    const gelar1 = document.getElementById('gelar1')?.value?.trim() || '';
+    const institusi1 = document.getElementById('institusi1')?.value?.trim() || '';
+    const tahunLulus1 = document.getElementById('tahunLulus1')?.value?.trim() || '';
+
+    // Work experience validation
+    const jabatan1 = document.getElementById('jabatan1')?.value?.trim() || '';
+    const perusahaan1 = document.getElementById('perusahaan1')?.value?.trim() || '';
+    const durasi1 = document.getElementById('durasi1')?.value?.trim() || '';
+
+    const skill = document.getElementById('skill')?.value?.trim() || '';
+    const cv = document.getElementById('cv')?.files[0];
+
+    // DEBUGGING: Log semua required fields
+    console.log('=== VALIDATION DEBUG ===');
+    console.log('nama:', nama ? '✓' : '✗', nama);
+    console.log('email:', email ? '✓' : '✗', email);
+    console.log('nomorTelepon:', nomorTelepon ? '✓' : '✗', nomorTelepon);
+    console.log('posisi:', posisi ? '✓' : '✗', posisi);
+    console.log('alamat:', alamat ? '✓' : '✗', alamat);
+    console.log('tanggalLahir:', tanggalLahir ? '✓' : '✗', tanggalLahir);
+    console.log('gelar1:', gelar1 ? '✓' : '✗', gelar1);
+    console.log('institusi1:', institusi1 ? '✓' : '✗', institusi1);
+    console.log('tahunLulus1:', tahunLulus1 ? '✓' : '✗', tahunLulus1);
+    console.log('jabatan1:', jabatan1 ? '✓' : '✗', jabatan1);
+    console.log('perusahaan1:', perusahaan1 ? '✓' : '✗', perusahaan1);
+    console.log('durasi1:', durasi1 ? '✓' : '✗', durasi1);
+    console.log('skill:', skill ? '✓' : '✗', skill);
+    console.log('cv:', cv ? '✓' : '✗', cv?.name);
+    console.log('========================');
+
+    // Check required fields
+    if (
+      !nama ||
+      !email ||
+      !nomorTelepon ||
+      !posisi ||
+      !alamat ||
+      !tanggalLahir ||
+      !gelar1 ||
+      !institusi1 ||
+      !tahunLulus1 ||
+      !jabatan1 ||
+      !perusahaan1 ||
+      !durasi1 ||
+      !skill ||
+      !cv
+    ) {
+      showStatus(
+        'Please fill in all required fields (marked with *) and upload your CV.',
+        'error',
+      );
+      return false;
     }
 
-    // Event listener untuk form submit
-    submitBtn.addEventListener('click', function (e) {
-      e.preventDefault();
-      submitApplication();
-    });
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      showStatus('Please enter a valid email address.', 'error');
+      return false;
+    }
 
-    // Real-time validation feedback
-    const inputs = document.querySelectorAll(
-      '#job-form input, #job-form textarea, #job-form select',
-    );
-    inputs.forEach((input) => {
-      // Focus effects
-      input.addEventListener('focus', function () {
-        this.parentElement.style.transform = 'scale(1.01)';
-        this.parentElement.style.transition = 'transform 0.2s ease';
-      });
+    // Validate Indonesian phone number
+    const phoneRegex = /^(\+62|62|0)[0-9]{9,13}$/;
+    if (!phoneRegex.test(nomorTelepon.replace(/\s|-/g, ''))) {
+      showStatus(
+        'Please enter a valid Indonesian phone number (e.g., +62812345678 or 08123456789).',
+        'error',
+      );
+      return false;
+    }
 
-      input.addEventListener('blur', function () {
-        this.parentElement.style.transform = 'scale(1)';
-      });
+    // Validate birth date format
+    const birthDateRegex = /^[0-9]{2}-[0-9]{2}-[0-9]{4}$/;
+    if (!birthDateRegex.test(tanggalLahir)) {
+      showStatus('Please enter birth date in DD-MM-YYYY format (e.g., 15-08-1995).', 'error');
+      return false;
+    }
 
-      // Real-time validation
-      input.addEventListener('input', function () {
-        if (this.hasAttribute('required') && this.value.trim() === '') {
-          this.style.borderColor = '#f56565';
-        } else if (this.type === 'email' && this.value.trim() !== '') {
-          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          this.style.borderColor = emailRegex.test(this.value) ? '#48bb78' : '#f56565';
-        } else if (this.type === 'tel' && this.value.trim() !== '') {
-          const phoneRegex = /^(\+62|62|0)[0-9]{9,13}$/;
-          this.style.borderColor = phoneRegex.test(this.value.replace(/\s|-/g, ''))
-            ? '#48bb78'
-            : '#f56565';
-        } else if (this.value.trim() !== '') {
-          this.style.borderColor = '#48bb78';
+    // Validate graduation year
+    const currentYear = new Date().getFullYear();
+    const graduationYear = parseInt(tahunLulus1);
+    if (graduationYear < 1950 || graduationYear > currentYear + 10) {
+      showStatus('Please enter a valid graduation year.', 'error');
+      return false;
+    }
+
+    // Validate reCAPTCHA
+    const recaptchaResponse = grecaptcha.getResponse();
+    if (!recaptchaResponse) {
+      showStatus('Please complete the reCAPTCHA verification.', 'error');
+      return false;
+    }
+
+    return true;
+  }
+
+  // Network connectivity check
+  function checkConnectivity() {
+    return navigator.onLine;
+  }
+
+  // Enhanced error handling for network issues
+  function handleNetworkError(error) {
+    if (!checkConnectivity()) {
+      return 'No internet connection. Please check your network and try again.';
+    }
+
+    if (error.name === 'AbortError') {
+      return 'Request timeout. Please try again.';
+    }
+
+    if (error.code === 'ECONNREFUSED' || error.message.includes('ECONNREFUSED')) {
+      return 'Server is not responding. Please try again later or contact support.';
+    }
+
+    if (error.message.includes('Failed to fetch')) {
+      return 'Unable to connect to server. Please check your connection and try again.';
+    }
+
+    return 'Network error occurred. Please try again.';
+  }
+
+  // Submit ke API (dengan Cloudinary upload) - FIXED VERSION
+  async function submitToAPI() {
+    updateProgress(apiProgress, '⏳', 'Submitting and uploading CV...', 'processing');
+
+    try {
+      const formData = new FormData();
+
+      // PERBAIKAN: Ambil data langsung dari form elements
+      const nama = document.getElementById('nama')?.value?.trim() || '';
+      const email = document.getElementById('email')?.value?.trim() || '';
+      const alamat = document.getElementById('alamat')?.value?.trim() || '';
+      const nomorTelepon = document.getElementById('nomorTelepon')?.value?.trim() || '';
+      const posisi = document.getElementById('posisi')?.value || '';
+      const tanggalLahir = document.getElementById('tanggalLahir')?.value?.trim() || '';
+
+      // Skills dan optional fields
+      const skill = document.getElementById('skill')?.value?.trim() || '';
+      const sertifikasi = document.getElementById('sertifikasi')?.value?.trim() || '';
+      const bahasa = document.getElementById('bahasa')?.value?.trim() || '';
+      const linkedin = document.getElementById('linkedin')?.value?.trim() || '';
+
+      // Gabungkan education entries secara manual
+      const gelar1 = document.getElementById('gelar1')?.value?.trim() || '';
+      const institusi1 = document.getElementById('institusi1')?.value?.trim() || '';
+      const tahunLulus1 = document.getElementById('tahunLulus1')?.value?.trim() || '';
+
+      const gelar2 = document.getElementById('gelar2')?.value?.trim() || '';
+      const institusi2 = document.getElementById('institusi2')?.value?.trim() || '';
+      const tahunLulus2 = document.getElementById('tahunLulus2')?.value?.trim() || '';
+
+      let pendidikanTerakhir = '';
+      if (gelar1 && institusi1 && tahunLulus1) {
+        pendidikanTerakhir = `${gelar1} - ${institusi1} - ${tahunLulus1}`;
+      }
+      if (gelar2 && institusi2 && tahunLulus2) {
+        pendidikanTerakhir += (pendidikanTerakhir ? '; ' : '') + `${gelar2} - ${institusi2} - ${tahunLulus2}`;
+      }
+
+      // Gabungkan work experience secara manual
+      const jabatan1 = document.getElementById('jabatan1')?.value?.trim() || '';
+      const perusahaan1 = document.getElementById('perusahaan1')?.value?.trim() || '';
+      const durasi1 = document.getElementById('durasi1')?.value?.trim() || '';
+
+      const jabatan2 = document.getElementById('jabatan2')?.value?.trim() || '';
+      const perusahaan2 = document.getElementById('perusahaan2')?.value?.trim() || '';
+      const durasi2 = document.getElementById('durasi2')?.value?.trim() || '';
+
+      const jabatan3 = document.getElementById('jabatan3')?.value?.trim() || '';
+      const perusahaan3 = document.getElementById('perusahaan3')?.value?.trim() || '';
+      const durasi3 = document.getElementById('durasi3')?.value?.trim() || '';
+
+      let pengalamanKerja = '';
+      if (jabatan1 && perusahaan1 && durasi1) {
+        pengalamanKerja = `${jabatan1} - ${perusahaan1} - ${durasi1}`;
+      }
+      if (jabatan2 && perusahaan2 && durasi2) {
+        pengalamanKerja += (pengalamanKerja ? '; ' : '') + `${jabatan2} - ${perusahaan2} - ${durasi2}`;
+      }
+      if (jabatan3 && perusahaan3 && durasi3) {
+        pengalamanKerja += (pengalamanKerja ? '; ' : '') + `${jabatan3} - ${perusahaan3} - ${durasi3}`;
+      }
+
+      // DEBUGGING: Log semua nilai sebelum dikirim
+      console.log('=== FORM DATA DEBUG ===');
+      console.log('nama:', nama);
+      console.log('email:', email);
+      console.log('alamat:', alamat);
+      console.log('nomorTelepon:', nomorTelepon);
+      console.log('posisi:', posisi);
+      console.log('tanggalLahir:', tanggalLahir);
+      console.log('pendidikanTerakhir:', pendidikanTerakhir);
+      console.log('pengalamanKerja:', pengalamanKerja);
+      console.log('skill:', skill);
+      console.log('sertifikasi:', sertifikasi);
+      console.log('bahasa:', bahasa);
+      console.log('linkedin:', linkedin);
+      console.log('======================');
+
+      // Append ke FormData dengan nama field yang PERSIS sama dengan Postman
+      formData.append('nama', nama);
+      formData.append('email', email);
+      formData.append('alamat', alamat);
+      formData.append('nomorTelepon', nomorTelepon);
+      formData.append('posisi', posisi);
+      formData.append('tanggalLahir', tanggalLahir);
+      formData.append('pendidikanTerakhir', pendidikanTerakhir);
+      formData.append('pengalamanKerja', pengalamanKerja);
+      formData.append('skill', skill);
+      formData.append('sertifikasi', sertifikasi);
+      formData.append('bahasa', bahasa);
+      formData.append('linkedin', linkedin);
+
+      // Add CV file
+      const cvFile = document.getElementById('cv')?.files[0];
+      if (cvFile) {
+        formData.append('cv', cvFile);
+      }
+
+      // DEBUGGING: Log FormData entries
+      console.log('=== FORMDATA ENTRIES ===');
+      for (let [key, value] of formData.entries()) {
+        if (key !== 'cv') {
+          console.log(`${key}:`, `"${value}"`);
         } else {
-          this.style.borderColor = '#e2e8f0';
+          console.log(`${key}:`, value.name, `(${value.size} bytes)`);
         }
+      }
+      console.log('========================');
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 60000);
+
+      const baseUrl = getApiBaseUrl();
+      const endpoint = `${baseUrl}/api/v1/applicants/submit`;
+
+      console.log('Sending to endpoint:', endpoint);
+
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        body: formData,
+        signal: controller.signal,
+        // PENTING: Jangan set Content-Type header untuk FormData!
       });
+
+      clearTimeout(timeoutId);
+
+      console.log('Response status:', response.status);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('API Error Response:', errorText);
+        throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
+      }
+
+      const contentType = response.headers.get('content-type');
+      let result;
+
+      if (contentType && contentType.includes('application/json')) {
+        result = await response.json();
+      } else {
+        const text = await response.text();
+        result = { success: response.ok, message: text };
+      }
+
+      console.log('API Response:', result);
+
+      if (result.success) {
+        updateProgress(
+          apiProgress,
+          '✅',
+          'Saved to database and CV uploaded successfully',
+          'success',
+        );
+
+        return {
+          success: true,
+          message: result.message,
+          data: {
+            cvUrl: result.data?.cloudinaryFile?.viewLink || result.cvUrl || result.cv_url || '',
+            cvFilename:
+              result.data?.cloudinaryFile?.fileName ||
+              result.cvFilename ||
+              result.cv_filename ||
+              cvFile?.name ||
+              '',
+          },
+        };
+      } else {
+        throw new Error(result.error || result.message || 'API submission failed');
+      }
+    } catch (error) {
+      console.error('API Submission Error:', error);
+      updateProgress(apiProgress, '❌', 'Database submission failed', 'error');
+      const errorMessage = handleNetworkError(error);
+      return { success: false, message: errorMessage };
+    }
+  }
+
+  function syncHiddenFields(apiResponseData = null) {
+    // Ambil data langsung dari form
+    const nama = document.getElementById('nama')?.value?.trim() || '';
+    const email = document.getElementById('email')?.value?.trim() || '';
+    const nomorTelepon = document.getElementById('nomorTelepon')?.value?.trim() || '';
+    const posisi = document.getElementById('posisi')?.value || '';
+    const alamat = document.getElementById('alamat')?.value?.trim() || '';
+    const tanggalLahir = document.getElementById('tanggalLahir')?.value?.trim() || '';
+
+    // Education
+    const gelar1 = document.getElementById('gelar1')?.value?.trim() || '';
+    const institusi1 = document.getElementById('institusi1')?.value?.trim() || '';
+    const tahunLulus1 = document.getElementById('tahunLulus1')?.value?.trim() || '';
+    const gelar2 = document.getElementById('gelar2')?.value?.trim() || '';
+    const institusi2 = document.getElementById('institusi2')?.value?.trim() || '';
+    const tahunLulus2 = document.getElementById('tahunLulus2')?.value?.trim() || '';
+
+    let education = '';
+    if (gelar1 && institusi1 && tahunLulus1) {
+      education = `${gelar1} - ${institusi1} - ${tahunLulus1}`;
+    }
+    if (gelar2 && institusi2 && tahunLulus2) {
+      education += (education ? '; ' : '') + `${gelar2} - ${institusi2} - ${tahunLulus2}`;
+    }
+
+    // Work Experience
+    const jabatan1 = document.getElementById('jabatan1')?.value?.trim() || '';
+    const perusahaan1 = document.getElementById('perusahaan1')?.value?.trim() || '';
+    const durasi1 = document.getElementById('durasi1')?.value?.trim() || '';
+    const jabatan2 = document.getElementById('jabatan2')?.value?.trim() || '';
+    const perusahaan2 = document.getElementById('perusahaan2')?.value?.trim() || '';
+    const durasi2 = document.getElementById('durasi2')?.value?.trim() || '';
+    const jabatan3 = document.getElementById('jabatan3')?.value?.trim() || '';
+    const perusahaan3 = document.getElementById('perusahaan3')?.value?.trim() || '';
+    const durasi3 = document.getElementById('durasi3')?.value?.trim() || '';
+
+    let workExperience = '';
+    if (jabatan1 && perusahaan1 && durasi1) {
+      workExperience = `${jabatan1} - ${perusahaan1} - ${durasi1}`;
+    }
+    if (jabatan2 && perusahaan2 && durasi2) {
+      workExperience += (workExperience ? '; ' : '') + `${jabatan2} - ${perusahaan2} - ${durasi2}`;
+    }
+    if (jabatan3 && perusahaan3 && durasi3) {
+      workExperience += (workExperience ? '; ' : '') + `${jabatan3} - ${perusahaan3} - ${durasi3}`;
+    }
+
+    const skill = document.getElementById('skill')?.value?.trim() || '';
+    const sertifikasi = document.getElementById('sertifikasi')?.value?.trim() || '';
+    const bahasa = document.getElementById('bahasa')?.value?.trim() || '';
+    const linkedin = document.getElementById('linkedin')?.value?.trim() || '';
+
+    // Set hidden fields
+    const hiddenFields = [
+      { id: 'applicant_name', value: nama },
+      { id: 'applicant_email', value: email },
+      { id: 'phone_number', value: nomorTelepon },
+      { id: 'position', value: posisi },
+      { id: 'address', value: alamat },
+      { id: 'birth_date', value: tanggalLahir },
+      { id: 'education', value: education },
+      { id: 'work_experience', value: workExperience },
+      { id: 'skills', value: skill },
+      { id: 'certifications', value: sertifikasi },
+      { id: 'languages', value: bahasa },
+      { id: 'linkedin_url', value: linkedin },
+    ];
+
+    hiddenFields.forEach(field => {
+      const element = document.getElementById(field.id);
+      if (element) {
+        element.value = field.value;
+      }
     });
 
-    // Network status monitoring
-    window.addEventListener('online', function () {
-      showStatus('Connection restored!', 'success');
+    if (apiResponseData && apiResponseData.cvUrl) {
+      const cvUrlElement = document.getElementById('cv_url');
+      const cvFilenameElement = document.getElementById('cv_filename');
+      if (cvUrlElement) cvUrlElement.value = apiResponseData.cvUrl;
+      if (cvFilenameElement) cvFilenameElement.value = apiResponseData.cvFilename || '';
+    } else {
+      const cvUrlElement = document.getElementById('cv_url');
+      const cvFilenameElement = document.getElementById('cv_filename');
+      if (cvUrlElement) cvUrlElement.value = 'CV uploaded via API (URL not provided)';
+      if (cvFilenameElement) cvFilenameElement.value = document.getElementById('cv')?.files[0]?.name || 'CV file';
+    }
+  }
+
+  // Submit ke EmailJS (sebagai notifikasi)
+  async function submitToEmailJS(apiResponseData = null) {
+    updateProgress(emailProgress, '⏳', 'Sending email notification...', 'processing');
+
+    try {
+      syncHiddenFields(apiResponseData);
+
+      // Create a temporary form element untuk EmailJS
+      const tempForm = document.createElement('form');
+
+      // Add fields to temp form
+      const fieldsData = {
+        applicant_name: document.getElementById('applicant_name')?.value || '',
+        applicant_email: document.getElementById('applicant_email')?.value || '',
+        phone_number: document.getElementById('phone_number')?.value || '',
+        position: document.getElementById('position')?.value || '',
+        address: document.getElementById('address')?.value || '',
+        birth_date: document.getElementById('birth_date')?.value || '',
+        education: document.getElementById('education')?.value || '',
+        work_experience: document.getElementById('work_experience')?.value || '',
+        skills: document.getElementById('skills')?.value || '',
+        certifications: document.getElementById('certifications')?.value || '',
+        languages: document.getElementById('languages')?.value || '',
+        linkedin_url: document.getElementById('linkedin_url')?.value || '',
+        cv_url: document.getElementById('cv_url')?.value || '',
+        cv_filename: document.getElementById('cv_filename')?.value || '',
+        application_date: new Date().toLocaleDateString('id-ID'),
+        submission_method: 'Website Form',
+      };
+
+      Object.keys(fieldsData).forEach((fieldName) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = fieldName;
+        input.value = fieldsData[fieldName] || '';
+        tempForm.appendChild(input);
+      });
+
+      const response = await emailjs.sendForm('service_drhscig', 'template_sc48jkv', tempForm);
+
+      updateProgress(emailProgress, '✅', 'Email notification sent', 'success');
+      return { success: true, message: 'Email sent successfully' };
+    } catch (error) {
+      updateProgress(emailProgress, '❌', 'Email notification failed', 'error');
+
+      return {
+        success: false,
+        message: `Failed to send email notification: ${error.text || error.message}`,
+      };
+    }
+  }
+
+  // Main submission function - API first, then EmailJS
+  async function submitApplication() {
+    if (!validateForm()) return;
+    if (!checkConnectivity()) {
+      showStatus('No internet connection. Please check your network and try again.', 'error');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // Step 1: Submit ke API dulu (upload CV + save to database)
+      const apiResult = await submitToAPI();
+
+      if (apiResult.success) {
+        // Step 2: Jika API berhasil, kirim email notification
+        const emailResult = await submitToEmailJS(apiResult.data);
+
+        let finalMessage = '';
+        let finalStatus = '';
+
+        if (emailResult.success) {
+          // Kedua berhasil - ideal case
+          finalMessage = "Application submitted successfully! We'll contact you soon.";
+          finalStatus = 'success';
+        } else {
+          // API berhasil, email gagal - masih OK karena data tersimpan
+          finalMessage = 'Application submitted successfully! Your application has been saved.';
+          finalStatus = 'success';
+        }
+
+        // Reset form hanya jika API berhasil
+        form.reset();
+        fileInfo.textContent = '';
+        if (typeof grecaptcha !== 'undefined') {
+          grecaptcha.reset();
+        }
+
+        showStatus(finalMessage, finalStatus);
+      } else {
+        // API gagal - tidak perlu coba email
+        showStatus(
+          apiResult.message || 'Application submission failed. Please try again.',
+          'error',
+        );
+      }
+    } catch (error) {
+      console.error('Submission error:', error);
+      showStatus('An unexpected error occurred. Please try again.', 'error');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // Event listener untuk form submit
+  submitBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    submitApplication();
+  });
+
+  // Real-time validation feedback
+  const inputs = document.querySelectorAll(
+    '#job-form input, #job-form textarea, #job-form select',
+  );
+  inputs.forEach((input) => {
+    // Focus effects
+    input.addEventListener('focus', function () {
+      this.parentElement.style.transform = 'scale(1.01)';
+      this.parentElement.style.transition = 'transform 0.2s ease';
     });
 
-    window.addEventListener('offline', function () {
-      showStatus('No internet connection. Please check your network.', 'error');
+    input.addEventListener('blur', function () {
+      this.parentElement.style.transform = 'scale(1)';
+    });
+
+    // Real-time validation
+    input.addEventListener('input', function () {
+      if (this.hasAttribute('required') && this.value.trim() === '') {
+        this.style.borderColor = '#f56565';
+      } else if (this.type === 'email' && this.value.trim() !== '') {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        this.style.borderColor = emailRegex.test(this.value) ? '#48bb78' : '#f56565';
+      } else if (this.type === 'tel' && this.value.trim() !== '') {
+        const phoneRegex = /^(\+62|62|0)[0-9]{9,13}$/;
+        this.style.borderColor = phoneRegex.test(this.value.replace(/\s|-/g, ''))
+          ? '#48bb78'
+          : '#f56565';
+      } else if (this.value.trim() !== '') {
+        this.style.borderColor = '#48bb78';
+      } else {
+        this.style.borderColor = '#e2e8f0';
+      }
     });
   });
 
-  // Untuk compatibility dengan view transitions
-  document.addEventListener('astro:page-load', function () {
-    if (typeof emailjs !== 'undefined') {
-      emailjs.init('4-iOyCns2viav_IW_');
+  // Network status monitoring
+  window.addEventListener('online', function () {
+    showStatus('Connection restored!', 'success');
+  });
+
+  window.addEventListener('offline', function () {
+    showStatus('No internet connection. Please check your network.', 'error');
+  });
+
+  // Debug functions - bisa digunakan di console
+  window.testFormData = function() {
+    console.log('=== TESTING FORM DATA ===');
+
+    const testData = {
+      nama: document.getElementById('nama')?.value || 'NOT FOUND',
+      email: document.getElementById('email')?.value || 'NOT FOUND',
+      alamat: document.getElementById('alamat')?.value || 'NOT FOUND',
+      nomorTelepon: document.getElementById('nomorTelepon')?.value || 'NOT FOUND',
+      posisi: document.getElementById('posisi')?.value || 'NOT FOUND',
+      tanggalLahir: document.getElementById('tanggalLahir')?.value || 'NOT FOUND',
+      skill: document.getElementById('skill')?.value || 'NOT FOUND',
+      sertifikasi: document.getElementById('sertifikasi')?.value || 'NOT FOUND',
+      bahasa: document.getElementById('bahasa')?.value || 'NOT FOUND',
+      linkedin: document.getElementById('linkedin')?.value || 'NOT FOUND',
+    };
+
+    Object.entries(testData).forEach(([key, value]) => {
+      console.log(`${key}:`, value ? `"${value}"` : 'EMPTY');
+    });
+
+    console.log('========================');
+  };
+
+  // Debug: Log nilai field saat berubah
+  const debugFields = ['tanggalLahir', 'linkedin', 'sertifikasi', 'bahasa'];
+
+  debugFields.forEach(fieldId => {
+    const field = document.getElementById(fieldId);
+    if (field) {
+      field.addEventListener('input', function() {
+        console.log(`${fieldId} changed:`, this.value);
+      });
+    } else {
+      console.warn(`Debug field not found: ${fieldId}`);
     }
   });
-</script>
+});
+
+// Untuk compatibility dengan view transitions
+document.addEventListener('astro:page-load', function () {
+  if (typeof emailjs !== 'undefined') {
+    emailjs.init('4-iOyCns2viav_IW_');
+  }
+});
+  </script>
+
+
 
 <style>
   .job-application {
