@@ -5,7 +5,7 @@ slug: "sales-executive-68535"
 description: "Sebagai Sales Executive, Anda akan berperan penting dalam mendorong pertumbuhan bisnis melalui penjualan produk software perusahaan. "
 heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1752001919/uploads/zavjz3zog6dfnfsorenc.jpg"
 status: "published"
-pubDate: "2025-08-07T00:31:43.166Z"
+pubDate: "2025-08-07T00:32:21.710Z"
 
 ---
 
