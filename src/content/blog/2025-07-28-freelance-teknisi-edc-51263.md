@@ -5,9 +5,10 @@ slug: "freelance-teknisi-edc-51263"
 description: "Posisi ini bertanggung jawab untuk melakukan aktivasi dan perawatan (maintenance) mesin EDC di lokasi merchant atau klien yang telah ditentukan."
 heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1747670954/uploads/zy70ljky7xa0stxbcslw.png"
 status: "published"
-pubDate: "2025-08-07T03:23:26.042Z"
+pubDate: "2025-08-07T03:24:38.232Z"
 
 ---
+
 
 
 
@@ -43,6 +44,7 @@ Posisi ini bertanggung jawab untuk melakukan **aktivasi dan perawatan (maintenan
 - **Tanpa pengalaman kerja** dipersilakan melamar.
 - Tidak diwajibkan menyertakan foto diri saat melamar.
 - Penempatan kerja: **Kabupaten Nagekeo**.
--Skills : edc, atm, teknisi
 -Pengalaman : Teknisi EDC ATM 
+Skills : edc, atm, teknisi
+
 
