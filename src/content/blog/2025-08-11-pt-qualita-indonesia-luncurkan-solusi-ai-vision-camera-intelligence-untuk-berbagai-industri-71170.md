@@ -5,9 +5,10 @@ slug: "pt-qualita-indonesia-luncurkan-solusi-ai-vision-camera-intelligence-untuk
 description: "Launching product AI System"
 heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1754881300/uploads/nemhibwq66kop4zqjwkz.jpg"
 status: "published"
-pubDate: "2025-08-11T03:10:40.866Z"
+pubDate: "2025-08-11T03:21:11.894Z"
 
 ---
+
 
 
 **Jakarta** – PT Qualita Indonesia resmi memperkenalkan AI Vision Camera Intelligence, sebuah solusi berbasis IoT dan Artificial Intelligence (AI) yang dirancang untuk menjawab kebutuhan pengawasan, keamanan, dan analisis visual lintas industri. Teknologi ini memanfaatkan kamera pintar dengan kemampuan deteksi objek, analisis perilaku, serta integrasi sistem secara real-time.
@@ -19,9 +20,13 @@ Solusi ini dapat diterapkan di berbagai sektor, termasuk perbankan, manufaktur, 
 Selain itu, teknologi ini juga dibekali dengan Platofrm Dashboard 4.0 yang mendukung berbagai jenis input video, alarm, emap management, TV Wall, dan remote connection. Dengan fitur open API, sistem ini dapat terhubung dengan perangkat eksternal seperti UPS, sistem pemadam kebakaran, hingga NVR dari berbagai merek.
 
 **Keunggulan utama solusi ini meliputi:**
+
 **- Real-time monitoring & face tracking** untuk mengidentifikasi individu di area tertentu seperti teller, ruang VIP, atau area setoran.
+
 **- Deteksi area kritis** seperti parkir, kerumunan, dan objek tak terawasi.
+
 **- Custom alert system** untuk peringatan khusus, termasuk deteksi panas, perangkat offline, dan tamper detection.
+
 **- Integrasi penuh dengan aplikasi external** dengan open API sehingga memudahkan pelanggan dalam membuat analytic.
 
 PT Qualita Indonesia memastikan layanan purna jual yang mumpuni dengan 162 titik layanan, ±500 teknisi lapangan, dan 24/7 helpdesk support, sehingga pelanggan mendapatkan dukungan maksimal mulai dari instalasi, pemeliharaan, hingga perbaikan.
