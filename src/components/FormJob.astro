@@ -410,7 +410,6 @@ const displayText = formatSlugForDisplay(slug);
               id="bahasa"
               name="bahasa"
               placeholder="e.g. Bahasa Indonesia, English, Mandarin"
-              required
             />
             <small class="form-note">Separate multiple languages with commas</small>
           </div>
@@ -640,7 +639,6 @@ const displayText = formatSlugForDisplay(slug);
     }
 
     function validateForm() {
-      // Ambil nilai langsung dari DOM
       const nama = document.getElementById('nama')?.value?.trim() || '';
       const email = document.getElementById('email')?.value?.trim() || '';
       const nomorTelepon = document.getElementById('nomorTelepon')?.value?.trim() || '';
@@ -648,14 +646,14 @@ const displayText = formatSlugForDisplay(slug);
       const alamat = document.getElementById('alamat')?.value?.trim() || '';
       const tanggalLahir = document.getElementById('tanggalLahir')?.value?.trim() || '';
 
-      // Education validation (updated with new duration fields)
+      // Education validation
       const jenjang1 = document.getElementById('jenjang1')?.value || '';
       const jurusan1 = document.getElementById('jurusan1')?.value?.trim() || '';
       const institusi1 = document.getElementById('institusi1')?.value?.trim() || '';
       const tahunMulai1 = document.getElementById('tahunMulai1')?.value?.trim() || '';
       const tahunLulus1 = document.getElementById('tahunLulus1')?.value?.trim() || '';
 
-      // Work experience validation (updated with new date fields)
+      // Work experience validation
       const jabatan1 = document.getElementById('jabatan1')?.value?.trim() || '';
       const perusahaan1 = document.getElementById('perusahaan1')?.value?.trim() || '';
       const statusKerja1 = document.getElementById('statusKerja1')?.value || '';
@@ -664,28 +662,7 @@ const displayText = formatSlugForDisplay(slug);
       const skill = document.getElementById('skill')?.value?.trim() || '';
       const cv = document.getElementById('cv')?.files[0];
 
-      // DEBUGGING: Log semua required fields
-      console.log('=== VALIDATION DEBUG ===');
-      console.log('nama:', nama ? '✓' : '✗', nama);
-      console.log('email:', email ? '✓' : '✗', email);
-      console.log('nomorTelepon:', nomorTelepon ? '✓' : '✗', nomorTelepon);
-      console.log('posisi:', posisi ? '✓' : '✗', posisi);
-      console.log('alamat:', alamat ? '✓' : '✗', alamat);
-      console.log('tanggalLahir:', tanggalLahir ? '✓' : '✗', tanggalLahir);
-      console.log('jenjang1:', jenjang1 ? '✓' : '✗', jenjang1);
-      console.log('jurusan1:', jurusan1 ? '✓' : '✗', jurusan1);
-      console.log('institusi1:', institusi1 ? '✓' : '✗', institusi1);
-      console.log('tahunMulai1:', tahunMulai1 ? '✓' : '✗', tahunMulai1);
-      console.log('tahunLulus1:', tahunLulus1 ? '✓' : '✗', tahunLulus1);
-      console.log('jabatan1:', jabatan1 ? '✓' : '✗', jabatan1);
-      console.log('perusahaan1:', perusahaan1 ? '✓' : '✗', perusahaan1);
-      console.log('statusKerja1:', statusKerja1 ? '✓' : '✗', statusKerja1);
-      console.log('tanggalMulaiKerja1:', tanggalMulaiKerja1 ? '✓' : '✗', tanggalMulaiKerja1);
-      console.log('skill:', skill ? '✓' : '✗', skill);
-      console.log('cv:', cv ? '✓' : '✗', cv?.name);
-      console.log('========================');
-
-      // Check required fields (updated with new requirements)
+      // Check required fields
       if (
         !nama ||
         !email ||
@@ -729,7 +706,7 @@ const displayText = formatSlugForDisplay(slug);
         return false;
       }
 
-      // Validate date (now just check if selected)
+      // Validate date
       if (!tanggalLahir) {
         showStatus('Please select your birth date.', 'error');
         return false;
@@ -803,14 +780,14 @@ const displayText = formatSlugForDisplay(slug);
       return 'Network error occurred. Please try again.';
     }
 
-    // Submit ke API (dengan Cloudinary upload) - UPDATED VERSION
+    // Submit ke API (dengan Cloudinary upload)
     async function submitToAPI() {
       updateProgress(apiProgress, '⏳', 'Submitting and uploading CV...', 'processing');
 
       try {
         const formData = new FormData();
 
-        // PERBAIKAN: Ambil data langsung dari form elements
+        // Ambil data langsung dari form elements
         const nama = document.getElementById('nama')?.value?.trim() || '';
         const email = document.getElementById('email')?.value?.trim() || '';
         const alamat = document.getElementById('alamat')?.value?.trim() || '';
@@ -827,7 +804,7 @@ const displayText = formatSlugForDisplay(slug);
         const bahasa = document.getElementById('bahasa')?.value?.trim() || '';
         const linkedin = document.getElementById('linkedin')?.value?.trim() || '';
 
-        // Gabungkan education entries secara manual (UPDATED with duration)
+        // Gabungkan education entries
         const jenjang1 = document.getElementById('jenjang1')?.value || '';
         const jurusan1 = document.getElementById('jurusan1')?.value?.trim() || '';
         const institusi1 = document.getElementById('institusi1')?.value?.trim() || '';
@@ -850,7 +827,7 @@ const displayText = formatSlugForDisplay(slug);
           pendidikanTerakhir += (pendidikanTerakhir ? '; ' : '') + `${jenjang2} ${jurusan2} - ${institusi2} - ${eduDuration2}`;
         }
 
-        // Gabungkan work experience secara manual (UPDATED with new date fields)
+        // Gabungkan work experience
         const jabatan1 = document.getElementById('jabatan1')?.value?.trim() || '';
         const perusahaan1 = document.getElementById('perusahaan1')?.value?.trim() || '';
         const statusKerja1 = document.getElementById('statusKerja1')?.value || '';
@@ -883,23 +860,7 @@ const displayText = formatSlugForDisplay(slug);
           pengalamanKerja += (pengalamanKerja ? '; ' : '') + `${jabatan3} - ${perusahaan3} - ${workDuration3}`;
         }
 
-        // DEBUGGING: Log semua nilai sebelum dikirim
-        console.log('=== FORM DATA DEBUG ===');
-        console.log('nama:', nama);
-        console.log('email:', email);
-        console.log('alamat:', alamat);
-        console.log('nomorTelepon:', nomorTelepon);
-        console.log('posisi:', posisi);
-        console.log('tanggalLahir (formatted):', tanggalLahir);
-        console.log('pendidikanTerakhir:', pendidikanTerakhir);
-        console.log('pengalamanKerja:', pengalamanKerja);
-        console.log('skill:', skill);
-        console.log('sertifikasi:', sertifikasi);
-        console.log('bahasa:', bahasa);
-        console.log('linkedin:', linkedin);
-        console.log('======================');
-
-        // Append ke FormData dengan nama field yang PERSIS sama dengan Postman
+        // Append ke FormData
         formData.append('nama', nama);
         formData.append('email', email);
         formData.append('alamat', alamat);
@@ -919,39 +880,22 @@ const displayText = formatSlugForDisplay(slug);
           formData.append('cv', cvFile);
         }
 
-        // DEBUGGING: Log FormData entries
-        console.log('=== FORMDATA ENTRIES ===');
-        for (let [key, value] of formData.entries()) {
-          if (key !== 'cv') {
-            console.log(`${key}:`, `"${value}"`);
-          } else {
-            console.log(`${key}:`, value.name, `(${value.size} bytes)`);
-          }
-        }
-        console.log('========================');
-
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 60000);
 
         const baseUrl = getApiBaseUrl();
         const endpoint = `${baseUrl}/api/v1/applicants/submit`;
 
-        console.log('Sending to endpoint:', endpoint);
-
         const response = await fetch(endpoint, {
           method: 'POST',
           body: formData,
           signal: controller.signal,
-          // PENTING: Jangan set Content-Type header untuk FormData!
         });
 
         clearTimeout(timeoutId);
 
-        console.log('Response status:', response.status);
-
         if (!response.ok) {
           const errorText = await response.text();
-          console.error('API Error Response:', errorText);
           throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
         }
 
@@ -964,8 +908,6 @@ const displayText = formatSlugForDisplay(slug);
           const text = await response.text();
           result = { success: response.ok, message: text };
         }
-
-        console.log('API Response:', result);
 
         if (result.success) {
           updateProgress(
@@ -992,7 +934,6 @@ const displayText = formatSlugForDisplay(slug);
           throw new Error(result.error || result.message || 'API submission failed');
         }
       } catch (error) {
-        console.error('API Submission Error:', error);
         updateProgress(apiProgress, '❌', 'Database submission failed', 'error');
         const errorMessage = handleNetworkError(error);
         return { success: false, message: errorMessage };
@@ -1011,7 +952,7 @@ const displayText = formatSlugForDisplay(slug);
       const tanggalLahirRaw = document.getElementById('tanggalLahir')?.value?.trim() || '';
       const tanggalLahir = formatDateToDDMMYYYY(tanggalLahirRaw);
 
-      // Education (UPDATED with duration calculation)
+      // Education
       const jenjang1 = document.getElementById('jenjang1')?.value || '';
       const jurusan1 = document.getElementById('jurusan1')?.value?.trim() || '';
       const institusi1 = document.getElementById('institusi1')?.value?.trim() || '';
@@ -1034,7 +975,7 @@ const displayText = formatSlugForDisplay(slug);
         education += (education ? '; ' : '') + `${jenjang2} ${jurusan2} - ${institusi2} - ${eduDuration2}`;
       }
 
-      // Work Experience (UPDATED with new date fields)
+      // Work Experience
       const jabatan1 = document.getElementById('jabatan1')?.value?.trim() || '';
       const perusahaan1 = document.getElementById('perusahaan1')?.value?.trim() || '';
       const statusKerja1 = document.getElementById('statusKerja1')?.value || '';
@@ -1208,7 +1149,6 @@ const displayText = formatSlugForDisplay(slug);
           );
         }
       } catch (error) {
-        console.error('Submission error:', error);
         showStatus('An unexpected error occurred. Please try again.', 'error');
       } finally {
         setLoading(false);
@@ -1282,48 +1222,6 @@ const displayText = formatSlugForDisplay(slug);
 
     window.addEventListener('offline', function () {
       showStatus('No internet connection. Please check your network.', 'error');
-    });
-
-    // Debug functions - bisa digunakan di console
-    window.testFormData = function () {
-      console.log('=== TESTING FORM DATA ===');
-
-      const testData = {
-        nama: document.getElementById('nama')?.value || 'NOT FOUND',
-        email: document.getElementById('email')?.value || 'NOT FOUND',
-        alamat: document.getElementById('alamat')?.value || 'NOT FOUND',
-        nomorTelepon: document.getElementById('nomorTelepon')?.value || 'NOT FOUND',
-        posisi: document.getElementById('posisi')?.value || 'NOT FOUND',
-        tanggalLahir: formatDateToDDMMYYYY(document.getElementById('tanggalLahir')?.value || ''),
-        skill: document.getElementById('skill')?.value || 'NOT FOUND',
-        sertifikasi: document.getElementById('sertifikasi')?.value || 'NOT FOUND',
-        bahasa: document.getElementById('bahasa')?.value || 'NOT FOUND',
-        linkedin: document.getElementById('linkedin')?.value || 'NOT FOUND',
-      };
-
-      Object.entries(testData).forEach(([key, value]) => {
-        console.log(`${key}:`, value ? `"${value}"` : 'EMPTY');
-      });
-
-      console.log('========================');
-    };
-
-    // Debug: Log nilai field saat berubah
-    const debugFields = ['tanggalLahir', 'linkedin', 'sertifikasi', 'bahasa'];
-
-    debugFields.forEach((fieldId) => {
-      const field = document.getElementById(fieldId);
-      if (field) {
-        field.addEventListener('input', function () {
-          if (fieldId === 'tanggalLahir') {
-            console.log(`${fieldId} changed:`, this.value, '-> formatted:', formatDateToDDMMYYYY(this.value));
-          } else {
-            console.log(`${fieldId} changed:`, this.value);
-          }
-        });
-      } else {
-        console.warn(`Debug field not found: ${fieldId}`);
-      }
     });
   });
 
@@ -1458,7 +1356,7 @@ const displayText = formatSlugForDisplay(slug);
   height: 20px;
   
   /* Custom icon menggunakan background */
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23666666'%3e%3cpath fill-rule='evenodd' d='M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z' clip-rule='evenodd'/%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml,%3csvg xmlns='https://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23666666'%3e%3cpath fill-rule='evenodd' d='M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z' clip-rule='evenodd'/%3e%3c/svg%3e");
   background-size: 16px;
   background-repeat: no-repeat;
   background-position: center;

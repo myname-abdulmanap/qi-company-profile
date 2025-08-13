@@ -27,18 +27,27 @@ const relatedPosts = allPosts
     // Skip the current post by comparing slug in URL path
     if (post.data.slug === currentSlug) return false;
 
+    // Skip posts with status 'draft'
+    if (post.data.status === 'draft') return false;
+
     // Get post categories, ensuring we handle both string and array
-    const postCats = Array.isArray(post.data.category) ? post.data.category : [post.data.category];
+    const postCats = Array.isArray(post.data.category)
+      ? post.data.category
+      : [post.data.category];
 
     // Check if there's any category match
     return categories.some((category) =>
-      postCats.some((postCategory) => postCategory.toLowerCase() === category.toLowerCase()),
+      postCats.some(
+        (postCategory) =>
+          postCategory?.toLowerCase?.() === category?.toLowerCase?.()
+      )
     );
   })
   // Sort by publication date (latest first)
   .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
   // Get the top 3 related posts
   .slice(0, 3);
+
 ---
 
 {

@@ -16,6 +16,7 @@ const blog = defineCollection({
     status: z.string().optional(), // Tambahkan status sebagai string
 		slug: z.string(),
 	}),
+  
 });
 
 export const collections = { blog };
