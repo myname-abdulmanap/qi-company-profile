@@ -120,17 +120,31 @@ const displayText = formatSlugForDisplay(slug);
               />
             </div>
           </div>
-          <div class="form-group">
-            <label for="tahunLulus1">Graduation Year *</label>
-            <input
-              type="number"
-              id="tahunLulus1"
-              name="tahunLulus1"
-              placeholder="e.g. 2018"
-              min="1950"
-              max="2030"
-              required
-            />
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="tahunMulai1">Start Year *</label>
+              <input
+                type="number"
+                id="tahunMulai1"
+                name="tahunMulai1"
+                placeholder="e.g. 2014"
+                min="1950"
+                max="2030"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="tahunLulus1">Graduation Year *</label>
+              <input
+                type="number"
+                id="tahunLulus1"
+                name="tahunLulus1"
+                placeholder="e.g. 2018"
+                min="1950"
+                max="2030"
+                required
+              />
+            </div>
           </div>
         </div>
 
@@ -170,16 +184,29 @@ const displayText = formatSlugForDisplay(slug);
               />
             </div>
           </div>
-          <div class="form-group">
-            <label for="tahunLulus2">Graduation Year</label>
-            <input
-              type="number"
-              id="tahunLulus2"
-              name="tahunLulus2"
-              placeholder="e.g. 2020"
-              min="1950"
-              max="2030"
-            />
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="tahunMulai2">Start Year</label>
+              <input
+                type="number"
+                id="tahunMulai2"
+                name="tahunMulai2"
+                placeholder="e.g. 2010"
+                min="1950"
+                max="2030"
+              />
+            </div>
+            <div class="form-group">
+              <label for="tahunLulus2">Graduation Year</label>
+              <input
+                type="number"
+                id="tahunLulus2"
+                name="tahunLulus2"
+                placeholder="e.g. 2014"
+                min="1950"
+                max="2030"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -212,14 +239,32 @@ const displayText = formatSlugForDisplay(slug);
               />
             </div>
             <div class="form-group">
-              <label for="durasi1">Duration *</label>
+              <label for="statusKerja1">Employment Status *</label>
+              <select id="statusKerja1" name="statusKerja1" required>
+                <option value="">Select Status</option>
+                <option value="Still Working">Still Working</option>
+                <option value="No Longer Working">No Longer Working</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="tanggalMulaiKerja1">Start Date *</label>
               <input
-                type="text"
-                id="durasi1"
-                name="durasi1"
-                placeholder="e.g. 2020 - 2024 (4 years)"
+                type="date"
+                id="tanggalMulaiKerja1"
+                name="tanggalMulaiKerja1"
                 required
               />
+            </div>
+            <div class="form-group">
+              <label for="tanggalSelesaiKerja1">End Date</label>
+              <input
+                type="date"
+                id="tanggalSelesaiKerja1"
+                name="tanggalSelesaiKerja1"
+              />
+              <small class="form-note">Leave empty if still working</small>
             </div>
           </div>
         </div>
@@ -246,13 +291,31 @@ const displayText = formatSlugForDisplay(slug);
               />
             </div>
             <div class="form-group">
-              <label for="durasi2">Duration</label>
+              <label for="statusKerja2">Employment Status</label>
+              <select id="statusKerja2" name="statusKerja2">
+                <option value="">Select Status</option>
+                <option value="Still Working">Still Working</option>
+                <option value="No Longer Working">No Longer Working</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="tanggalMulaiKerja2">Start Date</label>
               <input
-                type="text"
-                id="durasi2"
-                name="durasi2"
-                placeholder="e.g. 2020 - 2024 (4 years)"
+                type="date"
+                id="tanggalMulaiKerja2"
+                name="tanggalMulaiKerja2"
               />
+            </div>
+            <div class="form-group">
+              <label for="tanggalSelesaiKerja2">End Date</label>
+              <input
+                type="date"
+                id="tanggalSelesaiKerja2"
+                name="tanggalSelesaiKerja2"
+              />
+              <small class="form-note">Leave empty if still working</small>
             </div>
           </div>
         </div>
@@ -279,20 +342,37 @@ const displayText = formatSlugForDisplay(slug);
               />
             </div>
             <div class="form-group">
-              <label for="durasi3">Duration</label>
+              <label for="statusKerja3">Employment Status</label>
+              <select id="statusKerja3" name="statusKerja3">
+                <option value="">Select Status</option>
+                <option value="Still Working">Still Working</option>
+                <option value="No Longer Working">No Longer Working</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="tanggalMulaiKerja3">Start Date</label>
               <input
-                type="text"
-                id="durasi3"
-                name="durasi3"
-                placeholder="e.g. 2020 - 2024 (4 years)"
+                type="date"
+                id="tanggalMulaiKerja3"
+                name="tanggalMulaiKerja3"
               />
+            </div>
+            <div class="form-group">
+              <label for="tanggalSelesaiKerja3">End Date</label>
+              <input
+                type="date"
+                id="tanggalSelesaiKerja3"
+                name="tanggalSelesaiKerja3"
+              />
+              <small class="form-note">Leave empty if still working</small>
             </div>
           </div>
         </div>
 
         <small class="form-note"
-          >At least one work experience is required. Fill in Position, Company, and Duration for
-          each experience.</small
+          >At least one work experience is required. Fill in Position, Company, Employment Status, and Start Date for each experience.</small
         >
       </div>
 
@@ -451,6 +531,44 @@ const displayText = formatSlugForDisplay(slug);
       return `${day}-${month}-${year}`;
     }
 
+    // Function to format duration from dates
+    function formatDuration(startDate, endDate) {
+      if (!startDate) return '';
+      
+      const start = new Date(startDate);
+      const end = endDate ? new Date(endDate) : new Date();
+      
+      const startYear = start.getFullYear();
+      const endYear = end.getFullYear();
+      
+      const months = (endYear - startYear) * 12 + (end.getMonth() - start.getMonth());
+      const years = Math.floor(months / 12);
+      const remainingMonths = months % 12;
+      
+      let duration = '';
+      if (endDate) {
+        duration = `${startYear} - ${endYear}`;
+      } else {
+        duration = `${startYear} - Present`;
+      }
+      
+      if (years > 0 || remainingMonths > 0) {
+        let periodText = ' (';
+        if (years > 0) {
+          periodText += `${years} year${years > 1 ? 's' : ''}`;
+          if (remainingMonths > 0) {
+            periodText += ` ${remainingMonths} month${remainingMonths > 1 ? 's' : ''}`;
+          }
+        } else {
+          periodText += `${remainingMonths} month${remainingMonths > 1 ? 's' : ''}`;
+        }
+        periodText += ')';
+        duration += periodText;
+      }
+      
+      return duration;
+    }
+
     // File upload handling
     fileInput.addEventListener('change', function (e) {
       const file = e.target.files[0];
@@ -529,16 +647,18 @@ const displayText = formatSlugForDisplay(slug);
       const alamat = document.getElementById('alamat')?.value?.trim() || '';
       const tanggalLahir = document.getElementById('tanggalLahir')?.value?.trim() || '';
 
-      // Education validation (updated)
+      // Education validation (updated with new duration fields)
       const jenjang1 = document.getElementById('jenjang1')?.value || '';
       const jurusan1 = document.getElementById('jurusan1')?.value?.trim() || '';
       const institusi1 = document.getElementById('institusi1')?.value?.trim() || '';
+      const tahunMulai1 = document.getElementById('tahunMulai1')?.value?.trim() || '';
       const tahunLulus1 = document.getElementById('tahunLulus1')?.value?.trim() || '';
 
-      // Work experience validation
+      // Work experience validation (updated with new date fields)
       const jabatan1 = document.getElementById('jabatan1')?.value?.trim() || '';
       const perusahaan1 = document.getElementById('perusahaan1')?.value?.trim() || '';
-      const durasi1 = document.getElementById('durasi1')?.value?.trim() || '';
+      const statusKerja1 = document.getElementById('statusKerja1')?.value || '';
+      const tanggalMulaiKerja1 = document.getElementById('tanggalMulaiKerja1')?.value?.trim() || '';
 
       const skill = document.getElementById('skill')?.value?.trim() || '';
       const cv = document.getElementById('cv')?.files[0];
@@ -554,15 +674,17 @@ const displayText = formatSlugForDisplay(slug);
       console.log('jenjang1:', jenjang1 ? '✓' : '✗', jenjang1);
       console.log('jurusan1:', jurusan1 ? '✓' : '✗', jurusan1);
       console.log('institusi1:', institusi1 ? '✓' : '✗', institusi1);
+      console.log('tahunMulai1:', tahunMulai1 ? '✓' : '✗', tahunMulai1);
       console.log('tahunLulus1:', tahunLulus1 ? '✓' : '✗', tahunLulus1);
       console.log('jabatan1:', jabatan1 ? '✓' : '✗', jabatan1);
       console.log('perusahaan1:', perusahaan1 ? '✓' : '✗', perusahaan1);
-      console.log('durasi1:', durasi1 ? '✓' : '✗', durasi1);
+      console.log('statusKerja1:', statusKerja1 ? '✓' : '✗', statusKerja1);
+      console.log('tanggalMulaiKerja1:', tanggalMulaiKerja1 ? '✓' : '✗', tanggalMulaiKerja1);
       console.log('skill:', skill ? '✓' : '✗', skill);
       console.log('cv:', cv ? '✓' : '✗', cv?.name);
       console.log('========================');
 
-      // Check required fields (updated)
+      // Check required fields (updated with new requirements)
       if (
         !nama ||
         !email ||
@@ -573,10 +695,12 @@ const displayText = formatSlugForDisplay(slug);
         !jenjang1 ||
         !jurusan1 ||
         !institusi1 ||
+        !tahunMulai1 ||
         !tahunLulus1 ||
         !jabatan1 ||
         !perusahaan1 ||
-        !durasi1 ||
+        !statusKerja1 ||
+        !tanggalMulaiKerja1 ||
         !skill ||
         !cv
       ) {
@@ -610,12 +734,36 @@ const displayText = formatSlugForDisplay(slug);
         return false;
       }
 
-      // Validate graduation year
+      // Validate education years
       const currentYear = new Date().getFullYear();
-      const graduationYear = parseInt(tahunLulus1);
-      if (graduationYear < 1950 || graduationYear > currentYear + 10) {
+      const startYear1 = parseInt(tahunMulai1);
+      const graduationYear1 = parseInt(tahunLulus1);
+      
+      if (startYear1 < 1950 || startYear1 > currentYear + 10) {
+        showStatus('Please enter a valid education start year.', 'error');
+        return false;
+      }
+      
+      if (graduationYear1 < 1950 || graduationYear1 > currentYear + 10) {
         showStatus('Please enter a valid graduation year.', 'error');
         return false;
+      }
+      
+      if (startYear1 >= graduationYear1) {
+        showStatus('Graduation year must be after start year.', 'error');
+        return false;
+      }
+
+      // Validate work experience dates
+      const startWorkDate1 = new Date(tanggalMulaiKerja1);
+      const endWorkDate1 = document.getElementById('tanggalSelesaiKerja1')?.value;
+      
+      if (endWorkDate1) {
+        const endDate1 = new Date(endWorkDate1);
+        if (startWorkDate1 >= endDate1) {
+          showStatus('Work end date must be after start date.', 'error');
+          return false;
+        }
       }
 
       // Validate reCAPTCHA
@@ -678,50 +826,60 @@ const displayText = formatSlugForDisplay(slug);
         const bahasa = document.getElementById('bahasa')?.value?.trim() || '';
         const linkedin = document.getElementById('linkedin')?.value?.trim() || '';
 
-        // Gabungkan education entries secara manual (UPDATED)
+        // Gabungkan education entries secara manual (UPDATED with duration)
         const jenjang1 = document.getElementById('jenjang1')?.value || '';
         const jurusan1 = document.getElementById('jurusan1')?.value?.trim() || '';
         const institusi1 = document.getElementById('institusi1')?.value?.trim() || '';
+        const tahunMulai1 = document.getElementById('tahunMulai1')?.value?.trim() || '';
         const tahunLulus1 = document.getElementById('tahunLulus1')?.value?.trim() || '';
 
         const jenjang2 = document.getElementById('jenjang2')?.value || '';
         const jurusan2 = document.getElementById('jurusan2')?.value?.trim() || '';
         const institusi2 = document.getElementById('institusi2')?.value?.trim() || '';
+        const tahunMulai2 = document.getElementById('tahunMulai2')?.value?.trim() || '';
         const tahunLulus2 = document.getElementById('tahunLulus2')?.value?.trim() || '';
 
         let pendidikanTerakhir = '';
-        if (jenjang1 && jurusan1 && institusi1 && tahunLulus1) {
-          pendidikanTerakhir = `${jenjang1} ${jurusan1} - ${institusi1} - ${tahunLulus1}`;
+        if (jenjang1 && jurusan1 && institusi1 && tahunMulai1 && tahunLulus1) {
+          const eduDuration1 = `${tahunMulai1} - ${tahunLulus1} (${tahunLulus1 - tahunMulai1} years)`;
+          pendidikanTerakhir = `${jenjang1} ${jurusan1} - ${institusi1} - ${eduDuration1}`;
         }
-        if (jenjang2 && jurusan2 && institusi2 && tahunLulus2) {
-          pendidikanTerakhir +=
-            (pendidikanTerakhir ? '; ' : '') + `${jenjang2} ${jurusan2} - ${institusi2} - ${tahunLulus2}`;
+        if (jenjang2 && jurusan2 && institusi2 && tahunMulai2 && tahunLulus2) {
+          const eduDuration2 = `${tahunMulai2} - ${tahunLulus2} (${tahunLulus2 - tahunMulai2} years)`;
+          pendidikanTerakhir += (pendidikanTerakhir ? '; ' : '') + `${jenjang2} ${jurusan2} - ${institusi2} - ${eduDuration2}`;
         }
 
-        // Gabungkan work experience secara manual
+        // Gabungkan work experience secara manual (UPDATED with new date fields)
         const jabatan1 = document.getElementById('jabatan1')?.value?.trim() || '';
         const perusahaan1 = document.getElementById('perusahaan1')?.value?.trim() || '';
-        const durasi1 = document.getElementById('durasi1')?.value?.trim() || '';
+        const statusKerja1 = document.getElementById('statusKerja1')?.value || '';
+        const tanggalMulaiKerja1 = document.getElementById('tanggalMulaiKerja1')?.value?.trim() || '';
+        const tanggalSelesaiKerja1 = document.getElementById('tanggalSelesaiKerja1')?.value?.trim() || '';
 
         const jabatan2 = document.getElementById('jabatan2')?.value?.trim() || '';
         const perusahaan2 = document.getElementById('perusahaan2')?.value?.trim() || '';
-        const durasi2 = document.getElementById('durasi2')?.value?.trim() || '';
+        const statusKerja2 = document.getElementById('statusKerja2')?.value || '';
+        const tanggalMulaiKerja2 = document.getElementById('tanggalMulaiKerja2')?.value?.trim() || '';
+        const tanggalSelesaiKerja2 = document.getElementById('tanggalSelesaiKerja2')?.value?.trim() || '';
 
         const jabatan3 = document.getElementById('jabatan3')?.value?.trim() || '';
         const perusahaan3 = document.getElementById('perusahaan3')?.value?.trim() || '';
-        const durasi3 = document.getElementById('durasi3')?.value?.trim() || '';
+        const statusKerja3 = document.getElementById('statusKerja3')?.value || '';
+        const tanggalMulaiKerja3 = document.getElementById('tanggalMulaiKerja3')?.value?.trim() || '';
+        const tanggalSelesaiKerja3 = document.getElementById('tanggalSelesaiKerja3')?.value?.trim() || '';
 
         let pengalamanKerja = '';
-        if (jabatan1 && perusahaan1 && durasi1) {
-          pengalamanKerja = `${jabatan1} - ${perusahaan1} - ${durasi1}`;
+        if (jabatan1 && perusahaan1 && statusKerja1 && tanggalMulaiKerja1) {
+          const workDuration1 = formatDuration(tanggalMulaiKerja1, tanggalSelesaiKerja1);
+          pengalamanKerja = `${jabatan1} - ${perusahaan1} - ${workDuration1}`;
         }
-        if (jabatan2 && perusahaan2 && durasi2) {
-          pengalamanKerja +=
-            (pengalamanKerja ? '; ' : '') + `${jabatan2} - ${perusahaan2} - ${durasi2}`;
+        if (jabatan2 && perusahaan2 && statusKerja2 && tanggalMulaiKerja2) {
+          const workDuration2 = formatDuration(tanggalMulaiKerja2, tanggalSelesaiKerja2);
+          pengalamanKerja += (pengalamanKerja ? '; ' : '') + `${jabatan2} - ${perusahaan2} - ${workDuration2}`;
         }
-        if (jabatan3 && perusahaan3 && durasi3) {
-          pengalamanKerja +=
-            (pengalamanKerja ? '; ' : '') + `${jabatan3} - ${perusahaan3} - ${durasi3}`;
+        if (jabatan3 && perusahaan3 && statusKerja3 && tanggalMulaiKerja3) {
+          const workDuration3 = formatDuration(tanggalMulaiKerja3, tanggalSelesaiKerja3);
+          pengalamanKerja += (pengalamanKerja ? '; ' : '') + `${jabatan3} - ${perusahaan3} - ${workDuration3}`;
         }
 
         // DEBUGGING: Log semua nilai sebelum dikirim
@@ -852,46 +1010,60 @@ const displayText = formatSlugForDisplay(slug);
       const tanggalLahirRaw = document.getElementById('tanggalLahir')?.value?.trim() || '';
       const tanggalLahir = formatDateToDDMMYYYY(tanggalLahirRaw);
 
-      // Education (UPDATED)
+      // Education (UPDATED with duration calculation)
       const jenjang1 = document.getElementById('jenjang1')?.value || '';
       const jurusan1 = document.getElementById('jurusan1')?.value?.trim() || '';
       const institusi1 = document.getElementById('institusi1')?.value?.trim() || '';
+      const tahunMulai1 = document.getElementById('tahunMulai1')?.value?.trim() || '';
       const tahunLulus1 = document.getElementById('tahunLulus1')?.value?.trim() || '';
+      
       const jenjang2 = document.getElementById('jenjang2')?.value || '';
       const jurusan2 = document.getElementById('jurusan2')?.value?.trim() || '';
       const institusi2 = document.getElementById('institusi2')?.value?.trim() || '';
+      const tahunMulai2 = document.getElementById('tahunMulai2')?.value?.trim() || '';
       const tahunLulus2 = document.getElementById('tahunLulus2')?.value?.trim() || '';
 
       let education = '';
-      if (jenjang1 && jurusan1 && institusi1 && tahunLulus1) {
-        education = `${jenjang1} ${jurusan1} - ${institusi1} - ${tahunLulus1}`;
+      if (jenjang1 && jurusan1 && institusi1 && tahunMulai1 && tahunLulus1) {
+        const eduDuration1 = `${tahunMulai1} - ${tahunLulus1} (${tahunLulus1 - tahunMulai1} years)`;
+        education = `${jenjang1} ${jurusan1} - ${institusi1} - ${eduDuration1}`;
       }
-      if (jenjang2 && jurusan2 && institusi2 && tahunLulus2) {
-        education += (education ? '; ' : '') + `${jenjang2} ${jurusan2} - ${institusi2} - ${tahunLulus2}`;
+      if (jenjang2 && jurusan2 && institusi2 && tahunMulai2 && tahunLulus2) {
+        const eduDuration2 = `${tahunMulai2} - ${tahunLulus2} (${tahunLulus2 - tahunMulai2} years)`;
+        education += (education ? '; ' : '') + `${jenjang2} ${jurusan2} - ${institusi2} - ${eduDuration2}`;
       }
 
-      // Work Experience
+      // Work Experience (UPDATED with new date fields)
       const jabatan1 = document.getElementById('jabatan1')?.value?.trim() || '';
       const perusahaan1 = document.getElementById('perusahaan1')?.value?.trim() || '';
-      const durasi1 = document.getElementById('durasi1')?.value?.trim() || '';
+      const statusKerja1 = document.getElementById('statusKerja1')?.value || '';
+      const tanggalMulaiKerja1 = document.getElementById('tanggalMulaiKerja1')?.value?.trim() || '';
+      const tanggalSelesaiKerja1 = document.getElementById('tanggalSelesaiKerja1')?.value?.trim() || '';
+      
       const jabatan2 = document.getElementById('jabatan2')?.value?.trim() || '';
       const perusahaan2 = document.getElementById('perusahaan2')?.value?.trim() || '';
-      const durasi2 = document.getElementById('durasi2')?.value?.trim() || '';
+      const statusKerja2 = document.getElementById('statusKerja2')?.value || '';
+      const tanggalMulaiKerja2 = document.getElementById('tanggalMulaiKerja2')?.value?.trim() || '';
+      const tanggalSelesaiKerja2 = document.getElementById('tanggalSelesaiKerja2')?.value?.trim() || '';
+      
       const jabatan3 = document.getElementById('jabatan3')?.value?.trim() || '';
       const perusahaan3 = document.getElementById('perusahaan3')?.value?.trim() || '';
-      const durasi3 = document.getElementById('durasi3')?.value?.trim() || '';
+      const statusKerja3 = document.getElementById('statusKerja3')?.value || '';
+      const tanggalMulaiKerja3 = document.getElementById('tanggalMulaiKerja3')?.value?.trim() || '';
+      const tanggalSelesaiKerja3 = document.getElementById('tanggalSelesaiKerja3')?.value?.trim() || '';
 
       let workExperience = '';
-      if (jabatan1 && perusahaan1 && durasi1) {
-        workExperience = `${jabatan1} - ${perusahaan1} - ${durasi1}`;
+      if (jabatan1 && perusahaan1 && statusKerja1 && tanggalMulaiKerja1) {
+        const workDuration1 = formatDuration(tanggalMulaiKerja1, tanggalSelesaiKerja1);
+        workExperience = `${jabatan1} - ${perusahaan1} - ${workDuration1}`;
       }
-      if (jabatan2 && perusahaan2 && durasi2) {
-        workExperience +=
-          (workExperience ? '; ' : '') + `${jabatan2} - ${perusahaan2} - ${durasi2}`;
+      if (jabatan2 && perusahaan2 && statusKerja2 && tanggalMulaiKerja2) {
+        const workDuration2 = formatDuration(tanggalMulaiKerja2, tanggalSelesaiKerja2);
+        workExperience += (workExperience ? '; ' : '') + `${jabatan2} - ${perusahaan2} - ${workDuration2}`;
       }
-      if (jabatan3 && perusahaan3 && durasi3) {
-        workExperience +=
-          (workExperience ? '; ' : '') + `${jabatan3} - ${perusahaan3} - ${durasi3}`;
+      if (jabatan3 && perusahaan3 && statusKerja3 && tanggalMulaiKerja3) {
+        const workDuration3 = formatDuration(tanggalMulaiKerja3, tanggalSelesaiKerja3);
+        workExperience += (workExperience ? '; ' : '') + `${jabatan3} - ${perusahaan3} - ${workDuration3}`;
       }
 
       const skill = document.getElementById('skill')?.value?.trim() || '';
@@ -1083,6 +1255,25 @@ const displayText = formatSlugForDisplay(slug);
       });
     });
 
+    // Auto-disable end date validation for "Still Working" status
+    document.querySelectorAll('select[id^="statusKerja"]').forEach((statusSelect) => {
+      statusSelect.addEventListener('change', function() {
+        const index = this.id.replace('statusKerja', '');
+        const endDateField = document.getElementById(`tanggalSelesaiKerja${index}`);
+        
+        if (endDateField) {
+          if (this.value === 'Still Working') {
+            endDateField.value = '';
+            endDateField.disabled = true;
+            endDateField.style.backgroundColor = '#f5f5f5';
+          } else {
+            endDateField.disabled = false;
+            endDateField.style.backgroundColor = 'white';
+          }
+        }
+      });
+    });
+
     // Network status monitoring
     window.addEventListener('online', function () {
       showStatus('Connection restored!', 'success');
@@ -1229,6 +1420,12 @@ const displayText = formatSlugForDisplay(slug);
     background: white;
   }
 
+  .form-group input:disabled {
+    background: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
+  }
+
   .form-group input:focus,
   .form-group textarea:focus,
   .form-group select:focus {
@@ -1245,19 +1442,28 @@ const displayText = formatSlugForDisplay(slug);
     cursor: pointer;
   }
 
-  /* Date input styling */
   .form-group input[type="date"] {
-    position: relative;
-    cursor: pointer;
+    padding-right: 1.5rem; /* Space for custom calendar icon */
   }
 
-  .form-group input[type="date"]::-webkit-calendar-picker-indicator {
-    cursor: pointer;
-    padding: 5px;
-    background: transparent;
-  }
+/* Untuk Webkit browsers (Chrome, Safari, Edge) */
+.form-group input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 1;
+  cursor: pointer;
+  padding: 5px;
+  background: transparent;
+  color: #666;
+  width: 20px;
+  height: 20px;
+  
+  /* Custom icon menggunakan background */
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23666666'%3e%3cpath fill-rule='evenodd' d='M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z' clip-rule='evenodd'/%3e%3c/svg%3e");
+  background-size: 16px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
 
-  /* File upload styling */
+ /* File upload styling */
   .file-upload-container {
     position: relative;
   }
