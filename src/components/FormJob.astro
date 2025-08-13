@@ -54,14 +54,12 @@ const displayText = formatSlugForDisplay(slug);
           <div class="form-group">
             <label for="tanggalLahir">Birth Date *</label>
             <input
-              type="text"
+              type="date"
               id="tanggalLahir"
               name="tanggalLahir"
-              placeholder="DD-MM-YYYY (e.g. 15-08-1995)"
-              pattern="^[0-9]{2}-[0-9]{2}-[0-9]{4}$"
               required
             />
-            <small class="form-note">Format: DD-MM-YYYY</small>
+            <small class="form-note">Select your birth date</small>
           </div>
         </div>
 
@@ -88,12 +86,26 @@ const displayText = formatSlugForDisplay(slug);
           <h4 class="entry-title">Latest Education *</h4>
           <div class="form-grid-3">
             <div class="form-group">
-              <label for="gelar1">Degree *</label>
+              <label for="jenjang1">Education Level *</label>
+              <select id="jenjang1" name="jenjang1" required>
+                <option value="">Select Level</option>
+                <option value="SMA/SMK">SMA/SMK</option>
+                <option value="D1">D1 (Diploma 1)</option>
+                <option value="D2">D2 (Diploma 2)</option>
+                <option value="D3">D3 (Diploma 3)</option>
+                <option value="D4">D4 (Diploma 4)</option>
+                <option value="S1">S1 (Sarjana)</option>
+                <option value="S2">S2 (Magister)</option>
+                <option value="S3">S3 (Doktor)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="jurusan1">Major/Field of Study *</label>
               <input
                 type="text"
-                id="gelar1"
-                name="gelar1"
-                placeholder="e.g. S1 Teknik Informatika"
+                id="jurusan1"
+                name="jurusan1"
+                placeholder="e.g. Teknik Informatika, Manajemen"
                 required
               />
             </div>
@@ -107,18 +119,18 @@ const displayText = formatSlugForDisplay(slug);
                 required
               />
             </div>
-            <div class="form-group">
-              <label for="tahunLulus1">Graduation Year *</label>
-              <input
-                type="number"
-                id="tahunLulus1"
-                name="tahunLulus1"
-                placeholder="e.g. 2018"
-                min="1950"
-                max="2030"
-                required
-              />
-            </div>
+          </div>
+          <div class="form-group">
+            <label for="tahunLulus1">Graduation Year *</label>
+            <input
+              type="number"
+              id="tahunLulus1"
+              name="tahunLulus1"
+              placeholder="e.g. 2018"
+              min="1950"
+              max="2030"
+              required
+            />
           </div>
         </div>
 
@@ -126,8 +138,27 @@ const displayText = formatSlugForDisplay(slug);
           <h4 class="entry-title">Additional Education (Optional)</h4>
           <div class="form-grid-3">
             <div class="form-group">
-              <label for="gelar2">Degree</label>
-              <input type="text" id="gelar2" name="gelar2" placeholder="e.g. S2 Manajemen" />
+              <label for="jenjang2">Education Level</label>
+              <select id="jenjang2" name="jenjang2">
+                <option value="">Select Level</option>
+                <option value="SMA/SMK">SMA/SMK</option>
+                <option value="D1">D1 (Diploma 1)</option>
+                <option value="D2">D2 (Diploma 2)</option>
+                <option value="D3">D3 (Diploma 3)</option>
+                <option value="D4">D4 (Diploma 4)</option>
+                <option value="S1">S1 (Sarjana)</option>
+                <option value="S2">S2 (Magister)</option>
+                <option value="S3">S3 (Doktor)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="jurusan2">Major/Field of Study</label>
+              <input
+                type="text"
+                id="jurusan2"
+                name="jurusan2"
+                placeholder="e.g. Manajemen, Akuntansi"
+              />
             </div>
             <div class="form-group">
               <label for="institusi2">Institution</label>
@@ -138,17 +169,17 @@ const displayText = formatSlugForDisplay(slug);
                 placeholder="e.g. Institut Teknologi Bandung"
               />
             </div>
-            <div class="form-group">
-              <label for="tahunLulus2">Graduation Year</label>
-              <input
-                type="number"
-                id="tahunLulus2"
-                name="tahunLulus2"
-                placeholder="e.g. 2020"
-                min="1950"
-                max="2030"
-              />
-            </div>
+          </div>
+          <div class="form-group">
+            <label for="tahunLulus2">Graduation Year</label>
+            <input
+              type="number"
+              id="tahunLulus2"
+              name="tahunLulus2"
+              placeholder="e.g. 2020"
+              min="1950"
+              max="2030"
+            />
           </div>
         </div>
       </div>
@@ -293,7 +324,7 @@ const displayText = formatSlugForDisplay(slug);
             <small class="form-note">Separate multiple certifications with commas</small>
           </div>
           <div class="form-group">
-            <label for="bahasa">Languages (Optional)</label>
+            <label for="bahasa">Languages</label>
             <input
               type="text"
               id="bahasa"
@@ -413,6 +444,13 @@ const displayText = formatSlugForDisplay(slug);
       return '/api';
     };
 
+    // Function to convert date from YYYY-MM-DD to DD-MM-YYYY
+    function formatDateToDDMMYYYY(dateString) {
+      if (!dateString) return '';
+      const [year, month, day] = dateString.split('-');
+      return `${day}-${month}-${year}`;
+    }
+
     // File upload handling
     fileInput.addEventListener('change', function (e) {
       const file = e.target.files[0];
@@ -491,8 +529,9 @@ const displayText = formatSlugForDisplay(slug);
       const alamat = document.getElementById('alamat')?.value?.trim() || '';
       const tanggalLahir = document.getElementById('tanggalLahir')?.value?.trim() || '';
 
-      // Education validation
-      const gelar1 = document.getElementById('gelar1')?.value?.trim() || '';
+      // Education validation (updated)
+      const jenjang1 = document.getElementById('jenjang1')?.value || '';
+      const jurusan1 = document.getElementById('jurusan1')?.value?.trim() || '';
       const institusi1 = document.getElementById('institusi1')?.value?.trim() || '';
       const tahunLulus1 = document.getElementById('tahunLulus1')?.value?.trim() || '';
 
@@ -512,7 +551,8 @@ const displayText = formatSlugForDisplay(slug);
       console.log('posisi:', posisi ? '✓' : '✗', posisi);
       console.log('alamat:', alamat ? '✓' : '✗', alamat);
       console.log('tanggalLahir:', tanggalLahir ? '✓' : '✗', tanggalLahir);
-      console.log('gelar1:', gelar1 ? '✓' : '✗', gelar1);
+      console.log('jenjang1:', jenjang1 ? '✓' : '✗', jenjang1);
+      console.log('jurusan1:', jurusan1 ? '✓' : '✗', jurusan1);
       console.log('institusi1:', institusi1 ? '✓' : '✗', institusi1);
       console.log('tahunLulus1:', tahunLulus1 ? '✓' : '✗', tahunLulus1);
       console.log('jabatan1:', jabatan1 ? '✓' : '✗', jabatan1);
@@ -522,7 +562,7 @@ const displayText = formatSlugForDisplay(slug);
       console.log('cv:', cv ? '✓' : '✗', cv?.name);
       console.log('========================');
 
-      // Check required fields
+      // Check required fields (updated)
       if (
         !nama ||
         !email ||
@@ -530,7 +570,8 @@ const displayText = formatSlugForDisplay(slug);
         !posisi ||
         !alamat ||
         !tanggalLahir ||
-        !gelar1 ||
+        !jenjang1 ||
+        !jurusan1 ||
         !institusi1 ||
         !tahunLulus1 ||
         !jabatan1 ||
@@ -563,10 +604,9 @@ const displayText = formatSlugForDisplay(slug);
         return false;
       }
 
-      // Validate birth date format
-      const birthDateRegex = /^[0-9]{2}-[0-9]{2}-[0-9]{4}$/;
-      if (!birthDateRegex.test(tanggalLahir)) {
-        showStatus('Please enter birth date in DD-MM-YYYY format (e.g., 15-08-1995).', 'error');
+      // Validate date (now just check if selected)
+      if (!tanggalLahir) {
+        showStatus('Please select your birth date.', 'error');
         return false;
       }
 
@@ -614,7 +654,7 @@ const displayText = formatSlugForDisplay(slug);
       return 'Network error occurred. Please try again.';
     }
 
-    // Submit ke API (dengan Cloudinary upload) - FIXED VERSION
+    // Submit ke API (dengan Cloudinary upload) - UPDATED VERSION
     async function submitToAPI() {
       updateProgress(apiProgress, '⏳', 'Submitting and uploading CV...', 'processing');
 
@@ -627,7 +667,10 @@ const displayText = formatSlugForDisplay(slug);
         const alamat = document.getElementById('alamat')?.value?.trim() || '';
         const nomorTelepon = document.getElementById('nomorTelepon')?.value?.trim() || '';
         const posisi = document.getElementById('posisi')?.value || '';
-        const tanggalLahir = document.getElementById('tanggalLahir')?.value?.trim() || '';
+        
+        // Convert date to DD-MM-YYYY format
+        const tanggalLahirRaw = document.getElementById('tanggalLahir')?.value?.trim() || '';
+        const tanggalLahir = formatDateToDDMMYYYY(tanggalLahirRaw);
 
         // Skills dan optional fields
         const skill = document.getElementById('skill')?.value?.trim() || '';
@@ -635,22 +678,24 @@ const displayText = formatSlugForDisplay(slug);
         const bahasa = document.getElementById('bahasa')?.value?.trim() || '';
         const linkedin = document.getElementById('linkedin')?.value?.trim() || '';
 
-        // Gabungkan education entries secara manual
-        const gelar1 = document.getElementById('gelar1')?.value?.trim() || '';
+        // Gabungkan education entries secara manual (UPDATED)
+        const jenjang1 = document.getElementById('jenjang1')?.value || '';
+        const jurusan1 = document.getElementById('jurusan1')?.value?.trim() || '';
         const institusi1 = document.getElementById('institusi1')?.value?.trim() || '';
         const tahunLulus1 = document.getElementById('tahunLulus1')?.value?.trim() || '';
 
-        const gelar2 = document.getElementById('gelar2')?.value?.trim() || '';
+        const jenjang2 = document.getElementById('jenjang2')?.value || '';
+        const jurusan2 = document.getElementById('jurusan2')?.value?.trim() || '';
         const institusi2 = document.getElementById('institusi2')?.value?.trim() || '';
         const tahunLulus2 = document.getElementById('tahunLulus2')?.value?.trim() || '';
 
         let pendidikanTerakhir = '';
-        if (gelar1 && institusi1 && tahunLulus1) {
-          pendidikanTerakhir = `${gelar1} - ${institusi1} - ${tahunLulus1}`;
+        if (jenjang1 && jurusan1 && institusi1 && tahunLulus1) {
+          pendidikanTerakhir = `${jenjang1} ${jurusan1} - ${institusi1} - ${tahunLulus1}`;
         }
-        if (gelar2 && institusi2 && tahunLulus2) {
+        if (jenjang2 && jurusan2 && institusi2 && tahunLulus2) {
           pendidikanTerakhir +=
-            (pendidikanTerakhir ? '; ' : '') + `${gelar2} - ${institusi2} - ${tahunLulus2}`;
+            (pendidikanTerakhir ? '; ' : '') + `${jenjang2} ${jurusan2} - ${institusi2} - ${tahunLulus2}`;
         }
 
         // Gabungkan work experience secara manual
@@ -686,7 +731,7 @@ const displayText = formatSlugForDisplay(slug);
         console.log('alamat:', alamat);
         console.log('nomorTelepon:', nomorTelepon);
         console.log('posisi:', posisi);
-        console.log('tanggalLahir:', tanggalLahir);
+        console.log('tanggalLahir (formatted):', tanggalLahir);
         console.log('pendidikanTerakhir:', pendidikanTerakhir);
         console.log('pengalamanKerja:', pengalamanKerja);
         console.log('skill:', skill);
@@ -802,22 +847,27 @@ const displayText = formatSlugForDisplay(slug);
       const nomorTelepon = document.getElementById('nomorTelepon')?.value?.trim() || '';
       const posisi = document.getElementById('posisi')?.value || '';
       const alamat = document.getElementById('alamat')?.value?.trim() || '';
-      const tanggalLahir = document.getElementById('tanggalLahir')?.value?.trim() || '';
+      
+      // Convert date for hidden field
+      const tanggalLahirRaw = document.getElementById('tanggalLahir')?.value?.trim() || '';
+      const tanggalLahir = formatDateToDDMMYYYY(tanggalLahirRaw);
 
-      // Education
-      const gelar1 = document.getElementById('gelar1')?.value?.trim() || '';
+      // Education (UPDATED)
+      const jenjang1 = document.getElementById('jenjang1')?.value || '';
+      const jurusan1 = document.getElementById('jurusan1')?.value?.trim() || '';
       const institusi1 = document.getElementById('institusi1')?.value?.trim() || '';
       const tahunLulus1 = document.getElementById('tahunLulus1')?.value?.trim() || '';
-      const gelar2 = document.getElementById('gelar2')?.value?.trim() || '';
+      const jenjang2 = document.getElementById('jenjang2')?.value || '';
+      const jurusan2 = document.getElementById('jurusan2')?.value?.trim() || '';
       const institusi2 = document.getElementById('institusi2')?.value?.trim() || '';
       const tahunLulus2 = document.getElementById('tahunLulus2')?.value?.trim() || '';
 
       let education = '';
-      if (gelar1 && institusi1 && tahunLulus1) {
-        education = `${gelar1} - ${institusi1} - ${tahunLulus1}`;
+      if (jenjang1 && jurusan1 && institusi1 && tahunLulus1) {
+        education = `${jenjang1} ${jurusan1} - ${institusi1} - ${tahunLulus1}`;
       }
-      if (gelar2 && institusi2 && tahunLulus2) {
-        education += (education ? '; ' : '') + `${gelar2} - ${institusi2} - ${tahunLulus2}`;
+      if (jenjang2 && jurusan2 && institusi2 && tahunLulus2) {
+        education += (education ? '; ' : '') + `${jenjang2} ${jurusan2} - ${institusi2} - ${tahunLulus2}`;
       }
 
       // Work Experience
@@ -1052,7 +1102,7 @@ const displayText = formatSlugForDisplay(slug);
         alamat: document.getElementById('alamat')?.value || 'NOT FOUND',
         nomorTelepon: document.getElementById('nomorTelepon')?.value || 'NOT FOUND',
         posisi: document.getElementById('posisi')?.value || 'NOT FOUND',
-        tanggalLahir: document.getElementById('tanggalLahir')?.value || 'NOT FOUND',
+        tanggalLahir: formatDateToDDMMYYYY(document.getElementById('tanggalLahir')?.value || ''),
         skill: document.getElementById('skill')?.value || 'NOT FOUND',
         sertifikasi: document.getElementById('sertifikasi')?.value || 'NOT FOUND',
         bahasa: document.getElementById('bahasa')?.value || 'NOT FOUND',
@@ -1073,7 +1123,11 @@ const displayText = formatSlugForDisplay(slug);
       const field = document.getElementById(fieldId);
       if (field) {
         field.addEventListener('input', function () {
-          console.log(`${fieldId} changed:`, this.value);
+          if (fieldId === 'tanggalLahir') {
+            console.log(`${fieldId} changed:`, this.value, '-> formatted:', formatDateToDDMMYYYY(this.value));
+          } else {
+            console.log(`${fieldId} changed:`, this.value);
+          }
         });
       } else {
         console.warn(`Debug field not found: ${fieldId}`);
@@ -1128,6 +1182,29 @@ const displayText = formatSlugForDisplay(slug);
     margin-bottom: 1.5rem;
   }
 
+  .form-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .education-entry,
+  .experience-entry {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #e2e8f0;
+  }
+
+  .entry-title {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
   .form-group {
     margin-bottom: 1.5rem;
   }
@@ -1166,6 +1243,18 @@ const displayText = formatSlugForDisplay(slug);
 
   .form-group select {
     cursor: pointer;
+  }
+
+  /* Date input styling */
+  .form-group input[type="date"] {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .form-group input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    padding: 5px;
+    background: transparent;
   }
 
   /* File upload styling */
