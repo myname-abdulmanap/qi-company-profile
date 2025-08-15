@@ -43,4 +43,4 @@ jobs:
         port: 22
         script: |
           cd /home/kangdev/astro-sites
-          docker-compose restart qualita
+          sudo docker-compose restart qualita
