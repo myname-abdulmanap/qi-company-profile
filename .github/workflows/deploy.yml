@@ -26,8 +26,12 @@ jobs:
 
     - name: Upload dist to server with rsync (delete old)
       run: |
+        # Buat file key sementara
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+        chmod 600 private_key.pem
+        # Kirim dist pakai rsync
         rsync -avz --delete \
-          -e "ssh -i ${{ secrets.SSH_PRIVATE_KEY }} -p 22" \
+          -e "ssh -i private_key.pem -o StrictHostKeyChecking=no -p 22" \
           dist/ kangdev@qualita-indonesia.com:/home/kangdev/astro-sites/qualita-indonesia/dist
 
     - name: Restart only qualita container
