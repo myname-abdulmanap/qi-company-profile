@@ -43,4 +43,5 @@ jobs:
         port: 22
         script: |
           cd /home/kangdev/astro-sites
-          sudo docker-compose restart qualita
+          sudo docker exec astro-qualita nginx -s reload
+
