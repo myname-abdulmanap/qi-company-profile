@@ -611,7 +611,7 @@ const displayText = formatSlugForDisplay(slug);
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 60000);
 
-        const response = await fetch('http://localhost:4000/api/v1/applicants/submit', {
+        const response = await fetch('${baseUrl}/api/v1/applicants/submit', {
           method: 'POST',
           body: formData,
           signal: controller.signal,
