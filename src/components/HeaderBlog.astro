@@ -263,6 +263,63 @@ import ThemeToggle from "./ThemeToggle.astro";
       padding: 0.5rem 0;
     }
   }
+
+  /* ==== Animated underline for menu & dropdown ==== */
+.menu a,
+.dropdown a {
+  position: relative;
+  display: inline-block;         /* biar garis pas selebar teks */
+  text-decoration: none;         /* matiin underline default */
+  transition: color .25s ease;   /* kamu udah punya ini, gpp double */
+}
+
+.menu a::after,
+.dropdown a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;                  /* jarak garis dari teks (menu utama) */
+  width: 100%;
+  height: 2px;
+  background: currentColor;      /* ikut warna teks */
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .35s ease;
+  border-radius: 999px;
+}
+
+/* Hover / focus: garis animasi muncul */
+.menu a:hover::after,
+.menu a:focus-visible::after,
+.dropdown a:hover::after,
+.dropdown a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* Aktif (opsional): biar halaman aktif tetap underlined
+   - pakai salah satu selector ini sesuai kebutuhanmu */
+.menu a[aria-current="page"]::after,
+.menu a.active::after {
+  transform: scaleX(1);
+}
+
+/* Penyesuaian khusus item di dropdown biar garisnya di dalam padding */
+.dropdown a::after {
+  left: 1.5rem;                  /* sama dengan padding-left dropdown a */
+  right: 1.5rem;                 /* biar rapi, ganti width -> left/right */
+  width: auto;                   /* biar follow left/right */
+  bottom: .35rem;                /* sedikit lebih dekat ke teks */
+  transition: transform .25s ease;
+}
+
+/* Aksesibilitas: nonaktifkan animasi jika user prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .menu a::after,
+  .dropdown a::after {
+    transition: none;
+  }
+}
+
 </style>
 
 <div class="overlay"></div>
