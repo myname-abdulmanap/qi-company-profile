@@ -13,7 +13,7 @@ const allPosts = await getCollection('blog');
 const posts = allPosts
   .filter((post) => {
     const category = post.data.category;
-    const status = post.data.status?.toLowerCase?.() || 'draft'; // default draft jika tidak ada
+    const status = post.data.status?.toLowerCase?.() || 'draft'; 
 
     const isCareer = Array.isArray(category)
       ? category.some((cat) => cat.toLowerCase() === 'careers')
@@ -27,7 +27,6 @@ const posts = allPosts
 <!doctype html>
 <html lang="en">
   <BaseHead title={SITE_TITLE_CAREERS} description={SITE_DESCRIPTION_CAREERS} />
-
   <style>
     .blog-section {
       padding: 4rem 0;
