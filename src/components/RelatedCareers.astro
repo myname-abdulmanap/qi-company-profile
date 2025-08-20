@@ -45,137 +45,268 @@ const relatedPosts = allPosts
   })
   // Sort by publication date (latest first)
   .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
-  // Get the top 3 related posts
-  .slice(0, 3);
+  // Get the top 5 related posts for sidebar
+  .slice(0, 5);
 
 ---
 
 {
   relatedPosts.length > 0 && (
-    <div class="related-posts">
-      <h3 class="related-posts-title">Related Posts</h3>
-      <div class="related-posts-container">
+    <div class="related-careers-sidebar">
+      <div class="related-careers-list">
         {relatedPosts.map((post) => (
-          <a href={`/careers/${post.data.slug}`} class="related-post-card">
+          <a href={`/careers/${post.data.slug}`} class="related-career-item">
             {post.data.heroImage && (
-              <div class="related-post-image">
+              <div class="career-image">
                 <img src={post.data.heroImage} alt={post.data.title} loading="lazy" />
               </div>
             )}
-            <div class="related-post-content">
-              <h4 class="related-post-title">{post.data.title}</h4>
-              <p class="related-post-date">
+            <div class="career-content">
+              <h4 class="career-title">{post.data.title}</h4>
+              <p class="career-date">
                 <FormattedDate date={post.data.pubDate} />
               </p>
+              {post.data.description && (
+                <p class="career-excerpt">{post.data.description.substring(0, 80)}...</p>
+              )}
             </div>
           </a>
         ))}
+      </div>
+      
+      {relatedPosts.length === 0 && (
+        <p class="no-related">No related opportunities available.</p>
+      )}
+      
+      <div class="view-all">
+        <a href="/careers" class="view-all-link">View All Careers →</a>
       </div>
     </div>
   )
 }
 
 <style>
-  .related-posts {
-    margin-top: 3rem;
-    margin-bottom: 1.5rem;
+  .related-careers-sidebar {
+    width: 100%;
   }
 
-  .related-posts-title {
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: var(--text-color);
-  }
-
-  .related-posts-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+  .related-careers-list {
+    display: flex;
+    flex-direction: column;
     gap: 1rem;
   }
 
-  .related-post-card {
+  .related-career-item {
     display: flex;
-    flex-direction: column;
-    background-color: var(--bg-color);
-    border-radius: 8px;
-    overflow: hidden;
-    transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: white;
+    border-radius: 0.5rem;
     text-decoration: none;
-    height: 100%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   }
 
-  .related-post-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  .related-career-item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary, #3b82f6);
   }
 
-  .related-post-image {
-    height: 120px;
+  .career-image {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    border-radius: 0.375rem;
     overflow: hidden;
+    background: #f3f4f6;
   }
 
-  .related-post-image img {
+  .career-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.2s ease;
   }
 
-  .related-post-card:hover .related-post-image img {
-    transform: scale(1.03);
+  .related-career-item:hover .career-image img {
+    transform: scale(1.05);
   }
 
-  .related-post-content {
-    padding: 0.85rem;
-
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
+  .career-content {
+    flex: 1;
+    min-width: 0; /* Prevent text overflow */
   }
 
-  .related-post-title {
-    font-size: 0.95rem;
+  .career-title {
+    font-size: 0.875rem;
     font-weight: 600;
-    margin-bottom: 0.35rem;
-    color: var(--text-color);
+    margin: 0 0 0.25rem 0;
+    color: #111827;
     line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
-  .related-post-date {
+  .career-date {
     font-size: 0.75rem;
-    color: var(--text-color);
-    opacity: 0.8;
+    color: #6b7280;
+    margin: 0 0 0.25rem 0;
+  }
+
+  .career-excerpt {
+    font-size: 0.75rem;
+    color: #9ca3af;
     margin: 0;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
-  /* Responsive styles */
+  .no-related {
+    text-align: center;
+    color: #6b7280;
+    font-size: 0.875rem;
+    padding: 2rem 1rem;
+  }
+
+  .view-all {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+    text-align: center;
+  }
+
+  .view-all-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary, #3b82f6);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .view-all-link:hover {
+    color: var(--primary-dark, #2563eb);
+    text-decoration: underline;
+  }
+
+  /* Responsive styles for different screen sizes */
+  
+  /* Desktop - Sidebar layout (already optimized) */
+  @media (min-width: 769px) {
+    .related-careers-sidebar {
+      /* Sidebar styles are already optimal for desktop */
+    }
+  }
+
+  /* Tablet - Still sidebar but slightly different */
+  @media (max-width: 1024px) and (min-width: 769px) {
+    .career-image {
+      width: 50px;
+      height: 50px;
+    }
+    
+    .career-title {
+      font-size: 0.8125rem;
+    }
+    
+    .career-date,
+    .career-excerpt {
+      font-size: 0.6875rem;
+    }
+  }
+
+  /* Mobile - Convert to horizontal grid layout */
   @media (max-width: 768px) {
-    .related-posts-container {
+    .related-careers-list {
+      display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 0.8rem;
+      gap: 0.75rem;
     }
 
-    .related-post-image {
-      height: 110px;
+    .related-career-item {
+      flex-direction: column;
+      padding: 0.75rem;
+    }
+
+    .career-image {
+      width: 100%;
+      height: 80px;
+      margin-bottom: 0.5rem;
+    }
+
+    .career-content {
+      text-align: center;
+    }
+
+    .career-title {
+      font-size: 0.875rem;
+      -webkit-line-clamp: 2;
+    }
+
+    .career-excerpt {
+      display: none; /* Hide excerpts on mobile to save space */
     }
   }
 
+  /* Small mobile - Single column */
   @media (max-width: 480px) {
-    .related-posts-container {
+    .related-careers-list {
       grid-template-columns: 1fr;
     }
 
-    .related-post-image {
-      height: 130px;
+    .related-career-item {
+      flex-direction: row;
+      align-items: center;
     }
 
-    .related-posts-title {
-      font-size: 1.2rem;
-      margin-bottom: 0.75rem;
+    .career-image {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 0;
+    }
+
+    .career-content {
+      text-align: left;
+      margin-left: 0.75rem;
+    }
+
+    .career-title {
+      font-size: 0.8125rem;
+    }
+  }
+
+  /* Extra small screens */
+  @media (max-width: 320px) {
+    .related-career-item {
+      padding: 0.5rem;
+      gap: 0.5rem;
+    }
+
+    .career-image {
+      width: 50px;
+      height: 50px;
+    }
+
+    .career-content {
+      margin-left: 0.5rem;
+    }
+
+    .career-title {
+      font-size: 0.75rem;
+      -webkit-line-clamp: 3;
+    }
+
+    .career-date {
+      font-size: 0.6875rem;
     }
   }
 </style>
