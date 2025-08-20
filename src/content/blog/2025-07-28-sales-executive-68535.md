@@ -5,15 +5,9 @@ slug: "sales-executive-68535"
 description: "Sebagai Sales Executive, Anda akan berperan penting dalam mendorong pertumbuhan bisnis melalui penjualan produk software perusahaan. "
 heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1752001919/uploads/zavjz3zog6dfnfsorenc.jpg"
 status: "published"
-pubDate: "2025-08-07T02:47:01.951Z"
+pubDate: "2025-08-20T10:02:33.970Z"
 
 ---
-
-
-
-
-
-
 
 # Lowongan Pekerjaan: Sales Executive
 
@@ -36,7 +30,5 @@ Sebagai **Sales Executive**, Anda akan berperan penting dalam mendorong pertumbu
 - Memastikan pencapaian **target penjualan** bulanan dan tahunan.
 - Melakukan **follow-up** terhadap prospek penjualan dan menyiapkan laporan aktivitas penjualan secara berkala.
 -Required Skills: sales
----
 
-Silakan kirimkan CV dan surat lamaran Anda ke email: [careers@qualita-indonesia.com]  
-Subjek: **Lamaran Sales Executive - [Nama Anda]**
+
