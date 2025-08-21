@@ -1,19 +1,19 @@
 ---
 // src/components/Map.astro
-const mapEmbedUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d507681.35106797965!2d106.42530017343752!3d-6.2293399999999925!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e698c1ef283f2bb%3A0xca42874adfc9e82f!2sPT%20Qualita%20Indonesia%20(Head%20Office)!5e0!3m2!1sid!2sid!4v1747996077234!5m2!1sid!2sid";
+const mapEmbedUrl =
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d507681.35106797965!2d106.42530017343752!3d-6.2293399999999925!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e698c1ef283f2bb%3A0xca42874adfc9e82f!2sPT%20Qualita%20Indonesia%20(Head%20Office)!5e0!3m2!1sid!2sid!4v1747996077234!5m2!1sid!2sid";
 ---
 
-<section class="map-section">
-  <div class="container">
-    <div class="map-header">
-      <h2 class="animate-element fade-up">Head Office Location<span class="line-animated"></span></h2>
+<section class="map" id="map">
+  <div class="map-container">
+    <div class="section-title fade-in">
+      <h2>Head Office Location</h2>
+     
     </div>
-    <div class="map-container">
+
+    <div class="map-frame">
       <iframe
         src={mapEmbedUrl}
-        width="100%"
-        height="400"
-        style="border:0; border-radius: 1rem;"
         allowfullscreen=""
         loading="lazy"
         referrerpolicy="no-referrer-when-downgrade"
@@ -23,106 +23,52 @@ const mapEmbedUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d50768
 </section>
 
 <style>
-  .map-section {
-    padding: 4rem 1rem;
-    background-color: var(--bg-color, #f9fafb);
-  }
-
-  .map-title {
-    text-align: center;
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 2rem;
-    color: #1f2937;
+  .map {
+    padding: 8rem 1rem;
+    background: var(--bg-color, #f9fafb);
   }
 
   .map-container {
     max-width: 900px;
-    margin: 0 auto;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    border-radius: 1rem;
+    margin: 0 auto; /* ✅ bikin center seperti Contact */
   }
 
-  .map-header {
+  .section-title {
     text-align: center;
-    margin-bottom: 4rem;
+    margin-bottom: 3rem;
   }
 
-  .map-header h2 {
+  .section-title h2 {
     font-size: 2.5rem;
     font-weight: 700;
-    color: var(--heading-color);
+    color: var(--heading-color, #1f2937);
     margin-bottom: 1rem;
-    position: relative;
-    display: inline-block;
   }
 
-  .map-header h2::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 3px;
-    background: linear-gradient(to right, #4338ca, #ec4899);
-    border-radius: 3px;
-    transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .map-header h2.animate::after {
-    width: 80px;
-  }
-
-  .map-header p {
-    max-width: 36rem;
-    margin: 1.5rem auto 0;
+  .section-title p {
     color: var(--text-secondary, #6b7280);
     font-size: 1.1rem;
-    line-height: 1.6;
   }
 
-
-  
-  /* Animation Keyframes */
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
+  .map-frame {
+    width: 100%;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   }
 
-  @keyframes pulse {
-    0% { transform: scale(0.95); opacity: 0.7; }
-    50% { transform: scale(1.05); opacity: 0.9; }
-    100% { transform: scale(0.95); opacity: 0.7; }
-  }
-
-  /* Entrance Animations */
-  .animate-element {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-  }
-
-  .animate-element.animate {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .fade-up {
-    transform: translateY(50px);
-  }
-
-  .fade-in-right {
-    transform: translateX(-50px);
-  }
-
-  .fade-in-left {
-    transform: translateX(50px);
+  .map-frame iframe {
+    width: 100%;
+    height: 400px;
+    border: 0;
+    display: block;
   }
 
   @media (max-width: 768px) {
-    .map-container iframe {
+    .map {
+      padding: 4rem 1rem;
+    }
+    .map-frame iframe {
       height: 300px;
     }
   }
