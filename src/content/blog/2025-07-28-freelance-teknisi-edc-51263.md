@@ -4,10 +4,11 @@ category: "careers"
 slug: "freelance-teknisi-edc-51263"
 description: "Posisi ini bertanggung jawab untuk melakukan aktivasi dan perawatan (maintenance) mesin EDC di lokasi merchant atau klien yang telah ditentukan."
 heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1747670954/uploads/zy70ljky7xa0stxbcslw.png"
-status: "published"
-pubDate: "2025-08-07T03:27:20.537Z"
+status: "draft"
+pubDate: "2025-08-21T05:01:44.643Z"
 
 ---
+
 
 # Lowongan Pekerjaan: Teknisi EDC dan ATM - Aktivasi & Maintenance
 
