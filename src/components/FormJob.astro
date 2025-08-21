@@ -73,7 +73,7 @@ const displayText = formatSlugForDisplay(slug);
             <div class="form-group">
               <label for="jenjang1">Education Level *</label>
               <select id="jenjang1" name="jenjang1" required>
-                <option value="">Select Level</option>
+                <option value="">Select Level</option>\
                 <option value="SD">SD</option>
                 <option value="SMP">SMP</option>
                 <option value="SMA/SMK">SMA/SMK</option>
@@ -88,7 +88,7 @@ const displayText = formatSlugForDisplay(slug);
             </div>
             <div class="form-group">
               <label for="jurusan1">Major/Field of Study *</label>
-              <input type="text" id="jurusan1" name="jurusan1" placeholder="e.g. TKJ, Teknik Informatika, Manajemen" required />
+              <input type="text" id="jurusan1" name="jurusan1" placeholder="e.g. Teknik Informatika, Manajemen" required />
             </div>
             <div class="form-group">
               <label for="institusi1">Institution *</label>
@@ -128,7 +128,7 @@ const displayText = formatSlugForDisplay(slug);
             </div>
             <div class="form-group">
               <label for="jurusan2">Major/Field of Study</label>
-              <input type="text" id="jurusan2" name="jurusan2" placeholder="e.g. RPL, Manajemen, Akuntansi" />
+              <input type="text" id="jurusan2" name="jurusan2" placeholder="e.g. Manajemen, Akuntansi" />
             </div>
             <div class="form-group">
               <label for="institusi2">Institution</label>
@@ -560,7 +560,7 @@ const displayText = formatSlugForDisplay(slug);
       formData.append('bahasa', document.getElementById('bahasa').value.trim());
       formData.append('linkedin', document.getElementById('linkedin').value.trim());
 
-      // Education - Combine jenjang and jurusan for backend
+      // Education
       let pendidikanTerakhir = '';
       for (let i = 1; i <= 2; i++) {
         const jenjang = document.getElementById(`jenjang${i}`)?.value || '';
@@ -571,9 +571,7 @@ const displayText = formatSlugForDisplay(slug);
 
         if (jenjang && jurusan && institusi && tahunMulai && tahunLulus) {
           const eduDuration = `${tahunMulai} - ${tahunLulus} (${tahunLulus - tahunMulai} years)`;
-          // Combine jenjang and jurusan for backend
-          const combinedEducation = `${jenjang} ${jurusan}`;
-          const eduEntry = `${combinedEducation} - ${institusi} - ${eduDuration}`;
+          const eduEntry = `${jenjang} ${jurusan} - ${institusi} - ${eduDuration}`;
           pendidikanTerakhir += (pendidikanTerakhir ? '; ' : '') + eduEntry;
         }
       }
@@ -735,3 +733,6 @@ const displayText = formatSlugForDisplay(slug);
     new JobApplication();
   });
 </script>
+
+
+
