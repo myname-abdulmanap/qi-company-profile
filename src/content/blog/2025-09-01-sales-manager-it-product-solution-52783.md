@@ -4,10 +4,11 @@ category: "careers"
 slug: "sales-manager-it-product-solution-52783"
 description: "Berpengalaman dalam penjualan produk & solusi IT, business development, serta manajemen tim sales. Terbukti mampu membangun relasi dengan klien korporasi, mencapai target revenue, dan menghadirkan solusi teknologi sesuai kebutuhan bisnis."
 heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1756698007/uploads/vjaaa9udk3u0l9nw9d4t.png"
-status: "draft"
-pubDate: "2025-09-01T03:41:33.018Z"
+status: "published"
+pubDate: "2025-09-01T03:54:33.604Z"
 
 ---
+
 
 # Kualifikasi :
 •	Pendidikan minimal S1 dari berbagai jurusan.
