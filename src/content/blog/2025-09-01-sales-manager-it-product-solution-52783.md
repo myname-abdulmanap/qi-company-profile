@@ -3,11 +3,12 @@ title: "Sales Manager – IT Product & Solution"
 category: "careers"
 slug: "sales-manager-it-product-solution-52783"
 description: "Berpengalaman dalam penjualan produk & solusi IT, business development, serta manajemen tim sales. Terbukti mampu membangun relasi dengan klien korporasi, mencapai target revenue, dan menghadirkan solusi teknologi sesuai kebutuhan bisnis."
-heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1756698007/uploads/vjaaa9udk3u0l9nw9d4t.png"
+heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1756700142/uploads/vjoujvcdpmmdgr4y0xkd.png"
 status: "published"
-pubDate: "2025-09-01T04:03:55.049Z"
+pubDate: "2025-09-01T04:16:01.849Z"
 
 ---
+
 
 
 # Kualifikasi :
