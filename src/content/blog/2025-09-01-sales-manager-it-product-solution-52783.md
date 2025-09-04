@@ -5,11 +5,9 @@ slug: "sales-manager-it-product-solution-52783"
 description: "Berpengalaman dalam penjualan produk & solusi IT, business development, serta manajemen tim sales. Terbukti mampu membangun relasi dengan klien korporasi, mencapai target revenue, dan menghadirkan solusi teknologi sesuai kebutuhan bisnis."
 heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1756700142/uploads/vjoujvcdpmmdgr4y0xkd.png"
 status: "published"
-pubDate: "2025-09-01T04:16:50.293Z"
+pubDate: "2025-09-04T01:58:59.521Z"
 
 ---
-
-
 
 
 # Kualifikasi :
@@ -22,11 +20,11 @@ pubDate: "2025-09-01T04:16:50.293Z"
 -	Kemampuan dalam membangun dan memelihara hubungan jangka panjang dengan pelanggan di sektor teknologi.
 
 ## Deskripsi Pekerjaan:
-- List item
-•	Memasarkan produk IT dan solusi perusahaan kepada klien di sektor teknologi dan retail.
-•	Membangun hubungan dengan klien untuk memastikan keberlanjutan dan pengembangan bisnis.
-•	Melakukan presentasi produk dan penawaran teknis kepada klien, menjelaskan dengan jelas fitur dan manfaat produk.
-•	Mengidentifikasi peluang baru dalam sektor IT dan merancang strategi untuk pertumbuhan bisnis.
-•	Menangani proses negosiasi dan memastikan kelancaran proses kontrak hingga pembayaran invoice.
-•	Berkoordinasi dengan tim internal untuk memastikan kebutuhan klien dipenuhi dan produk sesuai dengan yang dijanjikan.
-•	Membuat laporan hasil pekerjaan secara berkala, termasuk analisis dan perkembangan penjualan.
+-	Memasarkan produk IT dan solusi perusahaan kepada klien di sektor teknologi dan retail.
+-	Membangun hubungan dengan klien untuk memastikan keberlanjutan dan pengembangan bisnis.
+-	Melakukan presentasi produk dan penawaran teknis kepada klien, menjelaskan dengan jelas fitur dan manfaat produk.
+-	Mengidentifikasi peluang baru dalam sektor IT dan merancang strategi untuk pertumbuhan bisnis.
+-	Menangani proses negosiasi dan memastikan kelancaran proses kontrak hingga pembayaran invoice.
+-	Berkoordinasi dengan tim internal untuk memastikan kebutuhan klien dipenuhi dan produk sesuai dengan yang dijanjikan.
+-	Membuat laporan hasil pekerjaan secara berkala, termasuk analisis dan perkembangan penjualan.
+
