@@ -4,10 +4,11 @@ category: "careers"
 slug: "product-manager-95670"
 description: "Product Manager dengan keahlian dalam memahami kebutuhan klien, menyusun solusi teknis, serta mengelola roadmap produk untuk mendukung pertumbuhan bisnis."
 heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1758092707/uploads/gu4ujm4lhjxoifybhzmv.png"
-status: "draft"
-pubDate: "2025-09-17T07:11:15.368Z"
+status: "published"
+pubDate: "2025-09-17T07:12:34.481Z"
 
 ---
+
 
 # Kualifikasi :
 - Pendidikan minimal S1 (diutamakan Teknik Elektro, Teknik Informatika, atau jurusan terkait IT).
