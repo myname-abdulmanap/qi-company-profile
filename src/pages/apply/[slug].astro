@@ -1,5 +1,6 @@
 ---
 import FormJob from '../../components/FormJob.astro';
+import FormJobFreelancer from '../../components/FormJobFreelancer.astro';
 import BaseHead from '../../components/BaseHead.astro';
 import { SITE_TITLE_JOB, SITE_DESCRIPTION_JOB } from '../../consts';
 import Footer from '../../components/Footer.astro';
@@ -9,7 +10,6 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-
   return posts.map((post: CollectionEntry<'blog'>) => ({
     params: { slug: post.data.slug },
   }));
@@ -19,10 +19,11 @@ const { slug } = Astro.params;
 const posts = await getCollection('blog');
 const matchedPost = posts.find((post) => post.data.slug === slug);
 
-// Jika tidak ada, tampilkan error (Astro akan arahkan ke 404 jika dibungkus dalam try-catch di layout root)
 if (!matchedPost) {
   throw new Error(`404: Post with slug "${slug}" not found`);
 }
+
+const postType = matchedPost.data.type || "Non Freelancer"; // default kalau tidak ada
 ---
 
 <!doctype html>
@@ -34,7 +35,11 @@ if (!matchedPost) {
 
   <body>
     <HeaderBlog />
-    <FormJob slug={slug} />
+    {
+      postType === "Freelancer"
+        ? <FormJobFreelancer slug={slug} locations={matchedPost.data.locations} />
+        : <FormJob slug={slug} locations={matchedPost.data.locations} />
+    }
     <Footer />
   </body>
 </html>

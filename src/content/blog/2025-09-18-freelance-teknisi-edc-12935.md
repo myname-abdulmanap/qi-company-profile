@@ -5,6 +5,10 @@ slug: "freelance-teknisi-edc-12935"
 description: "Freelance Teknisi EDC bertugas melakukan instalasi, perawatan, dan troubleshooting mesin EDC di merchant, serta memastikan perangkat berfungsi dengan baik."
 heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1758164538/uploads/lobp26z2b1ogf6xe5jcq.png"
 status: "published"
+type: "Freelancer"
+locations:
+  - name: "Seluruh Indonesia"
+    status: "available"
 pubDate: "2025-09-18T03:20:22.406Z"
 
 ---

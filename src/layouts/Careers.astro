@@ -18,11 +18,10 @@ type Props = CollectionEntry<"blog">["data"] & {
 const currentUrl = new URL(Astro.url.pathname, Astro.site);
 
 
-const { title, description, pubDate, updatedDate, heroImage, category } =
+const { title, description, pubDate, updatedDate, heroImage, category, locations } =
   Astro.props;
 import { ClientRouter } from "astro:transitions";
 
-// Handle both string and array types for category
 const categories = Array.isArray(category) ? category : [category];
 ---
 
@@ -155,6 +154,13 @@ const categories = Array.isArray(category) ? category : [category];
             <p class="hero-description">
               {description}
             </p>
+           {locations && locations.length > 0 && (
+  <p class="location">
+    <strong>Location:</strong> {locations.map(loc => 
+      `${loc.name}${loc.status === "closed" ? " (Closed)" : " (Available)"}`
+    ).join(", ")}
+  </p>
+)}
             <hr />
             <br />
             <div class="author-section">

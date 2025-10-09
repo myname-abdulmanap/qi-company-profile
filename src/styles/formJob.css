@@ -639,8 +639,8 @@
     top: 100%;
     left: 0;
     right: 0;
-    background: white;
-    border: 2px solid #e5e7eb;
+    background: var(--bg-color);
+    border: 2px solid var(--bg-color);
     border-top: none;
     border-radius: 0 0 8px 8px;
     max-height: 200px;
@@ -656,12 +656,12 @@
     align-items: center;
     gap: 0.5rem;
     transition: background-color 0.2s ease;
-    border-bottom: 1px solid #f3f4f6;
+    border-bottom: 1px solid var(--bg-color);
   }
 
   .suggestion-item:hover,
   .suggestion-item.highlighted {
-    background: #f3f4f6;
+    background: var(--bg-color);
   }
 
   .suggestion-item:last-child {

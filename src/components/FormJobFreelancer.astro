@@ -1,7 +1,6 @@
-
 ---
-const { slug } = Astro.props;
-
+import "../styles/formJob.css";
+const { slug, locations = [] } = Astro.props;
 function formatSlugForDisplay(slug) {
   return slug
     .split("-")
@@ -14,1437 +13,1439 @@ function formatSlugForDisplay(slug) {
 const displayText = formatSlugForDisplay(slug);
 ---
 
-<section class="freelancer-application" id="freelancer-application">
-  <div class="freelancer-application-container">
+<section class="job-application" id="job-application">
+  <div class="job-application-container">
     <div class="section-title fade-in">
       <br />
-      <br />
-      <h2>Freelancer Application</h2>
-      <p>Join our freelance network at Qualita Indonesia</p>
-      <p>Fill out the form below to apply for freelance positions</p>
+      <br/>
+      <h2><i class="fas fa-briefcase"></i> Job Application</h2>
+      <p>Apply for the position of <strong>{displayText}</strong> by filling out the form below.</p>
+      
     </div>
 
-    <form
-      class="freelancer-form fade-in"
-      id="freelancer-form"
-      enctype="multipart/form-data"
-      data-astro-reload
-    >
-      <!-- Informasi Detail -->
+    <form class="job-form fade-in" id="job-form" enctype="multipart/form-data">
+
+     <div class="form-section">
+  <h3 class="section-subtitle">
+    <i class="fas fa-briefcase"></i>
+    Job Information
+  </h3>
+
+  <div class="form-grid">
+    <div class="form-group">
+      <label for="posisi" class="required">
+        <i class="fas fa-clipboard-list"></i>
+        Position Applied For
+      </label>
+      <input 
+        type="text" 
+        id="posisi" 
+        name="posisi" 
+        value={displayText} 
+        readonly 
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="lokasiPenempatan" class="required">
+        <i class="fas fa-map-marker-alt"></i>
+        Job Location
+      </label>
+      <select id="lokasiPenempatan" name="lokasiPenempatan" required>
+        <option value="">Select Location</option>
+        {locations.length > 0 ? (
+          locations.map((loc) => (
+            <option value={loc.name} disabled={loc.status === "closed"}>
+              {loc.name} {loc.status === "closed" ? "(Closed)" : "(Available)"}
+            </option>
+          ))
+        ) : (
+          <option value="Not Specified">Not Specified</option>
+        )}
+      </select>
+      <div class="validation-message"></div>
+    </div>
+  </div>
+</div>
+      <!-- Personal Info -->
       <div class="form-section">
-        <h3 class="section-subtitle">Informasi Detail</h3>
+        <h3 class="section-subtitle">
+          <i class="fas fa-user"></i>
+          Personal Information
+        </h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="nama" class="required">
+              <i class="fas fa-id-card"></i>
+              Full Name
+            </label>
+            <input 
+              type="text" 
+              id="nama" 
+              name="nama" 
+              required 
+              placeholder="Enter your full name"
+            />
+            <div class="validation-message"></div>
+          </div>
+
         
-        <div class="form-grid">
           <div class="form-group">
-            <label for="nama">Nama *</label>
-            <input
-              type="text"
-              id="nama"
-              name="nama"
-              placeholder="Masukkan nama lengkap"
-              required
-            />
+            <label for="gender" class="required">
+              <i class="fas fa-venus-mars"></i>
+              Gender
+            </label>
+            <select id="gender" name="gender" required>
+              <option value="">Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+             <div class="validation-message"></div>
           </div>
           
           <div class="form-group">
-            <label for="jenisKelamin">Jenis Kelamin *</label>
-            <select id="jenisKelamin" name="jenisKelamin" required>
-              <option value="">Pilih jenis kelamin</option>
-              <option value="Laki-laki">Laki-laki</option>
-              <option value="Perempuan">Perempuan</option>
-            </select>
+            <label for="email" class="required">
+              <i class="fas fa-envelope"></i>
+              Email
+            </label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              required 
+              placeholder="your.email@example.com"
+            />
+            <div class="validation-message"></div>
           </div>
-        </div>
-
-        <div class="form-grid">
           <div class="form-group">
-            <label for="noTelp">No Telp *</label>
-            <input
-              type="tel"
-              id="noTelp"
-              name="noTelp"
-              placeholder="contoh: +62812345678 atau 08123456789"
+            <label for="nomorTelepon" class="required">
+              <i class="fas fa-phone"></i>
+              Phone Number
+            </label>
+            <input 
+              type="tel" 
+              id="nomorTelepon" 
+              name="nomorTelepon" 
+              required 
+              placeholder="08xx-xxxx-xxxx"
+            />
+            <div class="validation-message"></div>
+          </div>
+          <div class="form-group">
+            <label for="tanggalLahir" class="required">
+              <i class="fas fa-calendar-alt"></i>
+              Birth Date
+            </label>
+            <input 
+              type="date" 
+              id="tanggalLahir" 
+              name="tanggalLahir" 
               required
             />
-          </div>
-          
-          <div class="form-group">
-            <label for="tempatTanggalLahir">Tempat Tanggal Lahir *</label>
-            <input
-              type="text"
-              id="tempatTanggalLahir"
-              name="tempatTanggalLahir"
-              placeholder="contoh: Jakarta, 15 Agustus 1990"
-              required
-            />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="alamatKTP">Alamat KTP *</label>
-          <textarea
-            id="alamatKTP"
-            name="alamatKTP"
-            placeholder="Masukkan alamat sesuai KTP"
-            required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="alamatDomisili">Alamat Domisili *</label>
-          <textarea
-            id="alamatDomisili"
-            name="alamatDomisili"
-            placeholder="Masukkan alamat tempat tinggal saat ini"
-            required></textarea>
-          <button type="button" id="getLocationBtn" class="geolocation-btn">
-            📍 Dapatkan Lokasi Saya
-          </button>
-          <div id="coordinatesInfo" class="coordinates-info" style="display: none;"></div>
-        </div>
-
-        <div class="form-grid">
-          <div class="form-group">
-            <label for="pendidikanTerakhir">Pendidikan Terakhir *</label>
-            <select id="pendidikanTerakhir" name="pendidikanTerakhir" required>
-              <option value="">Pilih pendidikan terakhir</option>
-              <option value="SD">SD</option>
-              <option value="SMP">SMP</option>
-              <option value="SMA/SMK">SMA/SMK</option>
-              <option value="D1">D1 (Diploma 1)</option>
-              <option value="D2">D2 (Diploma 2)</option>
-              <option value="D3">D3 (Diploma 3)</option>
-              <option value="D4">D4 (Diploma 4)</option>
-              <option value="S1">S1 (Sarjana)</option>
-              <option value="S2">S2 (Magister)</option>
-              <option value="S3">S3 (Doktor)</option>
-            </select>
+            <div class="validation-message"></div>
           </div>
 
-          <div class="form-group">
-            <label for="areaLowongan">Area Lowongan *</label>
-            <select id="areaLowongan" name="areaLowongan" required>
-              <option value="">Pilih area lowongan</option>
-              <option value="Jakarta">Jakarta</option>
-              <option value="Surabaya">Surabaya</option>
-              <option value="Bandung">Bandung</option>
-              <option value="Medan">Medan</option>
-              <option value="Semarang">Semarang</option>
-              <option value="Makassar">Makassar</option>
-              <option value="Palembang">Palembang</option>
-              <option value="Yogyakarta">Yogyakarta</option>
-              <option value="Remote/Online">Remote/Online</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="posisi">Posisi *</label>
-          <select id="posisi" name="posisi" required>
-            <option value="">Select Position</option>
-            <option value={slug} selected>{displayText}</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="linkPortfolio">Link Portfolio</label>
-          <input
-            type="url"
-            id="linkPortfolio"
-            name="linkPortfolio"
-            placeholder="https://portfolio-anda.com atau https://github.com/username"
+           <div class="form-group">
+          <label for="alamat" class="required">
+            <i class="fas fa-home"></i>
+            Address (KTP)
+          </label>
+          <input 
+            type="text" 
+            id="alamat" 
+            name="alamat" 
+            required 
+            placeholder="Enter your address as per KTP"
           />
-          <small class="form-note">Link ke portfolio, GitHub, LinkedIn, atau website pribadi Anda</small>
+          <div class="validation-message"></div>
+        </div>
+        </div>
+
+       
+
+        
+
+        <div class="form-group">
+          <label for="alamatDomisili" class="required">
+            <i class="fas fa-map-marker-alt"></i>
+            Domicile Address (with map)
+          </label>
+          <div class="location-input-container">
+            <input 
+              type="text" 
+              id="alamatDomisili" 
+              name="alamatDomisili" 
+              placeholder="Click map or use current location" 
+              required
+            /><br />
+            <button type="button" id="location-btn" class="location-btn">
+              <i class="fas fa-location-arrow"></i>
+              Use Current Location
+            </button>
+          </div>
+          <div id="map" class="map-container"></div>
+          <input type="hidden" id="locationLat" name="locationLat" />
+          <input type="hidden" id="locationLng" name="locationLng" />
+          <div id="location-coordinates-display" style="margin-top: 8px; padding: 8px; background: #f0f9ff; border-left: 3px solid #0284c7; border-radius: 4px; font-size: 13px; color: #0c4a6e; display: none;">
+            <i class="fas fa-map-pin" style="margin-right: 6px;"></i>
+            <strong>Coordinates:</strong> <span id="location-coords-text">-</span>
+          </div>
+          <small class="form-note">
+            <i class="fas fa-info-circle"></i>
+            Click map to select location or use current location
+          </small>
         </div>
       </div>
 
-      <!-- Upload Dokumen -->
+   
+
+      <!-- Uploads -->
       <div class="form-section">
-        <h3 class="section-subtitle">Upload Dokumen</h3>
-        
+        <h3 class="section-subtitle">
+          <i class="fas fa-upload"></i>
+          Document Uploads
+        </h3>
+        <div class="form-group">
+          <label for="cv" class="required">
+            <i class="fas fa-file-alt"></i>
+            CV/Resume
+          </label>
+          <input 
+            type="file" 
+            id="cv" 
+            name="cv" 
+            accept=".pdf,.doc,.docx,.txt" 
+            required 
+          />
+          <small class="form-note">Accepted formats: PDF, DOC, DOCX (Max: 3 MB)</small>
+          <div class="validation-message"></div>
+        </div>
         <div class="form-grid">
           <div class="form-group">
-            <label for="ktp">KTP *</label>
-            <div class="file-upload-container">
-              <input
-                type="file"
-                id="ktp"
-                name="ktp"
-                accept=".pdf,.jpg,.jpeg,.png"
-                class="file-input"
-                required
-              />
-              <label for="ktp" class="file-label">
-                <span class="file-icon">🆔</span>
-                <span class="file-text">Pilih file KTP</span>
-              </label>
-              <div class="file-info" id="ktp-info"></div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="kk">Kartu Keluarga *</label>
-            <div class="file-upload-container">
-              <input
-                type="file"
-                id="kk"
-                name="kk"
-                accept=".pdf,.jpg,.jpeg,.png"
-                class="file-input"
-                required
-              />
-              <label for="kk" class="file-label">
-                <span class="file-icon">👥</span>
-                <span class="file-text">Pilih file KK</span>
-              </label>
-              <div class="file-info" id="kk-info"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-grid">
-          <div class="form-group">
-            <label for="cv">CV *</label>
-            <div class="file-upload-container">
-              <input
-                type="file"
-                id="cv"
-                name="cv"
-                accept=".pdf,.doc,.docx"
-                class="file-input"
-                required
-              />
-              <label for="cv" class="file-label">
-                <span class="file-icon">📄</span>
-                <span class="file-text">Pilih file CV</span>
-              </label>
-              <div class="file-info" id="cv-info"></div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="ijazah">Ijazah Terakhir *</label>
-            <div class="file-upload-container">
-              <input
-                type="file"
-                id="ijazah"
-                name="ijazah"
-                accept=".pdf,.jpg,.jpeg,.png"
-                class="file-input"
-                required
-              />
-              <label for="ijazah" class="file-label">
-                <span class="file-icon">🎓</span>
-                <span class="file-text">Pilih file Ijazah</span>
-              </label>
-              <div class="file-info" id="ijazah-info"></div>
-            </div>
-          </div>
-        </div>
-
-        <small class="form-note">
-          Format file yang diterima: PDF, JPG, JPEG, PNG. Maksimal ukuran file: 2MB
-        </small>
-      </div>
-
-      <!-- Kontak Darurat -->
-      <div class="form-section">
-        <h3 class="section-subtitle">Kontak Darurat</h3>
-        <p class="section-description">Kontak darurat yang bisa dihubungi (harus beda rumah)</p>
-        
-        <div class="emergency-contact-section">
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="namaKontakDarurat">Nama *</label>
-              <input
-                type="text"
-                id="namaKontakDarurat"
-                name="namaKontakDarurat"
-                placeholder="Nama kontak darurat"
-                required
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="hubunganKandidat">Hubungan dengan Kandidat *</label>
-              <select id="hubunganKandidat" name="hubunganKandidat" required>
-                <option value="">Pilih hubungan</option>
-                <option value="Orang Tua">Orang Tua</option>
-                <option value="Saudara">Saudara</option>
-                <option value="Kerabat">Kerabat</option>
-                <option value="Teman">Teman</option>
-                <option value="Tetangga">Tetangga</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="noTelpKontakDarurat">No Telp *</label>
-            <input
-              type="tel"
-              id="noTelpKontakDarurat"
-              name="noTelpKontakDarurat"
-              placeholder="Nomor telepon kontak darurat"
+            <label for="photo" class="required">
+              <i class="fas fa-camera"></i>
+              Photo (Personal)
+            </label>
+            <input 
+              type="file" 
+              id="photo" 
+              name="photo" 
+              accept="image/*" 
               required
             />
+            <small class="form-note">Accepted formats: PNG, JPG (Max: 2MB)</small>
           </div>
-
           <div class="form-group">
-            <label for="alamatKontakDarurat">Alamat *</label>
-            <textarea
-              id="alamatKontakDarurat"
-              name="alamatKontakDarurat"
-              placeholder="Alamat lengkap kontak darurat"
-              required></textarea>
-            <button type="button" id="getEmergencyLocationBtn" class="geolocation-btn">
-              📍 Dapatkan Lokasi Kontak Darurat
+            <label for="ktp" class="required">
+              <i class="fas fa-id-card-alt"></i>
+              ID Card (KTP)
+            </label>
+            <input 
+              type="file" 
+              id="ktp" 
+              name="ktp" 
+              accept="image/*,.pdf" 
+              required
+            />
+              <small class="form-note">Accepted formats: PNG, JPG (Max: 2 MB)</small>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="kk" class="required">
+              <i class="fas fa-users"></i>
+              Family Card (KK)
+            </label>
+            <input 
+              type="file" 
+              id="kk" 
+              name="kk" 
+              accept="image/*,.pdf" 
+              required
+            />
+              <small class="form-note">Accepted formats: PNG, JPG (Max: 2 MB)</small>
+          </div>
+          <div class="form-group">
+            <label for="ijazah" class="required">
+              <i class="fas fa-certificate"></i>
+              Ijazah/Transcript
+            </label>
+            <input 
+              type="file" 
+              id="ijazah" 
+              name="ijazah" 
+              accept="image/*,.pdf" 
+              required
+            />
+              <small class="form-note">Accepted formats: PNG, JPG (Max: 2 MB)</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="form-section">
+        <h3 class="section-subtitle">
+          <i class="fas fa-graduation-cap"></i>
+          Education (Minimum 1 entry required)
+        </h3>
+        <div id="education-container"></div>
+        <button type="button" class="btn secondary" id="add-education">
+          <i class="fas fa-plus"></i>
+          Add Education
+        </button>
+        <input type="hidden" id="pendidikanTerakhir" name="pendidikanTerakhir" />
+      </div>
+
+      <!-- Work Experience -->
+      <div class="form-section">
+        <h3 class="section-subtitle">
+          <i class="fas fa-briefcase"></i>
+          Work Experience (Minimum 1 entry required)
+        </h3>
+        <div id="experience-container"></div>
+        <button type="button" class="btn secondary" id="add-experience">
+          <i class="fas fa-plus"></i>
+          Add Experience
+        </button>
+        <input type="hidden" id="pengalamanKerja" name="pengalamanKerja" />
+      </div>
+
+      <!-- Skills -->
+      <div class="form-section">
+        <h3 class="section-subtitle">
+          <i class="fas fa-cogs"></i>
+          Skills & Information
+        </h3>
+        <div class="form-group skill-input-group">
+          <label for="skill" class="required">
+            <i class="fas fa-star"></i>
+            Skills
+          </label>
+          <div class="skill-input-container">
+            <input 
+              type="text" 
+              id="skill" 
+              name="skill" 
+              required 
+              placeholder="Type skills (e.g., JavaScript, React, Python)"
+              autocomplete="off"
+            />
+            <datalist id="skill-suggestions"></datalist>
+          </div>
+          <small class="form-note">
+            <i class="fas fa-lightbulb"></i>
+            Type and select from suggestions or enter custom skills
+          </small>
+          <div class="validation-message"></div>
+        </div>
+        <div class="form-group">
+          <label for="bahasa" class="required">
+            <i class="fas fa-language"></i>
+            Languages
+          </label>
+          <input 
+            type="text" 
+            id="bahasa" 
+            name="bahasa" 
+            required 
+            placeholder="e.g., Indonesian (Native), English (Fluent)"
+          />
+          <div class="validation-message"></div>
+        </div>
+        <div class="form-group">
+          <label for="sertifikasi">
+            <i class="fas fa-award"></i>
+            Certifications
+          </label>
+          <input 
+            type="text" 
+            id="sertifikasi" 
+            name="sertifikasi" 
+            placeholder="List your certifications"
+          />
+          <small class="form-note">
+            <i class="fas fa-lightbulb"></i>
+            Separated with commas (e.g., AWS Certified Solutions Architect, PMP)  
+          </small>
+        </div>
+        <div class="form-group">
+          <label for="linkedin">
+            <i class="fab fa-linkedin"></i>
+            LinkedIn Profile
+          </label>
+          <input 
+            type="url" 
+            id="linkedin" 
+            name="linkedin" 
+            placeholder="https://linkedin.com/in/yourprofile"
+          />
+        </div>
+        <div class="form-group">
+          <label for="portfolio">
+            <i class="fas fa-globe"></i>
+            Portfolio Website
+          </label>
+          <input 
+            type="url" 
+            id="portfolio" 
+            name="portfolio" 
+            placeholder="https://yourportfolio.com"
+          />
+        </div>
+      </div>
+
+      <!-- Emergency Contact -->
+      <div class="form-section">
+        <h3 class="section-subtitle">
+          <i class="fas fa-phone-alt"></i>
+          Emergency Contact
+        </h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="namaKontak" class="required">
+              <i class="fas fa-user-friends"></i>
+              Contact Name
+            </label>
+            <input 
+              type="text" 
+              id="namaKontak" 
+              name="namaKontak" 
+              placeholder="Emergency contact name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="hubunganKontak" class="required">
+              <i class="fas fa-heart"></i>
+              Relationship
+            </label>
+            <input 
+              type="text" 
+              id="hubunganKontak" 
+              name="hubunganKontak" 
+              placeholder="e.g., Ayah, Ibu, Saudara, Teman"
+            />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="nomorKontak" class="required">
+            <i class="fas fa-phone"></i>
+            Phone Number
+          </label>
+          <input 
+            type="tel" 
+            id="nomorKontak" 
+            name="nomorKontak" 
+            placeholder="Emergency contact phone"
+          />
+        </div>
+        <div class="form-group">
+          <label for="alamatKontak" class="required">
+            <i class="fas fa-map-marker-alt"></i>
+            Address (with map)
+          </label>
+          <div class="location-input-container">
+            <input 
+              type="text" 
+              id="alamatKontak" 
+              name="alamatKontak" 
+              placeholder="Type address or click map to select location"
+            /> 
+            <button type="button" id="search-emergency-btn" class="location-btn">
+              <i class="fas fa-search"></i>
+              Search Address
             </button>
-            <div id="emergencyCoordinatesInfo" class="coordinates-info" style="display: none;"></div>
           </div>
-
-          <div class="form-group">
-            <label for="fotoKKKontakDarurat">Upload Foto Kartu Keluarga Kontak Darurat *</label>
-            <div class="file-upload-container">
-              <input
-                type="file"
-                id="fotoKKKontakDarurat"
-                name="fotoKKKontakDarurat"
-                accept=".pdf,.jpg,.jpeg,.png"
-                class="file-input"
-                required
-              />
-              <label for="fotoKKKontakDarurat" class="file-label">
-                <span class="file-icon">👨‍👩‍👧‍👦</span>
-                <span class="file-text">Pilih foto KK kontak darurat</span>
-              </label>
-              <div class="file-info" id="fotoKKKontakDarurat-info"></div>
-            </div>
+          <div id="map-emergency" class="map-container"></div>
+          <input type="hidden" id="locationLatKontak" name="locationLatKontak" />
+          <input type="hidden" id="locationLngKontak" name="locationLngKontak" />
+          <div id="emergency-coordinates-display" style="margin-top: 8px; padding: 8px; background: #f0f9ff; border-left: 3px solid #0284c7; border-radius: 4px; font-size: 13px; color: #0c4a6e; display: none;">
+            <i class="fas fa-map-pin" style="margin-right: 6px;"></i>
+            <strong>Coordinates:</strong> <span id="emergency-coords-text">-</span>
           </div>
+          <small class="form-note">
+            <i class="fas fa-info-circle"></i>
+            Type address and click Search or click map to select location
+          </small>
+        </div>
+        <div class="form-group">
+          <label for="fotoKKKontak" class="required">
+            <i class="fas fa-file-image"></i>
+            Family Card (KK For Emergency Contact)
+          </label>
+          <input 
+            type="file" 
+            id="fotoKKKontak" 
+            name="fotoKKKontak" 
+            accept="image/*,.pdf" 
+          />
+            <small class="form-note">Accepted formats: PNG, JPG (Max: 2 MB)</small>
         </div>
       </div>
 
-      <!-- reCAPTCHA -->
-      <div class="form-group">
-        <div
-          class="g-recaptcha"
-          data-sitekey="6LcSPkYrAAAAAA3TN5ptXfbY_nsfOOCCPXjMMESG"
-        >
-        </div>
-        <p class="captcha-warning">
-          * Jika captcha tidak muncul, silakan refresh halaman terlebih dahulu.
-        </p>
-      </div>
-
-      <!-- Form Actions -->
       <div class="form-actions">
-        <button type="submit" class="btn primary" id="submit-btn">
+        <button type="submit" id="submit-btn" class="btn primary">
+          <i class="fas fa-paper-plane"></i>
           Submit Application
         </button>
-        <a href={`/freelance/${slug}`} class="btn secondary">Back to Detail</a>
+         <a href={`/careers/${slug}`} class="btn secondary">Back to Detail</a> 
       </div>
-
-      <!-- Status Messages -->
-      <div class="status" id="status"></div>
-      <div
-        class="submission-progress"
-        id="submission-progress"
-        style="display: none;"
-      >
-        <div class="progress-item" id="api-progress">
-          <span class="progress-icon">⏳</span>
-          <span class="progress-text">
-            Submitting freelancer application and uploading documents...
-          </span>
-        </div>
-      </div>
+.      <div class="status" id="status"></div>
     </form>
   </div>
 </section>
 
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<!-- External Libraries -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
-  class FreelancerApplication {
-    constructor() {
-      this.form = document.getElementById("freelancer-form");
-      this.submitBtn = document.getElementById("submit-btn");
-      this.status = document.getElementById("status");
-      this.progressContainer = document.getElementById("submission-progress");
-      this.apiProgress = document.getElementById("api-progress");
-      this.coordinates = null;
-      this.emergencyCoordinates = null;
+class JobApplicationManager {
+  constructor() {
+    this.educationCount = 0;
+    this.experienceCount = 0;
+    this.form = document.getElementById("job-form");
+    this.status = document.getElementById("status");
+    this.map = null;
+    this.marker = null;
+    this.mapEmergency = null;
+    this.markerEmergency = null;
+    
+    this.init();
+    this.initSkillSystem();
+  }
 
-      this.init();
-    }
+  init() {
+    this.initMap();
+    this.initEmergencyMap();
+    this.bindEvents();
+    this.addEducation();
+    this.addExperience();
+    this.initFileValidation();
+  }
 
-    init() {
-      if (!this.form || !this.submitBtn || !this.status) return;
+  bindEvents() {
+    document.getElementById("location-btn").addEventListener("click", () => this.useCurrentLocation());
+    document.getElementById("search-emergency-btn").addEventListener("click", () => this.searchEmergencyAddress());
+    document.getElementById("add-education").addEventListener("click", () => this.addEducation());
+    document.getElementById("add-experience").addEventListener("click", () => this.addExperience());
+    this.form.addEventListener("submit", (e) => this.handleSubmit(e));
+    
+    document.addEventListener('change', (e) => {
+      if (e.target.matches('[name^="tanggalMulaiKerja"], [name^="tanggalSelesaiKerja"], [name^="statusKerja"]')) {
+        const entry = e.target.closest('.experience-entry');
+        if (entry) {
+          this.calculateDuration(entry);
+        }
+      }
+    });
+  }
 
-      this.setupEventListeners();
-      this.setupFileUploads();
-      this.setupGeolocation();
-      this.setupRealTimeValidation();
-    }
+  initSkillSystem() {
+    this.skillsDatabase = [
+      'JavaScript', 'TypeScript', 'Python', 'Java', 'C++', 'C#', 'PHP', 'Ruby', 'Go', 'Rust',
+      'Swift', 'Kotlin', 'Dart', 'Scala', 'R', 'MATLAB', 'C', 'Objective-C',
+      'Web Development', 'Web Developer', 'Web Design', 'Web Designer',
+      'React', 'React Developer', 'Vue.js', 'Vue Developer', 'Angular', 'Angular Developer',
+      'Next.js', 'Nuxt.js', 'Svelte', 'jQuery', 'HTML5', 'CSS3',
+      'Sass', 'Less', 'Tailwind CSS', 'Bootstrap', 'Material-UI', 'Ant Design', 'Chakra UI',
+      'Frontend Development', 'Frontend Developer', 'UI Developer',
+      'Node.js', 'Node Developer', 'Express.js', 'Django', 'Django Developer', 'Flask', 
+      'Spring Boot', 'Laravel', 'Laravel Developer', 'Ruby on Rails',
+      'ASP.NET', 'FastAPI', 'Nest.js', 'Koa.js', 'Gin', 'Fiber',
+      'Backend Development', 'Backend Developer', 'API Development',
+      'Full Stack Developer', 'Full Stack Development', 'MERN Stack', 'MEAN Stack',
+      'MySQL', 'PostgreSQL', 'MongoDB', 'Redis', 'SQLite', 'Oracle', 'SQL Server',
+      'Elasticsearch', 'Firebase', 'Supabase', 'DynamoDB', 'Cassandra',
+      'Database Administration', 'Database Design',
+      'AWS', 'AWS Developer', 'Google Cloud', 'GCP', 'Azure', 'Docker', 'Kubernetes', 
+      'Jenkins', 'GitLab CI', 'GitHub Actions', 'Terraform', 'Ansible', 'Linux', 'Nginx', 'Apache',
+      'DevOps Engineer', 'Cloud Engineer', 'System Administrator',
+      'Figma', 'Adobe Photoshop', 'Adobe Illustrator', 'Sketch', 'Adobe XD', 'InVision',
+      'Canva', 'UI/UX Design', 'UI Designer', 'UX Designer', 'Graphic Design', 'Graphic Designer',
+      'Wireframing', 'Prototyping', 'User Research',
+      'React Native', 'React Native Developer', 'Flutter', 'Flutter Developer',
+      'iOS Development', 'iOS Developer', 'Android Development', 'Android Developer', 
+      'Xamarin', 'Ionic', 'Cordova', 'Swift UI', 'Jetpack Compose',
+      'Mobile Developer', 'Mobile Development',
+      'Data Science', 'Data Scientist', 'Data Analyst', 'Data Analysis',
+      'Machine Learning', 'ML Engineer', 'Deep Learning', 'AI Developer',
+      'Data Engineering', 'Data Engineer', 'Big Data',
+      'Quality Assurance', 'QA Engineer', 'Software Testing', 'Test Automation',
+      'Selenium', 'Jest', 'Cypress', 'Unit Testing',
+      'Git', 'GitHub', 'GitLab', 'Bitbucket', 'VS Code', 'IntelliJ IDEA', 'Postman', 
+      'Jira', 'Slack', 'Notion', 'Trello', 'Asana', 
+      'Premiere Pro', 'After Effects', 'Final Cut Pro', 'Video Editing',
+      'Microsoft Office', 'Excel', 'PowerPoint', 'Word', 'Google Workspace',
+      'Communication', 'Teamwork', 'Leadership', 'Problem Solving', 
+      'Time Management', 'Project Management', 'Agile', 'Scrum',
+      'Critical Thinking', 'Creativity', 'Adaptability'
+    ];
 
-    setupEventListeners() {
-      this.submitBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        this.submitApplication();
-      });
+    this.setupSkillInput();
+  }
 
-      window.addEventListener("online", () =>
-        this.showStatus("Connection restored!", "success")
-      );
-      window.addEventListener("offline", () =>
-        this.showStatus(
-          "No internet connection. Please check your network.",
-          "error"
-        )
-      );
-    }
+  setupSkillInput() {
+    const skillInput = document.getElementById('skill');
+    const suggestionsContainer = document.createElement('div');
+    suggestionsContainer.className = 'skill-suggestions';
+    suggestionsContainer.style.cssText = `
+      position: absolute;
+      background: var(--bg-color);
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+      width: 100%;
+      z-index: 1000;
+      display: none;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    `;
+    
+    skillInput.parentElement.style.position = 'relative';
+    skillInput.parentElement.appendChild(suggestionsContainer);
 
-    setupFileUploads() {
-      const fileInputs = ['ktp', 'kk', 'cv', 'ijazah', 'fotoKKKontakDarurat'];
+    skillInput.addEventListener('input', (e) => {
+      const value = e.target.value.toLowerCase().trim();
       
-      fileInputs.forEach(inputId => {
-        const input = document.getElementById(inputId);
-        const info = document.getElementById(inputId + '-info');
+      const validationMessage = skillInput.parentElement.parentElement.querySelector('.validation-message');
+      if (validationMessage) {
+        validationMessage.textContent = '';
+        validationMessage.className = 'validation-message';
+      }
+      skillInput.classList.remove('error', 'success');
+      
+      if (value.length < 2) {
+        suggestionsContainer.style.display = 'none';
+        suggestionsContainer.innerHTML = '';
+        return;
+      }
+      
+      const matches = this.skillsDatabase.filter(skill => 
+        skill.toLowerCase().includes(value)
+      ).slice(0, 10);
+      
+      if (matches.length > 0) {
+        suggestionsContainer.innerHTML = matches.map(skill => `
+          <div class="suggestion-item" style="
+            padding: 10px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.2s;
+          " onmouseover="this.style.background='#f5f5f5'" 
+             onmouseout="this.style.background='white'">
+            <i class="fas fa-lightbulb" style="color: #4a90e2; margin-right: 8px;"></i>
+            ${this.highlightMatch(skill, value)}
+          </div>
+        `).join('');
         
-        if (input && info) {
-          input.addEventListener('change', (e) => {
-            this.handleFileUpload(e, info);
+        suggestionsContainer.style.display = 'block';
+        
+        suggestionsContainer.querySelectorAll('.suggestion-item').forEach((item, index) => {
+          item.addEventListener('click', () => {
+            skillInput.value = matches[index];
+            suggestionsContainer.style.display = 'none';
+            skillInput.focus();
           });
-        }
-      });
-    }
-
-    handleFileUpload(e, infoElement) {
-      const file = e.target.files[0];
-      if (!file) {
-        infoElement.textContent = '';
-        return;
-      }
-
-      // Validate file size (2MB)
-      if (file.size > 2 * 1024 * 1024) {
-        this.showStatus('Ukuran file harus kurang dari 2MB', 'error');
-        e.target.value = '';
-        infoElement.textContent = '';
-        return;
-      }
-
-      // Validate file type
-      const allowedTypes = [
-        'application/pdf',
-        'application/msword',
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'image/jpeg',
-        'image/jpg',
-        'image/png',
-      ];
-
-      if (!allowedTypes.includes(file.type)) {
-        this.showStatus(
-          'Tipe file tidak valid. Gunakan PDF, DOC, DOCX, JPG, atau PNG',
-          'error'
-        );
-        e.target.value = '';
-        infoElement.textContent = '';
-        return;
-      }
-
-      infoElement.textContent = `Dipilih: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
-      infoElement.style.color = '#48bb78';
-    }
-
-    setupGeolocation() {
-      const getLocationBtn = document.getElementById('getLocationBtn');
-      const getEmergencyLocationBtn = document.getElementById('getEmergencyLocationBtn');
-
-      if (getLocationBtn) {
-        getLocationBtn.addEventListener('click', () => {
-          this.getCurrentLocation('coordinates');
         });
+      } else {
+        suggestionsContainer.style.display = 'none';
+        suggestionsContainer.innerHTML = '';
       }
-
-      if (getEmergencyLocationBtn) {
-        getEmergencyLocationBtn.addEventListener('click', () => {
-          this.getCurrentLocation('emergency');
-        });
+    });
+    
+    document.addEventListener('click', (e) => {
+      if (!skillInput.contains(e.target) && !suggestionsContainer.contains(e.target)) {
+        suggestionsContainer.style.display = 'none';
       }
-    }
-
-    getCurrentLocation(type) {
-      if (!navigator.geolocation) {
-        this.showStatus('Geolocation tidak didukung oleh browser ini', 'error');
-        return;
-      }
-
-      const btn = type === 'emergency' ? 
-        document.getElementById('getEmergencyLocationBtn') : 
-        document.getElementById('getLocationBtn');
+    });
+    
+    skillInput.addEventListener('keydown', (e) => {
+      const items = suggestionsContainer.querySelectorAll('.suggestion-item');
+      if (items.length === 0) return;
       
-      const infoElement = type === 'emergency' ? 
-        document.getElementById('emergencyCoordinatesInfo') : 
-        document.getElementById('coordinatesInfo');
+      let currentIndex = -1;
+      items.forEach((item, index) => {
+        if (item.classList.contains('active')) {
+          currentIndex = index;
+        }
+      });
+      
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (currentIndex < items.length - 1) {
+          if (currentIndex >= 0) items[currentIndex].classList.remove('active');
+          currentIndex++;
+          items[currentIndex].classList.add('active');
+          items[currentIndex].style.background = '#f5f5f5';
+        }
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (currentIndex > 0) {
+          items[currentIndex].classList.remove('active');
+          items[currentIndex].style.background = 'white';
+          currentIndex--;
+          items[currentIndex].classList.add('active');
+          items[currentIndex].style.background = '#f5f5f5';
+        }
+      } else if (e.key === 'Enter' && currentIndex >= 0) {
+        e.preventDefault();
+        items[currentIndex].click();
+      } else if (e.key === 'Escape') {
+        suggestionsContainer.style.display = 'none';
+      }
+    });
+  }
+  
+  highlightMatch(text, query) {
+    const index = text.toLowerCase().indexOf(query);
+    if (index === -1) return text;
+    
+    const before = text.substring(0, index);
+    const match = text.substring(index, index + query.length);
+    const after = text.substring(index + query.length);
+    
+    return `${before}<strong style="color: #4a90e2;">${match}</strong>${after}`;
+  }
 
-      btn.disabled = true;
-      btn.textContent = '📍 Mendapatkan lokasi...';
+  initFileValidation() {
+    const fileInputs = this.form.querySelectorAll('input[type="file"]');
+    
+    fileInputs.forEach(input => {
+      input.addEventListener('change', (e) => this.validateFile(e.target));
+    });
+  }
 
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const coords = {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
-          };
+  validateFile(input) {
+    const file = input.files[0];
+    if (!file) return true;
 
-          if (type === 'emergency') {
-            this.emergencyCoordinates = coords;
+    const maxSize = input.id === 'cv' ? 5 * 1024 * 1024 : 2 * 1024 * 1024;
+    
+    if (file.size > maxSize) {
+      this.showStatus(`File "${file.name}" too large. Maximum size: ${maxSize / (1024 * 1024)}MB`, 'error');
+      input.value = '';
+      return false;
+    }
+
+    return true;
+  }
+
+  initMap() {
+    this.map = L.map("map").setView([-6.2088, 106.8456], 13);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(this.map);
+    
+    this.map.on("click", (e) => this.setLocation(e.latlng));
+  }
+
+  initEmergencyMap() {
+    this.mapEmergency = L.map("map-emergency").setView([-6.2088, 106.8456], 13);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(this.mapEmergency);
+    
+    this.mapEmergency.on("click", (e) => this.setEmergencyLocation(e.latlng));
+  }
+
+  async searchEmergencyAddress() {
+    const addressInput = document.getElementById('alamatKontak');
+    const address = addressInput.value.trim();
+    
+    if (!address) {
+      this.showStatus("Please enter an address to search", "error");
+      return;
+    }
+    
+    this.showStatus("Searching for address...", "loading");
+    
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1`
+      );
+      const data = await response.json();
+      
+      if (data && data.length > 0) {
+        const location = data[0];
+        const latlng = { lat: parseFloat(location.lat), lng: parseFloat(location.lon) };
+        
+        this.mapEmergency.setView(latlng, 15);
+        await this.setEmergencyLocation(latlng);
+        
+        this.showStatus("Address found successfully!", "success");
+      } else {
+        this.showStatus("Address not found. Please try a different search term or click on the map.", "error");
+      }
+    } catch (error) {
+      console.error("Geocoding error:", error);
+      this.showStatus("Failed to search address. Please try again or click on the map.", "error");
+    }
+  }
+
+  calculateDuration(entry) {
+    if (!entry) return;
+    
+    const num = entry.getAttribute('data-entry-id');
+    const startDateInput = entry.querySelector(`[name="tanggalMulaiKerja${num}"]`);
+    const endDateInput = entry.querySelector(`[name="tanggalSelesaiKerja${num}"]`);
+    const durationInput = entry.querySelector(`[name="durasiKerja${num}"]`);
+    const statusSelect = entry.querySelector(`[name="statusKerja${num}"]`);
+    
+    if (!startDateInput || !durationInput) return;
+    
+    const startDate = startDateInput.value;
+    let endDate = endDateInput?.value;
+    
+    if (statusSelect && statusSelect.value === 'Still Working') {
+      const today = new Date();
+      endDate = today.toISOString().split('T')[0];
+    }
+    
+    if (!startDate) {
+      durationInput.value = '';
+      return;
+    }
+    
+    if (!endDate && statusSelect?.value !== 'Still Working') {
+      durationInput.value = '';
+      return;
+    }
+    
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    
+    if (end < start) {
+      durationInput.value = 'Invalid dates';
+      return;
+    }
+    
+    let years = end.getFullYear() - start.getFullYear();
+    let months = end.getMonth() - start.getMonth();
+    let days = end.getDate() - start.getDate();
+    
+    if (days < 0) {
+      months--;
+      const prevMonth = new Date(end.getFullYear(), end.getMonth(), 0);
+      days += prevMonth.getDate();
+    }
+    
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+    
+    const parts = [];
+    if (years > 0) parts.push(`${years} year${years > 1 ? 's' : ''}`);
+    if (months > 0) parts.push(`${months} month${months > 1 ? 's' : ''}`);
+    if (days > 0) parts.push(`${days} day${days > 1 ? 's' : ''}`);
+    
+    durationInput.value = parts.length > 0 ? parts.join(', ') : '0 days';
+  }
+
+  async setEmergencyLocation(latlng) {
+    if (this.markerEmergency) this.mapEmergency.removeLayer(this.markerEmergency);
+    
+    this.markerEmergency = L.marker(latlng).addTo(this.mapEmergency);
+    this.markerEmergency.bindPopup('<i class="fas fa-spinner fa-spin"></i> Getting address...').openPopup();
+
+    try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latlng.lat}&lon=${latlng.lng}`
+      );
+      const data = await res.json();
+      const address = data.display_name || "Selected Location";
+      const link = `https://www.google.com/maps?q=${latlng.lat},${latlng.lng}`;
+      
+      document.getElementById("alamatKontak").value = `${address} - ${link}`;
+      this.markerEmergency.bindPopup(`<strong>Emergency Contact Location</strong><br>${address}`).openPopup();
+    } catch {
+      const link = `https://www.google.com/maps?q=${latlng.lat},${latlng.lng}`;
+      document.getElementById("alamatKontak").value = link;
+      this.markerEmergency.bindPopup('<strong>Emergency Contact Location</strong><br>Coordinates: ' + 
+        `${latlng.lat.toFixed(6)}, ${latlng.lng.toFixed(6)}`).openPopup();
+    }
+
+    document.getElementById("locationLatKontak").value = latlng.lat;
+    document.getElementById("locationLngKontak").value = latlng.lng;
+    
+    const coordsDisplay = document.getElementById("emergency-coordinates-display");
+    const coordsText = document.getElementById("emergency-coords-text");
+    coordsText.textContent = `Lat: ${latlng.lat.toFixed(6)}, Lng: ${latlng.lng.toFixed(6)}`;
+    coordsDisplay.style.display = "block";
+  }
+
+  async setLocation(latlng) {
+    if (this.marker) this.map.removeLayer(this.marker);
+    
+    this.marker = L.marker(latlng).addTo(this.map);
+    this.marker.bindPopup('<i class="fas fa-spinner fa-spin"></i> Getting address...').openPopup();
+
+    try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latlng.lat}&lon=${latlng.lng}`
+      );
+      const data = await res.json();
+      const address = data.display_name || "Selected Location";
+      const link = `https://www.google.com/maps?q=${latlng.lat},${latlng.lng}`;
+      
+      document.getElementById("alamatDomisili").value = `${address} - ${link}`;
+      this.marker.bindPopup(`<strong>Selected Location</strong><br>${address}`).openPopup();
+    } catch {
+      const link = `https://www.google.com/maps?q=${latlng.lat},${latlng.lng}`;
+      document.getElementById("alamatDomisili").value = link;
+      this.marker.bindPopup('<strong>Selected Location</strong><br>Coordinates: ' + 
+        `${latlng.lat.toFixed(6)}, ${latlng.lng.toFixed(6)}`).openPopup();
+    }
+
+    document.getElementById("locationLat").value = latlng.lat;
+    document.getElementById("locationLng").value = latlng.lng;
+    
+    const coordsDisplay = document.getElementById("location-coordinates-display");
+    const coordsText = document.getElementById("location-coords-text");
+    coordsText.textContent = `Lat: ${latlng.lat.toFixed(6)}, Lng: ${latlng.lng.toFixed(6)}`;
+    coordsDisplay.style.display = "block";
+  }
+
+  useCurrentLocation() {
+    if (!navigator.geolocation) {
+      return this.showStatus("Geolocation is not supported by this browser", "error");
+    }
+    
+    this.showStatus("Requesting location permission...", "loading");
+    
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const latlng = { 
+          lat: position.coords.latitude, 
+          lng: position.coords.longitude 
+        };
+        this.map.setView(latlng, 15);
+        this.setLocation(latlng);
+        this.showStatus("Location found successfully!", "success");
+      },
+      (error) => {
+        console.error("Geolocation error:", error);
+        let message = "Unable to get your location";
+        
+        switch(error.code) {
+          case error.PERMISSION_DENIED:
+            message = "Location access denied. Please:<br>1. Allow location access in your browser settings<br>2. Make sure location services are enabled on your device<br>3. Try refreshing the page and allow location when prompted";
+            break;
+          case error.POSITION_UNAVAILABLE:
+            message = "Location information unavailable. Please check if:<br>1. GPS is enabled on your device<br>2. You're not in airplane mode<br>3. You have good GPS signal";
+            break;
+          case error.TIMEOUT:
+            message = "Location request timed out. Please:<br>1. Check your GPS signal<br>2. Try again in a moment";
+            break;
+        }
+        this.showStatus(message, "error");
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 0
+      }
+    );
+  }
+
+  addEducation() {
+    this.educationCount++;
+    const container = document.getElementById("education-container");
+    const div = document.createElement("div");
+    div.classList.add("education-entry");
+    div.setAttribute('data-entry-id', this.educationCount);
+    
+    div.innerHTML = `
+      ${this.educationCount > 1 ? `<button type="button" class="remove-btn" onclick="window.jobApp.removeEducation(${this.educationCount})"><i class="fas fa-times"></i></button>` : ''}
+      <div class="form-grid-3">
+        <div class="form-group">
+          <label><i class="fas fa-layer-group"></i> Level *</label>
+          <select name="jenjang${this.educationCount}" required>
+            <option value="">Select Level</option>
+            <option value="SD">SD (Elementary)</option>
+            <option value="SMP">SMP (Middle School)</option>
+            <option value="SMA/SMK">SMA/SMK</option>
+            <option value="D3">D3 (Diploma)</option>
+            <option value="S1">S1 (Bachelor)</option>
+            <option value="S2">S2 (Master)</option>
+            <option value="S3">S3 (PhD)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-book"></i> Major *</label>
+          <input type="text" name="jurusan${this.educationCount}" required placeholder="e.g., Computer Science" />
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-university"></i> Institution *</label>
+          <input type="text" name="institusi${this.educationCount}" required placeholder="e.g., University of Indonesia" />
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label><i class="fas fa-calendar-plus"></i> Start Year *</label>
+          <input type="number" name="tahunMulai${this.educationCount}" required min="1980" max="2030" placeholder="2020" />
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-calendar-check"></i> Graduation Year *</label>
+          <input type="number" name="tahunLulus${this.educationCount}" required min="1980" max="2030" placeholder="2024" />
+        </div>
+      </div>`;
+    container.appendChild(div);
+  }
+
+  removeEducation(id) {
+    const entries = document.querySelectorAll('.education-entry');
+    if (entries.length <= 1) {
+      this.showStatus("At least one education entry is required", "error");
+      return;
+    }
+    
+    const entry = document.querySelector(`.education-entry[data-entry-id="${id}"]`);
+    if (entry) {
+      entry.remove();
+    }
+  }
+
+  addExperience() {
+    this.experienceCount++;
+    const container = document.getElementById("experience-container");
+    const div = document.createElement("div");
+    div.classList.add("experience-entry");
+    div.setAttribute('data-entry-id', this.experienceCount);
+    
+    div.innerHTML = `
+      ${this.experienceCount > 1 ? `<button type="button" class="remove-btn" onclick="window.jobApp.removeExperience(${this.experienceCount})"><i class="fas fa-times"></i></button>` : ''}
+      <div class="form-grid-3">
+        <div class="form-group">
+          <label><i class="fas fa-user-tie"></i> Position *</label>
+          <input type="text" name="jabatan${this.experienceCount}" required placeholder="e.g., Software Developer" />
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-building"></i> Company *</label>
+          <input type="text" name="perusahaan${this.experienceCount}" required placeholder="e.g., Tech Company Ltd" />
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-info-circle"></i> Status *</label>
+          <select name="statusKerja${this.experienceCount}" required>
+            <option value="">Select Status</option>
+            <option value="Still Working">Still Working</option>
+            <option value="No Longer Working">No Longer Working</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label><i class="fas fa-calendar-plus"></i> Start Date *</label>
+          <input type="date" name="tanggalMulaiKerja${this.experienceCount}" required />
+        </div>
+        <div class="form-group end-date-group">
+          <label><i class="fas fa-calendar-minus"></i> End Date</label>
+          <input type="date" name="tanggalSelesaiKerja${this.experienceCount}" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label><i class="fas fa-clock"></i> Duration</label>
+        <input type="text" name="durasiKerja${this.experienceCount}" readonly placeholder="Duration will be calculated automatically" class="duration-field" />
+      </div>`;
+    container.appendChild(div);
+  }
+
+  removeExperience(id) {
+    const entries = document.querySelectorAll('.experience-entry');
+    if (entries.length <= 1) {
+      this.showStatus("At least one work experience entry is required", "error");
+      return;
+    }
+    
+    const entry = document.querySelector(`.experience-entry[data-entry-id="${id}"]`);
+    if (entry) {
+      entry.remove();
+    }
+  }
+
+  collectEducation() {
+  const entries = document.querySelectorAll(".education-entry");
+  const educationList = [];
+  
+  entries.forEach((entry) => {
+    const num = entry.getAttribute('data-entry-id');
+    const jenjang = entry.querySelector(`select[name="jenjang${num}"]`)?.value?.trim() || '';
+    const jurusan = entry.querySelector(`input[name="jurusan${num}"]`)?.value?.trim() || '';
+    const institusi = entry.querySelector(`input[name="institusi${num}"]`)?.value?.trim() || '';
+    const mulai = entry.querySelector(`input[name="tahunMulai${num}"]`)?.value?.trim() || '';
+    const lulus = entry.querySelector(`input[name="tahunLulus${num}"]`)?.value?.trim() || '';
+    
+    if (jenjang && jurusan && institusi && mulai && lulus) {
+      // Format sesuai backend
+      const formatted = `${jenjang} ${jurusan} - ${institusi} - ${mulai} - ${lulus}`;
+      educationList.push(formatted);
+    }
+  });
+  
+  return educationList;
+}
+
+
+  collectExperience() {
+    const entries = document.querySelectorAll(".experience-entry");
+    const experienceList = [];
+    
+    entries.forEach((entry) => {
+      const num = entry.getAttribute('data-entry-id');
+      const jabatanInput = entry.querySelector(`input[name="jabatan${num}"]`);
+      const perusahaanInput = entry.querySelector(`input[name="perusahaan${num}"]`);
+      const mulaiInput = entry.querySelector(`input[name="tanggalMulaiKerja${num}"]`);
+      const selesaiInput = entry.querySelector(`input[name="tanggalSelesaiKerja${num}"]`);
+      const statusSelect = entry.querySelector(`select[name="statusKerja${num}"]`);
+      const durasiInput = entry.querySelector(`input[name="durasiKerja${num}"]`);
+      
+      const jabatan = jabatanInput?.value?.trim() || '';
+      const perusahaan = perusahaanInput?.value?.trim() || '';
+      const mulai = mulaiInput?.value?.trim() || '';
+      const selesai = selesaiInput?.value?.trim() || "Present";
+      const status = statusSelect?.value?.trim() || '';
+      const durasi = durasiInput?.value?.trim() || '';
+      
+      console.log(`Experience Entry ${num}:`, {jabatan, perusahaan, mulai, selesai, status, durasi});
+      
+      if (jabatan && perusahaan && mulai && status) {
+        const startFormatted = this.formatDateForDisplay(mulai);
+        const endFormatted = selesai === "Present" ? "Present" : this.formatDateForDisplay(selesai);
+        const durasiText = durasi ? ` (${durasi})` : '';
+        experienceList.push(`${jabatan} at ${perusahaan} (${startFormatted} - ${endFormatted})${durasiText} - ${status}`);
+      }
+    });
+    
+    console.log('Collected Experience:', experienceList);
+    return experienceList;
+  }
+
+  formatDateForDisplay(dateString) {
+    if (!dateString || dateString === "Present") return dateString;
+    const [year, month, day] = dateString.split('-');
+    return `${day}-${month}-${year}`;
+  }
+
+  validateForm() {
+    let isValid = true;
+    let errorMessages = [];
+    let firstErrorField = null;
+
+    this.clearAllErrors();
+
+    const requiredFields = this.form.querySelectorAll('[required]');
+    requiredFields.forEach(field => {
+      let fieldIsValid = true;
+      let errorMsg = '';
+
+      if (field.type === 'file') {
+        if (!field.files || field.files.length === 0) {
+          fieldIsValid = false;
+          const label = field.previousElementSibling?.textContent?.replace('*', '').trim() || 'File';
+          errorMsg = `${label} is required`;
+          this.markFieldAsError(field, errorMsg);
+        }
+      } else if (!field.value || field.value.trim() === '') {
+        fieldIsValid = false;
+        const label = field.previousElementSibling?.textContent?.replace('*', '').trim() || 'This field';
+        errorMsg = `${label} is required`;
+        this.markFieldAsError(field, errorMsg);
+      }
+
+      if (!fieldIsValid) {
+        isValid = false;
+        errorMessages.push(errorMsg);
+        if (!firstErrorField) firstErrorField = field;
+      }
+    });
+
+    const emailField = document.getElementById('email');
+    if (emailField.value && !this.isValidEmail(emailField.value)) {
+      isValid = false;
+      const msg = 'Please enter a valid email address';
+      errorMessages.push(msg);
+      this.markFieldAsError(emailField, msg);
+      if (!firstErrorField) firstErrorField = emailField;
+    }
+
+    const phoneField = document.getElementById('nomorTelepon');
+    if (phoneField.value && !this.isValidPhone(phoneField.value)) {
+      isValid = false;
+      const msg = 'Please enter a valid phone number (10-15 digits)';
+      errorMessages.push(msg);
+      this.markFieldAsError(phoneField, msg);
+      if (!firstErrorField) firstErrorField = phoneField;
+    }
+
+    const educationEntries = document.querySelectorAll('.education-entry');
+    if (educationEntries.length === 0) {
+      isValid = false;
+      errorMessages.push('At least one education entry is required');
+    } else {
+      educationEntries.forEach((entry, index) => {
+        const inputs = entry.querySelectorAll('input[required], select[required]');
+        inputs.forEach(input => {
+          if (!input.value || input.value.trim() === '') {
+            isValid = false;
+            const label = input.previousElementSibling?.textContent?.replace('*', '').trim() || 'Field';
+            const msg = `${label} is required`;
+            this.markFieldAsError(input, msg);
+            errorMessages.push(`Education ${index + 1}: ${msg}`);
+            if (!firstErrorField) firstErrorField = input;
+          }
+        });
+      });
+    }
+
+    const experienceEntries = document.querySelectorAll('.experience-entry');
+    if (experienceEntries.length === 0) {
+      isValid = false;
+      errorMessages.push('At least one work experience entry is required');
+    } else {
+      experienceEntries.forEach((entry, index) => {
+        const inputs = entry.querySelectorAll('input[required], select[required]');
+        inputs.forEach(input => {
+          if (!input.value || input.value.trim() === '') {
+            isValid = false;
+            const label = input.previousElementSibling?.textContent?.replace('*', '').trim() || 'Field';
+            const msg = `${label} is required`;
+            this.markFieldAsError(input, msg);
+            errorMessages.push(`Experience ${index + 1}: ${msg}`);
+            if (!firstErrorField) firstErrorField = input;
+          }
+        });
+      });
+    }
+
+    if (!isValid) {
+      const uniqueErrors = [...new Set(errorMessages)];
+      const errorCount = uniqueErrors.length;
+      const displayErrors = uniqueErrors.slice(0, 5);
+      
+      let statusMessage = `<strong>Found ${errorCount} error${errorCount > 1 ? 's' : ''}:</strong><br><ul style="margin: 8px 0; padding-left: 20px; text-align: left;">`;
+      displayErrors.forEach(err => {
+        statusMessage += `<li>${err}</li>`;
+      });
+      if (errorCount > 5) {
+        statusMessage += `<li><em>...and ${errorCount - 5} more error${errorCount - 5 > 1 ? 's' : ''}</em></li>`;
+      }
+      statusMessage += '</ul>';
+      
+      this.showStatus(statusMessage, 'error');
+      
+      if (firstErrorField) {
+        setTimeout(() => {
+          firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          firstErrorField.focus();
+        }, 100);
+      }
+    }
+
+    return isValid;
+  }
+
+  markFieldAsError(field, message) {
+    field.classList.add('error');
+    
+    let validationMessage = field.parentElement.querySelector('.validation-message');
+    if (!validationMessage) {
+      validationMessage = document.createElement('div');
+      validationMessage.className = 'validation-message';
+      field.parentElement.appendChild(validationMessage);
+    }
+    
+    validationMessage.textContent = message;
+    validationMessage.classList.add('error');
+    validationMessage.style.display = 'block';
+  }
+
+  clearAllErrors() {
+    const errorFields = this.form.querySelectorAll('.error');
+    errorFields.forEach(field => {
+      field.classList.remove('error', 'success');
+    });
+
+    const validationMessages = this.form.querySelectorAll('.validation-message');
+    validationMessages.forEach(msg => {
+      msg.textContent = '';
+      msg.className = 'validation-message';
+      msg.style.display = 'none';
+    });
+  }
+
+  isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  isValidPhone(phone) {
+    return /^[0-9+\-\s]{10,15}$/.test(phone);
+  }
+
+  async handleSubmit(e) {
+    e.preventDefault();
+    
+    this.status.style.display = "none";
+    
+    if (!this.validateForm()) {
+      return;
+    }
+
+    const submitBtn = document.getElementById("submit-btn");
+    const originalText = submitBtn.innerHTML;
+    
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+    
+    try {
+     
+      const experienceData = this.collectExperience();
+      const educationData = this.collectEducation();
+
+
+      
+      if (educationData.length === 0) {
+        throw new Error("Please add at least one education entry with all required fields filled");
+      }
+      
+      if (experienceData.length === 0) {
+        throw new Error("Please add at least one work experience entry with all required fields filled");
+      }
+    
+      document.getElementById("pendidikanTerakhir").value = educationData.join("; ");
+      document.getElementById("pengalamanKerja").value = experienceData.join(", ");
+
+      const formData = new FormData(this.form);
+      
+      const supportedFileFields = ['cv', 'photo', 'ktp', 'kk', 'ijazah', 'fotoKKKontak'];
+      const allKeys = Array.from(formData.keys());
+      
+      allKeys.forEach(key => {
+        const value = formData.get(key);
+        if (value instanceof File && !supportedFileFields.includes(key)) {
+          console.log(`Removing unsupported file field: ${key}`);
+          formData.delete(key);
+        }
+      });
+      
+      console.log("=== FORM DATA BEING SENT ===");
+      const formDataObject = {};
+      for (let [key, value] of formData.entries()) {
+        if (value instanceof File) {
+          console.log(`${key}: [FILE] ${value.name} (${value.size} bytes, ${value.type})`);
+          formDataObject[key] = `[FILE] ${value.name}`;
+        } else {
+          console.log(`${key}: ${value}`);
+          formDataObject[key] = value;
+        }
+      }
+      console.log("=== FORM DATA OBJECT ===", formDataObject);
+      
+      const response = await fetch("http://localhost:4000/api/v1/applicants", {
+        method: "POST",
+        body: formData
+      });
+      
+      const responseText = await response.text();
+      console.log("=== SERVER RESPONSE ===");
+      console.log("Status:", response.status, response.statusText);
+      console.log("Response body:", responseText);
+      
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error("Failed to parse JSON response:", parseError);
+        throw new Error(`Server returned invalid response (${response.status}): ${responseText.substring(0, 200)}`);
+      }
+      
+      if (!response.ok) {
+        let errorMessage = data.message || data.error || response.statusText;
+        
+        if (response.status === 400) {
+          if (data.errors && Array.isArray(data.errors)) {
+            errorMessage = "Validation errors:<br>" + data.errors.map(err => `• ${err}`).join("<br>");
+          } else if (data.details) {
+            errorMessage = `Bad Request: ${errorMessage}<br><small>${JSON.stringify(data.details)}</small>`;
           } else {
-            this.coordinates = coords;
+            errorMessage = `Bad Request (400): ${errorMessage}<br><small>Check console for details</small>`;
           }
-
-          infoElement.innerHTML = `
-            <strong>Koordinat berhasil didapatkan:</strong><br>
-            Latitude: ${coords.latitude.toFixed(6)}<br>
-            Longitude: ${coords.longitude.toFixed(6)}
-          `;
-          infoElement.style.display = 'block';
-
-          btn.disabled = false;
-          btn.textContent = '📍 Lokasi Berhasil Didapatkan';
-          
-          this.showStatus('Lokasi berhasil didapatkan!', 'success');
-        },
-        (error) => {
-          console.error('Geolocation error:', error);
-          btn.disabled = false;
-          btn.textContent = type === 'emergency' ? 
-            '📍 Dapatkan Lokasi Kontak Darurat' : 
-            '📍 Dapatkan Lokasi Saya';
-          
-          let errorMessage = 'Gagal mendapatkan lokasi: ';
-          switch(error.code) {
-            case error.PERMISSION_DENIED:
-              errorMessage += 'Izin lokasi ditolak';
-              break;
-            case error.POSITION_UNAVAILABLE:
-              errorMessage += 'Lokasi tidak tersedia';
-              break;
-            case error.TIMEOUT:
-              errorMessage += 'Timeout';
-              break;
-            default:
-              errorMessage += 'Error tidak dikenal';
-              break;
-          }
-          
-          this.showStatus(errorMessage, 'error');
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 15000,
-          maximumAge: 0
+        } else if (response.status === 413) {
+          errorMessage = "File too large. Please reduce file sizes and try again.";
+        } else if (response.status === 500) {
+          errorMessage = "Server error. Please try again later or contact support.";
         }
-      );
-    }
-
-    setupRealTimeValidation() {
-      const inputs = this.form.querySelectorAll("input, textarea, select");
-      inputs.forEach((input) => {
-        input.addEventListener("focus", function () {
-          this.parentElement.style.transform = "scale(1.01)";
-          this.parentElement.style.transition = "transform 0.2s ease";
-        });
-
-        input.addEventListener("blur", function () {
-          this.parentElement.style.transform = "scale(1)";
-        });
-
-        input.addEventListener("input", this.validateInput.bind(this));
-      });
-    }
-
-    validateInput(e) {
-      const input = e.target;
-
-      if (input.hasAttribute("required") && input.value.trim() === "") {
-        input.style.borderColor = "#f56565";
-      } else if (input.type === "email" && input.value.trim() !== "") {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        input.style.borderColor = emailRegex.test(input.value)
-          ? "#48bb78"
-          : "#f56565";
-      } else if (input.type === "tel" && input.value.trim() !== "") {
-        const phoneRegex = /^(\+62|62|0)[0-9]{9,13}$/;
-        input.style.borderColor = phoneRegex.test(
-          input.value.replace(/\s|-/g, "")
-        )
-          ? "#48bb78"
-          : "#f56565";
-      } else if (input.type === "url" && input.value.trim() !== "") {
-        try {
-          new URL(input.value);
-          input.style.borderColor = "#48bb78";
-        } catch {
-          input.style.borderColor = "#f56565";
+        
+        console.error("Server error details:", data);
+        throw new Error(errorMessage);
+      }
+      
+      if (data.success) {
+        this.showStatus("Application submitted successfully! We'll contact you soon.", "success");
+        this.clearAllErrors();
+        this.form.reset();
+        
+        document.getElementById("education-container").innerHTML = '';
+        document.getElementById("experience-container").innerHTML = '';
+        this.educationCount = 0;
+        this.experienceCount = 0;
+        this.addEducation();
+        this.addExperience();
+        
+        if (this.marker) {
+          this.map.removeLayer(this.marker);
+          this.marker = null;
         }
-      } else if (input.value.trim() !== "") {
-        input.style.borderColor = "#48bb78";
+        
+        if (this.markerEmergency) {
+          this.mapEmergency.removeLayer(this.markerEmergency);
+          this.markerEmergency = null;
+        }
+        
+        this.status.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
       } else {
-        input.style.borderColor = "#e2e8f0";
+        const errorDetail = data.message || data.error || "Submission failed";
+        throw new Error(errorDetail);
       }
+    } catch (error) {
+      console.error("=== SUBMISSION ERROR ===", error);
+      let errorMessage = error.message;
+      
+      if (errorMessage.includes("Failed to fetch")) {
+        errorMessage = "Cannot connect to server. Please check if the server is running at http://localhost:4000";
+      } else if (errorMessage.includes("NetworkError")) {
+        errorMessage = "Network error. Please check your internet connection and try again.";
+      }
+      
+      this.showStatus(`<strong>Submission Failed</strong><br>${errorMessage}`, "error");
+      this.status.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalText;
     }
+  }
 
-    validateForm() {
-      const requiredFields = [
-        "nama", "jenisKelamin", "noTelp", "tempatTanggalLahir", 
-        "alamatKTP", "alamatDomisili", "pendidikanTerakhir", "areaLowongan", "posisi",
-        "namaKontakDarurat", "hubunganKandidat", "noTelpKontakDarurat", "alamatKontakDarurat"
-      ];
-
-      for (const fieldId of requiredFields) {
-        const field = document.getElementById(fieldId);
-        if (!field || !field.value.trim()) {
-          this.showStatus(
-            "Please fill in all required fields (marked with *) and upload all required documents.",
-            "error"
-          );
-          return false;
-        }
-      }
-
-      // Check required file uploads
-      const requiredFiles = ['ktp', 'kk', 'cv', 'ijazah', 'fotoKKKontakDarurat'];
-      for (const fileId of requiredFiles) {
-        const fileInput = document.getElementById(fileId);
-        if (!fileInput || !fileInput.files[0]) {
-          this.showStatus(`Please upload ${fileId.toUpperCase()} file.`, "error");
-          return false;
-        }
-      }
-
-      // Validate phone numbers
-      const phoneFields = ['noTelp', 'noTelpKontakDarurat'];
-      for (const phoneId of phoneFields) {
-        const phone = document.getElementById(phoneId).value.trim();
-        const phoneRegex = /^(\+62|62|0)[0-9]{9,13}$/;
-        if (!phoneRegex.test(phone.replace(/\s|-/g, ""))) {
-          this.showStatus(
-            `Please enter a valid Indonesian phone number for ${phoneId}.`,
-            "error"
-          );
-          return false;
-        }
-      }
-
-      // Validate portfolio URL if provided
-      const portfolioUrl = document.getElementById("linkPortfolio").value.trim();
-      if (portfolioUrl) {
-        try {
-          new URL(portfolioUrl);
-        } catch {
-          this.showStatus("Please enter a valid portfolio URL.", "error");
-          return false;
-        }
-      }
-
-      // Validate reCAPTCHA
-      if (typeof grecaptcha !== "undefined" && !grecaptcha.getResponse()) {
-        this.showStatus("Please complete the reCAPTCHA verification.", "error");
-        return false;
-      }
-
-      return true;
-    }
-
-    collectFormData() {
-      const formData = new FormData();
-
-      // Personal Information
-      const personalFields = [
-        "nama", "jenisKelamin", "noTelp", "tempatTanggalLahir", 
-        "alamatKTP", "alamatDomisili", "pendidikanTerakhir", 
-        "areaLowongan", "posisi", "linkPortfolio"
-      ];
-
-      personalFields.forEach(field => {
-        const element = document.getElementById(field);
-        if (element) {
-          formData.append(field, element.value.trim());
-        }
-      });
-
-      // Emergency Contact
-      const emergencyFields = [
-        "namaKontakDarurat", "hubunganKandidat", "noTelpKontakDarurat", "alamatKontakDarurat"
-      ];
-
-      emergencyFields.forEach(field => {
-        const element = document.getElementById(field);
-        if (element) {
-          formData.append(field, element.value.trim());
-        }
-      });
-
-      // Add coordinates if available
-      if (this.coordinates) {
-        formData.append("coordinates", JSON.stringify(this.coordinates));
-      }
-
-      if (this.emergencyCoordinates) {
-        formData.append("emergencyCoordinates", JSON.stringify(this.emergencyCoordinates));
-      }
-
-      // Add files
-      const fileFields = ['ktp', 'kk', 'cv', 'ijazah', 'fotoKKKontakDarurat'];
-      fileFields.forEach(fileId => {
-        const fileInput = document.getElementById(fileId);
-        if (fileInput && fileInput.files[0]) {
-          formData.append(fileId, fileInput.files[0]);
-        }
-      });
-
-      return formData;
-    }
-
-    async submitToAPI() {
-      this.updateProgress(
-        "⏳",
-        "Submitting freelancer application and uploading documents...",
-        "processing"
-      );
-
-      try {
-        const formData = this.collectFormData();
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 90000); // 90 seconds for file uploads
-
-        const response = await fetch(
-          "https://localhost:4000/api/v1/freelancers/submit",
-          {
-            method: "POST",
-            body: formData,
-            signal: controller.signal,
-          }
-        );
-
-        clearTimeout(timeoutId);
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(
-            `HTTP error! status: ${response.status} - ${errorText}`
-          );
-        }
-
-        const contentType = response.headers.get("content-type");
-        const result =
-          contentType && contentType.includes("application/json")
-            ? await response.json()
-            : { success: response.ok, message: await response.text() };
-
-        if (result.success) {
-          this.updateProgress(
-            "✅",
-            "Freelancer application submitted successfully",
-            "success"
-          );
-          return { success: true, message: result.message };
-        } else {
-          throw new Error(
-            result.error || result.message || "API submission failed"
-          );
-        }
-      } catch (error) {
-        this.updateProgress("❌", "Application submission failed", "error");
-        const errorMessage = this.handleNetworkError(error);
-        return { success: false, message: errorMessage };
-      }
-    }
-
-    handleNetworkError(error) {
-      if (!navigator.onLine) {
-        return "No internet connection. Please check your network and try again.";
-      }
-
-      if (error.name === "AbortError") {
-        return "Request timeout. Please try again.";
-      }
-
-      if (
-        error.code === "ECONNREFUSED" ||
-        error.message.includes("ECONNREFUSED")
-      ) {
-        return "Server is not responding. Please try again later or contact support.";
-      }
-
-      if (error.message.includes("Failed to fetch")) {
-        return "Unable to connect to server. Please check your connection and try again.";
-      }
-
-      return "Network error occurred. Please try again.";
-    }
-
-    async submitApplication() {
-      if (!this.validateForm()) return;
-      if (!navigator.onLine) {
-        this.showStatus(
-          "No internet connection. Please check your network and try again.",
-          "error"
-        );
-        return;
-      }
-
-      this.setLoading(true);
-
-      try {
-        const result = await this.submitToAPI();
-
-        if (result.success) {
-          this.form.reset();
-          // Clear file info displays
-          const fileInfos = this.form.querySelectorAll('.file-info');
-          fileInfos.forEach(info => info.textContent = '');
-          
-          // Clear coordinates
-          this.coordinates = null;
-          this.emergencyCoordinates = null;
-          document.getElementById('coordinatesInfo').style.display = 'none';
-          document.getElementById('emergencyCoordinatesInfo').style.display = 'none';
-          
-          if (typeof grecaptcha !== "undefined") {
-            grecaptcha.reset();
-          }
-          this.showStatus(
-            "Freelancer application submitted successfully! We'll contact you soon.",
-            "success"
-          );
-        } else {
-          this.showStatus(
-            result.message ||
-              "Application submission failed. Please try again.",
-            "error"
-          );
-        }
-      } catch (error) {
-        this.showStatus(
-          "An unexpected error occurred. Please try again.",
-          "error"
-        );
-      } finally {
-        this.setLoading(false);
-      }
-    }
-
-    updateProgress(icon, text, status) {
-      const iconSpan = this.apiProgress.querySelector(".progress-icon");
-      const textSpan = this.apiProgress.querySelector(".progress-text");
-
-      iconSpan.textContent = icon;
-      textSpan.textContent = text;
-      this.apiProgress.className = `progress-item ${status}`;
-    }
-
-    setLoading(isLoading) {
-      if (isLoading) {
-        this.submitBtn.disabled = true;
-        this.submitBtn.innerHTML = '<span class="loading"></span>Submitting...';
-        this.progressContainer.style.display = "block";
-      } else {
-        this.submitBtn.disabled = false;
-        this.submitBtn.innerHTML = "Submit Application";
-        this.progressContainer.style.display = "none";
-      }
-    }
-
-    showStatus(message, type) {
-      this.status.textContent = message;
-      this.status.className = `status ${type}`;
-      this.status.style.display = "block";
-
-      setTimeout(() => {
+  showStatus(message, type) {
+    this.status.innerHTML = `
+      <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+      ${message}
+    `;
+    this.status.className = `status ${type}`;
+    this.status.style.display = "flex";
+    
+    clearTimeout(this._statusTimer);
+    if (type !== 'loading') {
+      this._statusTimer = setTimeout(() => {
         this.status.style.display = "none";
-      }, 8000);
+      }, type === 'success' ? 8000 : 6000);
     }
   }
+}
 
-  // Initialize when DOM is loaded
-  document.addEventListener("DOMContentLoaded", () => {
-    new FreelancerApplication();
-  });
-
-  // For compatibility with view transitions
-  document.addEventListener("astro:page-load", () => {
-    new FreelancerApplication();
-  });
+document.addEventListener("DOMContentLoaded", () => {
+  window.jobApp = new JobApplicationManager();
+});
 </script>
-
-
-
-<style>
-  
-/* Freelancer Application Form Styles */
-
-.freelancer-application {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-  padding: 2rem 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-}
-
-.freelancer-application-container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
-
-.section-title {
-  text-align: center;
-  margin-bottom: 3rem;
-  color: white;
-}
-
-.section-title h2 {
-  font-size: 3rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.section-title p {
-  font-size: 1.2rem;
-  opacity: 0.9;
-  margin-bottom: 0.5rem;
-}
-
-.freelancer-form {
-  background: white;
-  border-radius: 20px;
-  padding: 3rem;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-  animation: slideUp 0.6s ease-out;
-}
-
-@keyframes slideUp {
-  from { 
-    opacity: 0; 
-    transform: translateY(30px); 
-  }
-  to { 
-    opacity: 1; 
-    transform: translateY(0); 
-  }
-}
-
-.fade-in {
-  animation: fadeIn 0.8s ease-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.form-section {
-  margin-bottom: 3rem;
-}
-
-.section-subtitle {
-  font-size: 1.5rem;
-  color: #2d3748;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 2px solid #e2e8f0;
-  font-weight: 600;
-}
-
-.section-description {
-  color: #718096;
-  margin-bottom: 1.5rem;
-  font-size: 0.95rem;
-}
-
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.form-group {
-  position: relative;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  color: #4a5568;
-  font-size: 0.95rem;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-  width: 100%;
-  padding: 1rem;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  background: #f7fafc;
-  font-family: inherit;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: #667eea;
-  background: white;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
-}
-
-.form-group textarea {
-  min-height: 100px;
-  resize: vertical;
-  line-height: 1.5;
-}
-
-/* File Upload Styles */
-.file-upload-container {
-  position: relative;
-}
-
-.file-input {
-  display: none;
-}
-
-.file-label {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
-  border: 2px dashed #cbd5e0;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  background: #f7fafc;
-  min-height: 80px;
-}
-
-.file-label:hover {
-  border-color: #667eea;
-  background: #edf2f7;
-  transform: translateY(-2px);
-}
-
-.file-icon {
-  font-size: 2rem;
-  margin-right: 1rem;
-}
-
-.file-text {
-  font-weight: 500;
-  color: #4a5568;
-  text-align: center;
-}
-
-.file-info {
-  margin-top: 0.75rem;
-  font-size: 0.9rem;
-  color: #48bb78;
-  font-weight: 500;
-  padding: 0.5rem;
-  background: #f0fff4;
-  border-radius: 6px;
-  border: 1px solid #9ae6b4;
-}
-
-/* Geolocation Styles */
-.geolocation-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 500;
-  margin-top: 0.75rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-}
-
-.geolocation-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-}
-
-.geolocation-btn:disabled {
-  background: #a0aec0;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-.coordinates-info {
-  margin-top: 1rem;
-  padding: 1rem;
-  background: #f0fff4;
-  border: 2px solid #9ae6b4;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  color: #2f855a;
-  font-weight: 500;
-}
-
-/* Emergency Contact Section */
-.emergency-contact-section {
-  background: #f7fafc;
-  padding: 2rem;
-  border-radius: 15px;
-  border: 1px solid #e2e8f0;
-  margin-top: 1rem;
-}
-
-.emergency-contact-section h4 {
-  color: #2d3748;
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
-  font-weight: 600;
-}
-
-/* Form Notes */
-.form-note {
-  display: block;
-  margin-top: 0.5rem;
-  font-size: 0.85rem;
-  color: #718096;
-  font-style: italic;
-  line-height: 1.4;
-}
-
-/* Buttons */
-.form-actions {
-  display: flex;
-  gap: 1.5rem;
-  justify-content: center;
-  margin-top: 3rem;
-  flex-wrap: wrap;
-}
-
-.btn {
-  padding: 1rem 2.5rem;
-  border: none;
-  border-radius: 50px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 200px;
-  font-family: inherit;
-}
-
-.btn.primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-}
-
-.btn.primary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
-}
-
-.btn.primary:disabled {
-  background: #a0aec0;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-.btn.secondary {
-  background: #edf2f7;
-  color: #4a5568;
-  border: 2px solid #e2e8f0;
-}
-
-.btn.secondary:hover {
-  background: #e2e8f0;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-}
-
-/* Loading Animation */
-.loading {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 2px solid #ffffff33;
-  border-radius: 50%;
-  border-top-color: white;
-  animation: spin 0.8s ease-in-out infinite;
-  margin-right: 0.75rem;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* Status Messages */
-.status {
-  margin-top: 1.5rem;
-  padding: 1rem 1.5rem;
-  border-radius: 12px;
-  font-weight: 500;
-  text-align: center;
-  display: none;
-  animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
-  from { 
-    opacity: 0; 
-    transform: translateY(-10px); 
-  }
-  to { 
-    opacity: 1; 
-    transform: translateY(0); 
-  }
-}
-
-.status.success {
-  background: #f0fff4;
-  color: #2f855a;
-  border: 2px solid #9ae6b4;
-}
-
-.status.error {
-  background: #fed7d7;
-  color: #c53030;
-  border: 2px solid #feb2b2;
-}
-
-/* Progress Indicators */
-.submission-progress {
-  margin-top: 1.5rem;
-  padding: 1rem;
-  background: #f7fafc;
-  border-radius: 10px;
-  border: 1px solid #e2e8f0;
-}
-
-.progress-item {
-  display: flex;
-  align-items: center;
-  padding: 0.75rem;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.progress-item.processing {
-  background: #fef5e7;
-  color: #d69e2e;
-  border: 1px solid #f6e05e;
-}
-
-.progress-item.success {
-  background: #f0fff4;
-  color: #2f855a;
-  border: 1px solid #9ae6b4;
-}
-
-.progress-item.error {
-  background: #fed7d7;
-  color: #c53030;
-  border: 1px solid #feb2b2;
-}
-
-.progress-icon {
-  margin-right: 1rem;
-  font-size: 1.2rem;
-}
-
-.progress-text {
-  font-weight: 500;
-}
-
-/* reCAPTCHA */
-.g-recaptcha {
-  display: flex;
-  justify-content: center;
-  margin: 1.5rem 0;
-}
-
-.captcha-warning {
-  text-align: center;
-  color: #718096;
-  font-size: 0.9rem;
-  font-style: italic;
-  margin-top: 0.5rem;
-}
-
-/* Required Field Indicator */
-.form-group label::after {
-  content: "";
-}
-
-.form-group label:has(+ input[required])::after,
-.form-group label:has(+ select[required])::after,
-.form-group label:has(+ textarea[required])::after {
-  content: " *";
-  color: #e53e3e;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .freelancer-application {
-    padding: 1rem 0;
-  }
-
-  .freelancer-application-container {
-    padding: 0 0.5rem;
-  }
-
-  .section-title h2 {
-    font-size: 2.5rem;
-  }
-
-  .freelancer-form {
-    padding: 2rem 1.5rem;
-    border-radius: 15px;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .btn {
-    min-width: 100%;
-    margin-bottom: 0.75rem;
-  }
-
-  .form-actions {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .emergency-contact-section {
-    padding: 1.5rem;
-  }
-
-  .geolocation-btn {
-    width: 100%;
-    margin-top: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .section-title h2 {
-    font-size: 2rem;
-  }
-
-  .section-title p {
-    font-size: 1rem;
-  }
-
-  .freelancer-form {
-    padding: 1.5rem 1rem;
-  }
-
-  .file-label {
-    padding: 1rem;
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .file-icon {
-    margin-right: 0;
-    margin-bottom: 0.5rem;
-  }
-
-  .form-grid {
-    gap: 1rem;
-  }
-}
-
-/* Accessibility Improvements */
-@media (prefers-reduced-motion: reduce) {
-  .freelancer-form,
-  .fade-in,
-  .btn,
-  .geolocation-btn,
-  .form-group input,
-  .form-group select,
-  .form-group textarea,
-  .file-label {
-    animation: none;
-    transition: none;
-  }
-  
-  .btn:hover,
-  .geolocation-btn:hover,
-  .form-group input:focus,
-  .form-group select:focus,
-  .form-group textarea:focus,
-  .file-label:hover {
-    transform: none;
-  }
-}
-
-/* High Contrast Mode */
-@media (prefers-contrast: high) {
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    border-width: 3px;
-  }
-  
-  .btn.primary {
-    background: #000;
-    border: 2px solid #000;
-  }
-  
-  .btn.secondary {
-    border-width: 3px;
-  }
-}
-
-/* Focus Indicators */
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus,
-.btn:focus,
-.geolocation-btn:focus,
-.file-label:focus {
-  outline: 3px solid #667eea;
-  outline-offset: 2px;
-}
-
-/* Print Styles */
-@media print {
-  .freelancer-application {
-    background: white;
-    padding: 0;
-  }
-  
-  .freelancer-form {
-    box-shadow: none;
-    border: 1px solid #000;
-  }
-  
-  .btn,
-  .geolocation-btn,
-  .submission-progress,
-  .g-recaptcha {
-    display: none;
-  }
-}
-</style>

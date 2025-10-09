@@ -13,7 +13,13 @@ const blog = defineCollection({
 		updatedDate: z.coerce.date().optional(),
 		heroImage: z.string().optional(),
     category: z.union([z.string(), z.array(z.string())]),
-    status: z.string().optional(), // Tambahkan status sebagai string
+    status: z.string().optional(),
+    type: z.string().optional(),
+    locations: z.array(z.object({
+      name: z.string(),
+      status: z.enum(['available', 'closed']).optional(),
+    })).optional(),
+    // For a post at `src/content/blog/my-post.md`, this would be `my-post` 
 		slug: z.string(),
 	}),
   
