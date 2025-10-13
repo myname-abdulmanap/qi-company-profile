@@ -10,11 +10,12 @@ locations:
   - name: "Jakarta"
     status: "active"
   - name: "Bandung"
-    status: "active"
+    status: "closed"
   - name: "Bekasi"
     status: "active"
 pubDate: "2025-10-13T03:42:13.805Z"
 ---
+
 
 
 - List item 1
