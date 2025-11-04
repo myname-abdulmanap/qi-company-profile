@@ -11,6 +11,7 @@ function formatSlugForDisplay(slug) {
 }
 
 const displayText = formatSlugForDisplay(slug);
+
 ---
 
 <section class="job-application" id="job-application">
@@ -40,8 +41,8 @@ const displayText = formatSlugForDisplay(slug);
       <input 
         type="text" 
         id="posisi" 
-        name="posisi" 
-        value={displayText} 
+        name="posisi"
+        value={slug} 
         readonly 
       />
     </div>

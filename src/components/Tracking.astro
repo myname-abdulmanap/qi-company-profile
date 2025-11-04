@@ -1,0 +1,49 @@
+// File: src/components/TrackingScript.astro
+
+---
+const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:4000';
+---
+
+<script define:vars={{ API_URL }}>
+  // Generate or get visitor ID
+  function getVisitorId() {
+    let visitorId = localStorage.getItem('visitor_id');
+    if (!visitorId) {
+      visitorId = 'v_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+      localStorage.setItem('visitor_id', visitorId);
+    }
+    return visitorId;
+  }
+
+  // Track page visit
+  async function trackPageVisit() {
+    const visitorId = getVisitorId();
+    
+    try {
+      await fetch(`${API_URL}/api/track-visitor`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          visitorId,
+          page: window.location.pathname,
+          referrer: document.referrer || null
+        })
+      });
+      
+      console.log('✅ Visitor tracked:', visitorId);
+    } catch (error) {
+      console.error('❌ Tracking error:', error);
+    }
+  }
+
+  // Run on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', trackPageVisit);
+  } else {
+    trackPageVisit();
+  }
+
+  // Export for use in forms
+  window.getVisitorId = getVisitorId;
+  window.API_URL = API_URL;
+</script>

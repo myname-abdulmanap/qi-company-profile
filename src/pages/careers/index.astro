@@ -349,18 +349,19 @@ const posts = allPosts
                       </div>
                       <div class="card-content">
                         <div class="post-meta">
-                          {categoryArray.length > 0 && (
-                            <span class="category-inline">
-                              in {categoryArray[0]}
-                            </span>
-                          )}
+                        
+                         
                           <span class="post-date">
-                            <FormattedDate date={post.data.pubDate} />
+                            Published on <FormattedDate date={post.data.pubDate} />
                           </span>
                         </div>
                         <h3 class="card-title">{post.data.title}</h3>
                         <p class="card-description">{post.data.description}</p>
+
+
                       </div>
+
+                      
                     </a>
                   </article>
                 );

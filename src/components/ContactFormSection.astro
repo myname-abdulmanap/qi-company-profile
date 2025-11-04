@@ -1,7 +1,6 @@
 ---
 // Contact.astro
 ---
-
 <section class="contact" id="contact">
   <div class="contact-container">
     <br />
@@ -20,47 +19,81 @@
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="user_email"
-            placeholder="enter your email"
-            required
-          />
+          <input type="email" id="email" name="user_email" placeholder="enter your email" required />
         </div>
       </div>
+
       <div class="form-group">
         <label for="subject">Subject</label>
         <input type="text" id="subject" name="subject" placeholder="enter subject" />
       </div>
+
       <div class="form-group">
         <label for="message">Message</label>
         <textarea id="message" name="message" required></textarea>
       </div>
 
+      <!-- reCAPTCHA -->
       <div class="form-group">
-        <div class="form-group">
-          <div class="g-recaptcha" data-sitekey="6LcSPkYrAAAAAA3TN5ptXfbY_nsfOOCCPXjMMESG"></div>
-        </div>
+        <div class="g-recaptcha" data-sitekey="6LcSPkYrAAAAAA3TN5ptXfbY_nsfOOCCPXjMMESG"></div>
       </div>
       <p class="captcha-warning" style="margin-top: 1rem; color: #d9534f; font-size: 0.9rem;">
         * Jika captcha tidak muncul, silakan refresh halaman terlebih dahulu.
       </p>
 
-      <button type="submit" class="btn" id="submit-btn">Send Message</button>
+      <!-- Honeypot (anti-bot) -->
+      <input type="text" name="website" autocomplete="off" tabindex="-1" class="hidden" />
 
+      <!-- Hidden metadata - Enhanced Version -->
+      <input type="hidden" name="ip" />
+      <input type="hidden" name="user_agent" />
+      <input type="hidden" name="language" />
+      <input type="hidden" name="timezone" />
+      <input type="hidden" name="screen" />
+      <input type="hidden" name="platform" />
+      <input type="hidden" name="page_url" />
+      <input type="hidden" name="referrer" />
+      <input type="hidden" name="submitted_at" />
+      
+      <!-- New Enhanced Metadata -->
+      <input type="hidden" name="browser_name" />
+      <input type="hidden" name="cpu_cores" />
+      <input type="hidden" name="device_memory" />
+      <input type="hidden" name="connection_type" />
+      <input type="hidden" name="connection_speed" />
+      <input type="hidden" name="touch_support" />
+      <input type="hidden" name="color_depth" />
+      <input type="hidden" name="pixel_ratio" />
+      <input type="hidden" name="orientation" />
+      <input type="hidden" name="dark_mode" />
+      <input type="hidden" name="cookies_enabled" />
+      <input type="hidden" name="do_not_track" />
+      <input type="hidden" name="viewport_size" />
+      <input type="hidden" name="time_on_page" />
+      
+      <!-- Location Data (from IP) -->
+      <input type="hidden" name="country" />
+      <input type="hidden" name="city" />
+      <input type="hidden" name="region" />
+      <input type="hidden" name="isp" />
+
+      <button type="submit" class="btn" id="submit-btn">Send Message</button>
       <div class="status" id="status"></div>
     </form>
   </div>
 </section>
 
-<!-- EmailJS Script -->
+<!-- EmailJS & reCAPTCHA -->
 <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <script>
+  // Track time on page
+  const pageLoadTime = Date.now();
+
   // Tunggu hingga EmailJS loaded dan DOM ready
   document.addEventListener('DOMContentLoaded', function () {
+    // Inisialisasi EmailJS (public key kamu)
     emailjs.init('4-iOyCns2viav_IW_');
 
     const form = document.getElementById('contact-form');
@@ -76,13 +109,9 @@
       status.textContent = message;
       status.className = `status ${type}`;
       status.style.display = 'block';
-
-      setTimeout(() => {
-        status.style.display = 'none';
-      }, 5000);
+      setTimeout(() => (status.style.display = 'none'), 5000);
     }
 
-    // Function untuk mengatur loading state
     function setLoading(isLoading) {
       if (isLoading) {
         submitBtn.disabled = true;
@@ -93,65 +122,160 @@
       }
     }
 
-    // Event listener untuk form submit
-    form.addEventListener('submit', function (e) {
+    // Detect browser name from user agent
+    function getBrowserName() {
+      const ua = navigator.userAgent;
+      if (ua.includes('Firefox/')) return 'Firefox';
+      if (ua.includes('Edg/')) return 'Edge';
+      if (ua.includes('Chrome/') && !ua.includes('Edg/')) return 'Chrome';
+      if (ua.includes('Safari/') && !ua.includes('Chrome/')) return 'Safari';
+      if (ua.includes('Opera/') || ua.includes('OPR/')) return 'Opera';
+      return 'Unknown';
+    }
+
+    // Ambil metadata browser & isi ke hidden inputs - ENHANCED VERSION
+    function populateMetadataFields() {
+      // Basic metadata (existing)
+      form.querySelector('input[name="user_agent"]').value = navigator.userAgent || '-';
+      form.querySelector('input[name="language"]').value =
+        (navigator.languages && navigator.languages.join(', ')) || navigator.language || '-';
+      form.querySelector('input[name="timezone"]').value =
+        (Intl.DateTimeFormat().resolvedOptions().timeZone) || '-';
+      form.querySelector('input[name="screen"]').value =
+        (window.screen.width + 'x' + window.screen.height + '@' + (window.devicePixelRatio || 1));
+      form.querySelector('input[name="platform"]').value =
+        (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '-';
+      form.querySelector('input[name="page_url"]').value = window.location.href;
+      form.querySelector('input[name="referrer"]').value = document.referrer || '-';
+      form.querySelector('input[name="submitted_at"]').value = new Date().toISOString();
+
+      // NEW ENHANCED METADATA
+      // Browser info
+      form.querySelector('input[name="browser_name"]').value = getBrowserName();
+
+      // Hardware capabilities
+      form.querySelector('input[name="cpu_cores"]').value = navigator.hardwareConcurrency || 'unknown';
+      form.querySelector('input[name="device_memory"]').value = 
+        navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'unknown';
+
+      // Network info
+      const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      form.querySelector('input[name="connection_type"]').value = conn?.effectiveType || 'unknown';
+      form.querySelector('input[name="connection_speed"]').value = 
+        conn?.downlink ? `${conn.downlink} Mbps` : 'unknown';
+
+      // Device capabilities
+      form.querySelector('input[name="touch_support"]').value = 
+        navigator.maxTouchPoints > 0 ? 'Yes' : 'No';
+      form.querySelector('input[name="color_depth"]').value = `${screen.colorDepth}-bit`;
+      form.querySelector('input[name="pixel_ratio"]').value = window.devicePixelRatio || 1;
+      form.querySelector('input[name="orientation"]').value = 
+        screen.orientation?.type || (window.innerHeight > window.innerWidth ? 'portrait' : 'landscape');
+
+      // Browser preferences
+      form.querySelector('input[name="dark_mode"]').value = 
+        window.matchMedia('(prefers-color-scheme: dark)').matches ? 'Yes' : 'No';
+      form.querySelector('input[name="cookies_enabled"]').value = 
+        navigator.cookieEnabled ? 'Yes' : 'No';
+      form.querySelector('input[name="do_not_track"]').value = 
+        navigator.doNotTrack === '1' ? 'Yes' : 'No';
+
+      // Viewport & behavior
+      form.querySelector('input[name="viewport_size"]').value = 
+        `${window.innerWidth}x${window.innerHeight}`;
+      
+      // Time spent on page before submitting
+      const timeOnPage = Math.round((Date.now() - pageLoadTime) / 1000);
+      form.querySelector('input[name="time_on_page"]').value = `${timeOnPage} seconds`;
+    }
+
+    async function fetchPublicIP() {
+      try {
+        const res = await fetch('https://api.ipify.org?format=json');
+        const data = await res.json();
+        return data.ip || '-';
+      } catch (e) {
+        return '-';
+      }
+    }
+
+    // Event listener submit
+    form.addEventListener('submit', async function (e) {
       e.preventDefault();
       e.stopPropagation();
 
-      // Validasi form
+      // Validasi basic
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
       const subject = document.getElementById('subject').value.trim();
       const message = document.getElementById('message').value.trim();
 
-      // Cek field required
       if (!name || !email || !message) {
         showStatus('Please fill in all required fields (Name, Email, Message).', 'error');
         return;
       }
 
-      // Validasi email format
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
         showStatus('Please enter a valid email address.', 'error');
         return;
       }
 
+      // Honeypot check
+      const honeypot = (form.querySelector('input[name="website"]')?.value || '').trim();
+      if (honeypot) {
+        // Diam-diam sukses palsu agar bot tidak coba-coba lagi
+        showStatus('Message sent successfully! (ignored bot)', 'success');
+        form.reset();
+        return;
+      }
+
       setLoading(true);
 
+      try {
+        // reCAPTCHA validation (still used for spam protection, just not sent to email)
+        if (typeof grecaptcha !== 'undefined') {
+          const recaptchaToken = grecaptcha.getResponse() || '';
+          if (!recaptchaToken) {
+            showStatus('Please complete the reCAPTCHA.', 'error');
+            setLoading(false);
+            return;
+          }
+        }
 
+        // Isi metadata SEBELUM kirim
+        populateMetadataFields();
 
-      emailjs
-        .sendForm('service_ffsqvoa', 'template_vms7qa9', form)
-        .then(function (response) {
-          console.log('SUCCESS!', response.status, response.text);
-          showStatus("Message sent successfully! We'll get back to you soon.", 'success');
-          form.reset();
-        })
-        .catch(function (error) {
-          console.log('FAILED...', error);
-          showStatus('Failed to send message. Please try again later.', 'error');
-        })
-        .finally(function () {
-          setLoading(false);
-        });
+        // Ambil IP publik (best-effort)
+        form.querySelector('input[name="ip"]').value = await fetchPublicIP();
+
+        // Kirim via EmailJS (pakai form serialization)
+        await emailjs.sendForm('service_ffsqvoa', 'template_vms7qa9', form);
+        showStatus("Message sent successfully! We'll get back to you soon.", 'success');
+        form.reset();
+
+        // Reset reCAPTCHA jika ada
+        if (typeof grecaptcha !== 'undefined') {
+          grecaptcha.reset();
+        }
+      } catch (error) {
+        console.error('FAILED...', error);
+        showStatus('Failed to send message. Please try again later.', 'error');
+      } finally {
+        setLoading(false);
+      }
     });
 
-    // Tambahkan interaktivitas pada input
+    // Interaktivitas input
     const inputs = document.querySelectorAll('#contact-form input, #contact-form textarea');
     inputs.forEach((input) => {
-      // Efek focus
       input.addEventListener('focus', function () {
         this.parentElement.style.transform = 'scale(1.01)';
         this.parentElement.style.transition = 'transform 0.2s ease';
       });
-
-      // Efek blur
       input.addEventListener('blur', function () {
         this.parentElement.style.transform = 'scale(1)';
       });
-
-      // Real-time validation feedback
       input.addEventListener('input', function () {
         if (this.hasAttribute('required') && this.value.trim() === '') {
           this.style.borderColor = '#f56565';
@@ -165,13 +289,10 @@
         }
       });
     });
-
-
   });
 
-  // Untuk compatibility dengan view transitions
+  // Untuk compatibility dengan view transitions (Astro)
   document.addEventListener('astro:page-load', function () {
-    // Re-initialize jika ada view transition
     if (typeof emailjs !== 'undefined') {
       emailjs.init('4-iOyCns2viav_IW_');
     }
@@ -179,111 +300,30 @@
 </script>
 
 <style>
-  .contact {
-    padding: 8rem 1rem;
-    background: var(--color-contact);
-  }
-
-  .contact-container {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  .contact-form {
-    margin-top: 4rem;
-  }
-
-  .form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .form-group {
-    margin-bottom: 1.5rem;
-  }
-
-  .form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: var(--text-color);
-    font-weight: 500;
-  }
-
-  .form-group input,
-  .form-group textarea {
-    width: 100%;
-    padding: 1rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 0.5rem;
-    font-size: 1rem;
-    color: var(--text-color);
+  .contact { padding: 8rem 1rem; background: var(--color-contact); }
+  .contact-container { max-width: 800px; margin: 0 auto; }
+  .contact-form { margin-top: 4rem; }
+  .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.5rem; }
+  .form-group { margin-bottom: 1.5rem; }
+  .form-group label { display: block; margin-bottom: 0.5rem; color: var(--text-color); font-weight: 500; }
+  .form-group input, .form-group textarea {
+    width: 100%; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 0.5rem; font-size: 1rem; color: var(--text-color);
     transition: border-color 0.3s ease;
   }
-
-  .form-group input:focus,
-  .form-group textarea:focus {
-    outline: none;
-    border-color: var(--primary);
-  }
-
-  .form-group textarea {
-    height: 150px;
-    resize: vertical;
-  }
-
-  .status {
-    margin-top: 1.5rem;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    text-align: center;
-    font-weight: 500;
-    display: none;
-  }
-
-  .status.success {
-    background: #d4edda;
-    color: #155724;
-    border: 2px solid #c3e6cb;
-  }
-
-  .status.error {
-    background: #f8d7da;
-    color: #721c24;
-    border: 2px solid #f5c6cb;
-  }
-
+  .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); }
+  .form-group textarea { height: 150px; resize: vertical; }
+  .status { margin-top: 1.5rem; padding: 1rem; border-radius: 0.5rem; text-align: center; font-weight: 500; display: none; }
+  .status.success { background: #d4edda; color: #155724; border: 2px solid #c3e6cb; }
+  .status.error { background: #f8d7da; color: #721c24; border: 2px solid #f5c6cb; }
   .loading {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border: 2px solid #ffffff;
-    border-radius: 50%;
-    border-top-color: transparent;
-    animation: spin 1s ease-in-out infinite;
-    margin-right: 8px;
+    display: inline-block; width: 16px; height: 16px; border: 2px solid #ffffff; border-radius: 50%;
+    border-top-color: transparent; animation: spin 1s ease-in-out infinite; margin-right: 8px;
   }
-
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
+  @keyframes spin { to { transform: rotate(360deg); } }
   @media (max-width: 768px) {
-    .form-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .contact {
-      padding: 4rem 1rem;
-    }
+    .form-grid { grid-template-columns: 1fr; }
+    .contact { padding: 4rem 1rem; }
   }
-
-  .captcha-warning {
-    margin-top: 1rem;
-    color: #d9534f;
-    font-size: 0.9rem;
-  }
+  .captcha-warning { margin-top: 1rem; color: #d9534f; font-size: 0.9rem; }
+  .hidden { display: none; }
 </style>
