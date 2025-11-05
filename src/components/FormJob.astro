@@ -446,13 +446,11 @@ function apiJoin(path) {
 // =====================
 (function disableConsoleInProd(){
   try {
-    // Astroland way (dengan bundling), fallback sederhana:
-    const isProd = true; // dibaca saat client (build prod) — cukup pakai true agar aman
+    const isProd = true; // produksi
     if (isProd) {
       const noop = ()=>{};
       console.log = noop; console.debug = noop; console.info = noop;
-      // biarkan warn/error untuk debugging jika perlu; hapus jika ingin total sunyi:
-      // console.warn = noop; console.error = noop;
+      // console.warn = noop; console.error = noop; // uncomment kalau mau total mute
     }
   } catch {}
 })();
@@ -467,13 +465,53 @@ async function reverseGeocode(lat, lon) {
   return res.json();
 }
 
-// (opsional kalau mau dipakai di tombol pencarian alamat text)
-// async function searchGeocode(q, limit=1) {
-//   const url = apiJoin(`proxy/geocode?q=${encodeURIComponent(q)}&limit=${limit}`);
-//   const res = await fetch(url);
-//   if (!res.ok) throw new Error(`HTTP ${res.status}`);
-//   return res.json();
-// }
+// =====================
+// Address+Maps formatting helpers
+// =====================
+function toFixed6(n){ return Number(n).toFixed(6); }
+function buildGoogleMapsLink(lat, lng){
+  return `https://www.google.com/maps?q=${toFixed6(lat)},${toFixed6(lng)}`;
+}
+function formatAddressValue(address, lat, lng){
+  return `${address} - ${buildGoogleMapsLink(lat, lng)}`;
+}
+function ensureAlamatDomisiliHasLink(inputEl, lat, lng){
+  const v = (inputEl.value || '').trim();
+  if (!v) return;
+  if (!/ - https?:\/\//i.test(v) && lat && lng){
+    inputEl.value = `${v} - ${buildGoogleMapsLink(lat, lng)}`;
+  }
+}
+
+// ====== Address prettifier (ambil "nama tempat" + alamat pendek) ======
+function getNicePlaceName(d){
+  return d?.name
+      || d?.address?.amenity
+      || d?.address?.building
+      || d?.address?.shop
+      || d?.address?.office
+      || d?.address?.tourism
+      || d?.address?.leisure
+      || d?.address?.public_building
+      || '';
+}
+function makeShortAddress(addr){
+  const line1 = addr?.road
+    ? [addr?.house_number, addr?.road].filter(Boolean).join(' ')
+    : '';
+  const area = addr?.neighbourhood || addr?.suburb || addr?.village;
+  const city = addr?.city || addr?.town || addr?.county;
+  const parts = [line1, area, city, addr?.state, addr?.postcode].filter(Boolean);
+  return parts.join(', ');
+}
+function composeAddressLine(geojson, lat, lng){
+  const place = getNicePlaceName(geojson);
+  const short = makeShortAddress(geojson?.address || {});
+  let text = [place, short].filter(Boolean).join(', ');
+  if (!text) text = geojson?.display_name || `Lat ${toFixed6(lat)}, Lng ${toFixed6(lng)}`;
+  text = text.replace(/\s*,\s*Indonesia\s*$/i, '');
+  return formatAddressValue(text, lat, lng);
+}
 
 // =====================
 // Form manager
@@ -683,7 +721,6 @@ class JobApplicationManager {
       input.addEventListener('change', (e) => this.validateFile(e.target));
     });
   }
-
   validateFile(input) {
     const file = input.files?.[0];
     if (!file) return true;
@@ -708,28 +745,42 @@ class JobApplicationManager {
   async setLocation(latlng) {
     if (this.marker) this.map.removeLayer(this.marker);
     this.marker = L.marker(latlng).addTo(this.map);
-    this.marker.bindPopup('<i class="fas fa-spinner fa-spin"></i> Getting address...').openPopup();
+    this.marker
+      .bindPopup('<i class="fas fa-spinner fa-spin"></i> Getting address...')
+      .openPopup();
+
+    const lat = latlng.lat, lng = latlng.lng;
 
     try {
-      // PAKAI PROXY BACKEND (bukan langsung Nominatim)
-      const data = await reverseGeocode(latlng.lat, latlng.lng);
-      const address = data?.display_name || "Selected Location";
-      const link = `https://www.google.com/maps?q=${latlng.lat},${latlng.lng}`;
-      document.getElementById("alamatDomisili").value = `${address} - ${link}`;
-      this.marker.bindPopup(`<strong>Selected Location</strong><br>${address}`).openPopup();
+      const data = await reverseGeocode(lat, lng);
+
+      // Rakit "Nama Tempat, Alamat Pendek – URL Maps"
+      const finalValue = composeAddressLine(data, lat, lng);
+      document.getElementById("alamatDomisili").value = finalValue;
+
+      const gmaps = buildGoogleMapsLink(lat, lng);
+      const preview = finalValue.split(' - ')[0]; // bagian teks saja
+      this.marker
+        .bindPopup(`<strong>Selected Location</strong><br>${preview}<br>
+          <a href="${gmaps}" target="_blank" rel="noopener">Open in Maps</a>`)
+        .openPopup();
     } catch {
-      const link = `https://www.google.com/maps?q=${latlng.lat},${latlng.lng}`;
-      document.getElementById("alamatDomisili").value = link;
-      this.marker.bindPopup('<strong>Selected Location</strong><br>Coordinates: ' + 
-        `${latlng.lat.toFixed(6)}, ${latlng.lng.toFixed(6)}`).openPopup();
+      // fallback: koordinat tapi tetap format "teks – url"
+      const coordLabel = `Lat ${toFixed6(lat)}, Lng ${toFixed6(lng)}`;
+      const finalValue = formatAddressValue(coordLabel, lat, lng);
+      document.getElementById("alamatDomisili").value = finalValue;
+
+      this.marker
+        .bindPopup(`<strong>Selected Location</strong><br>${coordLabel}`)
+        .openPopup();
     }
 
-    document.getElementById("locationLat").value = latlng.lat;
-    document.getElementById("locationLng").value = latlng.lng;
+    document.getElementById("locationLat").value = lat;
+    document.getElementById("locationLng").value = lng;
 
     const coordsDisplay = document.getElementById("location-coordinates-display");
     const coordsText = document.getElementById("location-coords-text");
-    coordsText.textContent = `Lat: ${latlng.lat.toFixed(6)}, Lng: ${latlng.lng.toFixed(6)}`;
+    coordsText.textContent = `Lat: ${toFixed6(lat)}, Lng: ${toFixed6(lng)}`;
     coordsDisplay.style.display = "block";
   }
 
@@ -745,7 +796,7 @@ class JobApplicationManager {
       (position) => {
         const latlng = { lat: position.coords.latitude, lng: position.coords.longitude };
         this.map.setView(latlng, 15);
-        this.setLocation(latlng);
+        this.setLocation(latlng); // <-- otomatis isi "Nama Tempat, Alamat – URL"
         this.showStatus("Location found successfully!", "success");
       },
       (error) => {
@@ -1064,6 +1115,12 @@ class JobApplicationManager {
     this.status.style.display = "none";
     if (!this.validateForm()) return;
 
+    // Pastikan alamatDomisili memuat " - <link>"
+    const lat = document.getElementById("locationLat").value;
+    const lng = document.getElementById("locationLng").value;
+    const alamatInput = document.getElementById("alamatDomisili");
+    ensureAlamatDomisiliHasLink(alamatInput, lat, lng);
+
     const submitBtn = document.getElementById("submit-btn");
     const originalText = submitBtn.innerHTML;
     submitBtn.disabled = true;
@@ -1075,8 +1132,8 @@ class JobApplicationManager {
       if (educationData.length === 0) throw new Error("Please add at least one education entry with all required fields filled");
       if (experienceData.length === 0) throw new Error("Please add at least one work experience entry with all required fields filled");
 
-      (document.getElementById("pendidikanTerakhir") as HTMLInputElement).value = educationData.join("; ");
-      (document.getElementById("pengalamanKerja") as HTMLInputElement).value = experienceData.join(", ");
+      (document.getElementById("pendidikanTerakhir")).value = educationData.join("; ");
+      (document.getElementById("pengalamanKerja")).value = experienceData.join(", ");
 
       const formData = new FormData(this.form);
 
@@ -1092,10 +1149,9 @@ class JobApplicationManager {
         body: formData
       });
 
-      // Handle response (tanpa console log di prod)
       const text = await response.text();
       let data = {};
-      try { data = JSON.parse(text); } catch { /* biarkan fallback */ }
+      try { data = JSON.parse(text); } catch {}
 
       if (!response.ok) {
         let msg = (data && (data.message || data.error)) || response.statusText;
