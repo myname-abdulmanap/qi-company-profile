@@ -1,7 +1,11 @@
 ---
 import "../styles/formJob.css";
+
+// Props dari halaman
 const { slug, locations = [] } = Astro.props;
-function formatSlugForDisplay(slug) {
+
+// Helper untuk menampilkan slug human-readable (tetap seperti sebelumnya)
+function formatSlugForDisplay(slug: string) {
   return slug
     .split("-")
     .map((word) => word.replace(/\d+/g, "").trim())
@@ -12,9 +16,13 @@ function formatSlugForDisplay(slug) {
 
 const displayText = formatSlugForDisplay(slug);
 
+// Ambil BASE API dari ENV (gunakan URL penuh)
+// - .env.development : PUBLIC_API_BASE=http://localhost:4000/api/v1
+// - .env.production  : PUBLIC_API_BASE=https://qualita-indonesia.com/api/api/v1
+const API_BASE = (import.meta.env.PUBLIC_API_BASE || "/api/v1");
 ---
 
-<section class="job-application" id="job-application">
+<section class="job-application" id="job-application" data-api-base={API_BASE}>
   <div class="job-application-container">
     <div class="section-title fade-in">
       <br />
@@ -25,55 +33,56 @@ const displayText = formatSlugForDisplay(slug);
     </div>
 
     <form class="job-form fade-in" id="job-form" enctype="multipart/form-data">
+      <div class="form-section">
+        <h3 class="section-subtitle">
+          <i class="fas fa-briefcase"></i>
+          Job Information
+        </h3>
 
-     <div class="form-section">
-  <h3 class="section-subtitle">
-    <i class="fas fa-briefcase"></i>
-    Job Information
-  </h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="posisi" class="required">
+              <i class="fas fa-clipboard-list"></i>
+              Position Applied For
+            </label>
+            <input 
+              type="text" 
+              id="posisi" 
+              name="posisi"
+              value={slug} 
+              readonly 
+            />
+          </div>
 
-  <div class="form-grid">
-    <div class="form-group">
-      <label for="posisi" class="required">
-        <i class="fas fa-clipboard-list"></i>
-        Position Applied For
-      </label>
-      <input 
-        type="text" 
-        id="posisi" 
-        name="posisi"
-        value={slug} 
-        readonly 
-      />
-    </div>
+          <div class="form-group">
+            <label for="lokasiPenempatan" class="required">
+              <i class="fas fa-map-marker-alt"></i>
+              Job Location
+            </label>
+            <select id="lokasiPenempatan" name="lokasiPenempatan" required>
+              <option value="">Select Location</option>
+              {
+                locations.length > 0
+                  ? locations.map((loc: any) => (
+                      <option value={loc.name} disabled={loc.status === "closed"}>
+                        {loc.name} {loc.status === "closed" ? "(Closed)" : "(Available)"}
+                      </option>
+                    ))
+                  : <option value="Not Specified">Not Specified</option>
+              }
+            </select>
+            <div class="validation-message"></div>
+          </div>
+        </div>
+      </div>
 
-    <div class="form-group">
-      <label for="lokasiPenempatan" class="required">
-        <i class="fas fa-map-marker-alt"></i>
-        Job Location
-      </label>
-      <select id="lokasiPenempatan" name="lokasiPenempatan" required>
-        <option value="">Select Location</option>
-        {locations.length > 0 ? (
-          locations.map((loc) => (
-            <option value={loc.name} disabled={loc.status === "closed"}>
-              {loc.name} {loc.status === "closed" ? "(Closed)" : "(Available)"}
-            </option>
-          ))
-        ) : (
-          <option value="Not Specified">Not Specified</option>
-        )}
-      </select>
-      <div class="validation-message"></div>
-    </div>
-  </div>
-</div>
       <!-- Personal Info -->
       <div class="form-section">
         <h3 class="section-subtitle">
           <i class="fas fa-user"></i>
           Personal Information
         </h3>
+
         <div class="form-grid">
           <div class="form-group">
             <label for="nama" class="required">
@@ -90,7 +99,6 @@ const displayText = formatSlugForDisplay(slug);
             <div class="validation-message"></div>
           </div>
 
-        
           <div class="form-group">
             <label for="gender" class="required">
               <i class="fas fa-venus-mars"></i>
@@ -101,7 +109,7 @@ const displayText = formatSlugForDisplay(slug);
               <option value="male">Male</option>
               <option value="female">Female</option>
             </select>
-             <div class="validation-message"></div>
+            <div class="validation-message"></div>
           </div>
           
           <div class="form-group">
@@ -118,6 +126,7 @@ const displayText = formatSlugForDisplay(slug);
             />
             <div class="validation-message"></div>
           </div>
+
           <div class="form-group">
             <label for="nomorTelepon" class="required">
               <i class="fas fa-phone"></i>
@@ -132,6 +141,7 @@ const displayText = formatSlugForDisplay(slug);
             />
             <div class="validation-message"></div>
           </div>
+
           <div class="form-group">
             <label for="tanggalLahir" class="required">
               <i class="fas fa-calendar-alt"></i>
@@ -146,25 +156,21 @@ const displayText = formatSlugForDisplay(slug);
             <div class="validation-message"></div>
           </div>
 
-           <div class="form-group">
-          <label for="alamat" class="required">
-            <i class="fas fa-home"></i>
-            Address (KTP)
-          </label>
-          <input 
-            type="text" 
-            id="alamat" 
-            name="alamat" 
-            required 
-            placeholder="Enter your address as per KTP"
-          />
-          <div class="validation-message"></div>
+          <div class="form-group">
+            <label for="alamat" class="required">
+              <i class="fas fa-home"></i>
+              Address (KTP)
+            </label>
+            <input 
+              type="text" 
+              id="alamat" 
+              name="alamat" 
+              required 
+              placeholder="Enter your address as per KTP"
+            />
+            <div class="validation-message"></div>
+          </div>
         </div>
-        </div>
-
-       
-
-        
 
         <div class="form-group">
           <label for="alamatDomisili" class="required">
@@ -198,8 +204,6 @@ const displayText = formatSlugForDisplay(slug);
         </div>
       </div>
 
-   
-
       <!-- Uploads -->
       <div class="form-section">
         <h3 class="section-subtitle">
@@ -221,6 +225,7 @@ const displayText = formatSlugForDisplay(slug);
           <small class="form-note">Accepted formats: PDF, DOC, DOCX (Max: 3 MB)</small>
           <div class="validation-message"></div>
         </div>
+
         <div class="form-grid">
           <div class="form-group">
             <label for="photo" class="required">
@@ -236,6 +241,7 @@ const displayText = formatSlugForDisplay(slug);
             />
             <small class="form-note">Accepted formats: PNG, JPG (Max: 2MB)</small>
           </div>
+
           <div class="form-group">
             <label for="ktp" class="required">
               <i class="fas fa-id-card-alt"></i>
@@ -248,9 +254,10 @@ const displayText = formatSlugForDisplay(slug);
               accept="image/*,.pdf" 
               required
             />
-              <small class="form-note">Accepted formats: PNG, JPG (Max: 2 MB)</small>
+            <small class="form-note">Accepted formats: PNG, JPG (Max: 2 MB)</small>
           </div>
         </div>
+
         <div class="form-grid">
           <div class="form-group">
             <label for="kk" class="required">
@@ -264,8 +271,9 @@ const displayText = formatSlugForDisplay(slug);
               accept="image/*,.pdf" 
               required
             />
-              <small class="form-note">Accepted formats: PNG, JPG (Max: 2 MB)</small>
+            <small class="form-note">Accepted formats: PNG, JPG (Max: 2 MB)</small>
           </div>
+
           <div class="form-group">
             <label for="ijazah" class="required">
               <i class="fas fa-certificate"></i>
@@ -278,7 +286,7 @@ const displayText = formatSlugForDisplay(slug);
               accept="image/*,.pdf" 
               required
             />
-              <small class="form-note">Accepted formats: PNG, JPG (Max: 2 MB)</small>
+            <small class="form-note">Accepted formats: PNG, JPG (Max: 2 MB)</small>
           </div>
         </div>
       </div>
@@ -317,6 +325,7 @@ const displayText = formatSlugForDisplay(slug);
           <i class="fas fa-cogs"></i>
           Skills & Information
         </h3>
+
         <div class="form-group skill-input-group">
           <label for="skill" class="required">
             <i class="fas fa-star"></i>
@@ -339,20 +348,22 @@ const displayText = formatSlugForDisplay(slug);
           </small>
           <div class="validation-message"></div>
         </div>
+
         <div class="form-group">
           <label for="bahasa" class="required">
             <i class="fas fa-language"></i>
             Languages
           </label>
-          <input 
-            type="text" 
-            id="bahasa" 
-            name="bahasa" 
-            required 
-            placeholder="e.g., Indonesian (Native), English (Fluent)"
-          />
+            <input 
+              type="text" 
+              id="bahasa" 
+              name="bahasa" 
+              required 
+              placeholder="e.g., Indonesian (Native), English (Fluent)"
+            />
           <div class="validation-message"></div>
         </div>
+
         <div class="form-group">
           <label for="sertifikasi">
             <i class="fas fa-award"></i>
@@ -369,6 +380,7 @@ const displayText = formatSlugForDisplay(slug);
             Separated with commas (e.g., AWS Certified Solutions Architect, PMP)  
           </small>
         </div>
+
         <div class="form-group">
           <label for="linkedin">
             <i class="fab fa-linkedin"></i>
@@ -381,6 +393,7 @@ const displayText = formatSlugForDisplay(slug);
             placeholder="https://linkedin.com/in/yourprofile"
           />
         </div>
+
         <div class="form-group">
           <label for="portfolio">
             <i class="fas fa-globe"></i>
@@ -395,102 +408,16 @@ const displayText = formatSlugForDisplay(slug);
         </div>
       </div>
 
-      <!-- Emergency Contact -->
-      <!-- <div class="form-section">
-        <h3 class="section-subtitle">
-          <i class="fas fa-phone-alt"></i>
-          Emergency Contact
-        </h3>
-        <div class="form-grid">
-          <div class="form-group">
-            <label for="namaKontak" class="required">
-              <i class="fas fa-user-friends"></i>
-              Contact Name
-            </label>
-            <input 
-              type="text" 
-              id="namaKontak" 
-              name="namaKontak" 
-              placeholder="Emergency contact name"
-            />
-          </div>
-          <div class="form-group">
-            <label for="hubunganKontak" class="required">
-              <i class="fas fa-heart"></i>
-              Relationship
-            </label>
-            <input 
-              type="text" 
-              id="hubunganKontak" 
-              name="hubunganKontak" 
-              placeholder="e.g., Ayah, Ibu, Saudara, Teman"
-            />
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="nomorKontak" class="required">
-            <i class="fas fa-phone"></i>
-            Phone Number
-          </label>
-          <input 
-            type="tel" 
-            id="nomorKontak" 
-            name="nomorKontak" 
-            placeholder="Emergency contact phone"
-          />
-        </div>
-        <div class="form-group">
-          <label for="alamatKontak" class="required">
-            <i class="fas fa-map-marker-alt"></i>
-            Address (with map)
-          </label>
-          <div class="location-input-container">
-            <input 
-              type="text" 
-              id="alamatKontak" 
-              name="alamatKontak" 
-              placeholder="Type address or click map to select location"
-            /> 
-            <button type="button" id="search-emergency-btn" class="location-btn">
-              <i class="fas fa-search"></i>
-              Search Address
-            </button>
-          </div>
-          <div id="map-emergency" class="map-container"></div>
-          <input type="hidden" id="locationLatKontak" name="locationLatKontak" />
-          <input type="hidden" id="locationLngKontak" name="locationLngKontak" />
-          <div id="emergency-coordinates-display" style="margin-top: 8px; padding: 8px; background: #f0f9ff; border-left: 3px solid #0284c7; border-radius: 4px; font-size: 13px; color: #0c4a6e; display: none;">
-            <i class="fas fa-map-pin" style="margin-right: 6px;"></i>
-            <strong>Coordinates:</strong> <span id="emergency-coords-text">-</span>
-          </div>
-          <small class="form-note">
-            <i class="fas fa-info-circle"></i>
-            Type address and click Search or click map to select location
-          </small>
-        </div>
-        <div class="form-group">
-          <label for="fotoKKKontak" class="required">
-            <i class="fas fa-file-image"></i>
-            Family Card (KK For Emergency Contact)
-          </label>
-          <input 
-            type="file" 
-            id="fotoKKKontak" 
-            name="fotoKKKontak" 
-            accept="image/*,.pdf" 
-          />
-            <small class="form-note">Accepted formats: PNG, JPG (Max: 2 MB)</small>
-        </div>
-      </div> -->
-
+      <!-- Actions -->
       <div class="form-actions">
         <button type="submit" id="submit-btn" class="btn primary">
           <i class="fas fa-paper-plane"></i>
           Submit Application
         </button>
-         <a href={`/careers/${slug}`} class="btn secondary">Back to Detail</a> 
+        <a href={`/careers/${slug}`} class="btn secondary">Back to Detail</a> 
       </div>
-.      <div class="status" id="status"></div>
+
+      <div class="status" id="status"></div>
     </form>
   </div>
 </section>
@@ -501,6 +428,56 @@ const displayText = formatSlugForDisplay(slug);
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
+// =====================
+// Utils: API base & join
+// =====================
+function getApiBase() {
+  const root = document.querySelector('#job-application');
+  return (root?.dataset?.apiBase || '/api/v1').replace(/\/+$/,'');
+}
+function apiJoin(path) {
+  const base = getApiBase();
+  const clean = String(path).replace(/^\/+/, '');
+  return `${base}/${clean}`;
+}
+
+// =====================
+// Production-only console mute
+// =====================
+(function disableConsoleInProd(){
+  try {
+    // Astroland way (dengan bundling), fallback sederhana:
+    const isProd = true; // dibaca saat client (build prod) — cukup pakai true agar aman
+    if (isProd) {
+      const noop = ()=>{};
+      console.log = noop; console.debug = noop; console.info = noop;
+      // biarkan warn/error untuk debugging jika perlu; hapus jika ingin total sunyi:
+      // console.warn = noop; console.error = noop;
+    }
+  } catch {}
+})();
+
+// =====================
+// Geocode helpers (via backend proxy)
+// =====================
+async function reverseGeocode(lat, lon) {
+  const url = apiJoin(`proxy/reverse?lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}`);
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
+// (opsional kalau mau dipakai di tombol pencarian alamat text)
+// async function searchGeocode(q, limit=1) {
+//   const url = apiJoin(`proxy/geocode?q=${encodeURIComponent(q)}&limit=${limit}`);
+//   const res = await fetch(url);
+//   if (!res.ok) throw new Error(`HTTP ${res.status}`);
+//   return res.json();
+// }
+
+// =====================
+// Form manager
+// =====================
 class JobApplicationManager {
   constructor() {
     this.educationCount = 0;
@@ -509,7 +486,7 @@ class JobApplicationManager {
     this.status = document.getElementById("status");
     this.map = null;
     this.marker = null;
-    
+
     this.init();
     this.initSkillSystem();
   }
@@ -523,62 +500,62 @@ class JobApplicationManager {
   }
 
   bindEvents() {
-    document.getElementById("location-btn").addEventListener("click", () => this.useCurrentLocation());
-    document.getElementById("add-education").addEventListener("click", () => this.addEducation());
-    document.getElementById("add-experience").addEventListener("click", () => this.addExperience());
+    document.getElementById("location-btn")?.addEventListener("click", () => this.useCurrentLocation());
+    document.getElementById("add-education")?.addEventListener("click", () => this.addEducation());
+    document.getElementById("add-experience")?.addEventListener("click", () => this.addExperience());
     this.form.addEventListener("submit", (e) => this.handleSubmit(e));
-    
+
     document.addEventListener('change', (e) => {
-      if (e.target.matches('[name^="tanggalMulaiKerja"], [name^="tanggalSelesaiKerja"], [name^="statusKerja"]')) {
-        const entry = e.target.closest('.experience-entry');
-        if (entry) {
-          this.calculateDuration(entry);
-        }
+      const t = e.target;
+      if (!(t instanceof HTMLElement)) return;
+      if (t.matches('[name^="tanggalMulaiKerja"], [name^="tanggalSelesaiKerja"], [name^="statusKerja"]')) {
+        const entry = t.closest('.experience-entry');
+        if (entry) this.calculateDuration(entry);
       }
     });
   }
 
+  // ===== Skill suggestions (static) =====
   initSkillSystem() {
     this.skillsDatabase = [
-      'JavaScript', 'TypeScript', 'Python', 'Java', 'C++', 'C#', 'PHP', 'Ruby', 'Go', 'Rust',
-      'Swift', 'Kotlin', 'Dart', 'Scala', 'R', 'MATLAB', 'C', 'Objective-C',
-      'Web Development', 'Web Developer', 'Web Design', 'Web Designer',
-      'React', 'React Developer', 'Vue.js', 'Vue Developer', 'Angular', 'Angular Developer',
-      'Next.js', 'Nuxt.js', 'Svelte', 'jQuery', 'HTML5', 'CSS3',
-      'Sass', 'Less', 'Tailwind CSS', 'Bootstrap', 'Material-UI', 'Ant Design', 'Chakra UI',
-      'Frontend Development', 'Frontend Developer', 'UI Developer',
-      'Node.js', 'Node Developer', 'Express.js', 'Django', 'Django Developer', 'Flask', 
-      'Spring Boot', 'Laravel', 'Laravel Developer', 'Ruby on Rails',
-      'ASP.NET', 'FastAPI', 'Nest.js', 'Koa.js', 'Gin', 'Fiber',
-      'Backend Development', 'Backend Developer', 'API Development',
-      'Full Stack Developer', 'Full Stack Development', 'MERN Stack', 'MEAN Stack',
-      'MySQL', 'PostgreSQL', 'MongoDB', 'Redis', 'SQLite', 'Oracle', 'SQL Server',
-      'Elasticsearch', 'Firebase', 'Supabase', 'DynamoDB', 'Cassandra',
-      'Database Administration', 'Database Design',
-      'AWS', 'AWS Developer', 'Google Cloud', 'GCP', 'Azure', 'Docker', 'Kubernetes', 
-      'Jenkins', 'GitLab CI', 'GitHub Actions', 'Terraform', 'Ansible', 'Linux', 'Nginx', 'Apache',
-      'DevOps Engineer', 'Cloud Engineer', 'System Administrator',
-      'Figma', 'Adobe Photoshop', 'Adobe Illustrator', 'Sketch', 'Adobe XD', 'InVision',
-      'Canva', 'UI/UX Design', 'UI Designer', 'UX Designer', 'Graphic Design', 'Graphic Designer',
-      'Wireframing', 'Prototyping', 'User Research',
-      'React Native', 'React Native Developer', 'Flutter', 'Flutter Developer',
-      'iOS Development', 'iOS Developer', 'Android Development', 'Android Developer', 
-      'Xamarin', 'Ionic', 'Cordova', 'Swift UI', 'Jetpack Compose',
-      'Mobile Developer', 'Mobile Development',
-      'Data Science', 'Data Scientist', 'Data Analyst', 'Data Analysis',
-      'Machine Learning', 'ML Engineer', 'Deep Learning', 'AI Developer',
-      'Data Engineering', 'Data Engineer', 'Big Data',
-      'Quality Assurance', 'QA Engineer', 'Software Testing', 'Test Automation',
-      'Selenium', 'Jest', 'Cypress', 'Unit Testing',
-      'Git', 'GitHub', 'GitLab', 'Bitbucket', 'VS Code', 'IntelliJ IDEA', 'Postman', 
-      'Jira', 'Slack', 'Notion', 'Trello', 'Asana', 
-      'Premiere Pro', 'After Effects', 'Final Cut Pro', 'Video Editing',
-      'Microsoft Office', 'Excel', 'PowerPoint', 'Word', 'Google Workspace',
-      'Communication', 'Teamwork', 'Leadership', 'Problem Solving', 
-      'Time Management', 'Project Management', 'Agile', 'Scrum',
-      'Critical Thinking', 'Creativity', 'Adaptability'
+      'JavaScript','TypeScript','Python','Java','C++','C#','PHP','Ruby','Go','Rust',
+      'Swift','Kotlin','Dart','Scala','R','MATLAB','C','Objective-C',
+      'Web Development','Web Developer','Web Design','Web Designer',
+      'React','React Developer','Vue.js','Vue Developer','Angular','Angular Developer',
+      'Next.js','Nuxt.js','Svelte','jQuery','HTML5','CSS3',
+      'Sass','Less','Tailwind CSS','Bootstrap','Material-UI','Ant Design','Chakra UI',
+      'Frontend Development','Frontend Developer','UI Developer',
+      'Node.js','Node Developer','Express.js','Django','Django Developer','Flask',
+      'Spring Boot','Laravel','Laravel Developer','Ruby on Rails',
+      'ASP.NET','FastAPI','Nest.js','Koa.js','Gin','Fiber',
+      'Backend Development','Backend Developer','API Development',
+      'Full Stack Developer','Full Stack Development','MERN Stack','MEAN Stack',
+      'MySQL','PostgreSQL','MongoDB','Redis','SQLite','Oracle','SQL Server',
+      'Elasticsearch','Firebase','Supabase','DynamoDB','Cassandra',
+      'Database Administration','Database Design',
+      'AWS','AWS Developer','Google Cloud','GCP','Azure','Docker','Kubernetes',
+      'Jenkins','GitLab CI','GitHub Actions','Terraform','Ansible','Linux','Nginx','Apache',
+      'DevOps Engineer','Cloud Engineer','System Administrator',
+      'Figma','Adobe Photoshop','Adobe Illustrator','Sketch','Adobe XD','InVision',
+      'Canva','UI/UX Design','UI Designer','UX Designer','Graphic Design','Graphic Designer',
+      'Wireframing','Prototyping','User Research',
+      'React Native','React Native Developer','Flutter','Flutter Developer',
+      'iOS Development','iOS Developer','Android Development','Android Developer',
+      'Xamarin','Ionic','Cordova','Swift UI','Jetpack Compose',
+      'Mobile Developer','Mobile Development',
+      'Data Science','Data Scientist','Data Analyst','Data Analysis',
+      'Machine Learning','ML Engineer','Deep Learning','AI Developer',
+      'Data Engineering','Data Engineer','Big Data',
+      'Quality Assurance','QA Engineer','Software Testing','Test Automation',
+      'Selenium','Jest','Cypress','Unit Testing',
+      'Git','GitHub','GitLab','Bitbucket','VS Code','IntelliJ IDEA','Postman',
+      'Jira','Slack','Notion','Trello','Asana',
+      'Premiere Pro','After Effects','Final Cut Pro','Video Editing',
+      'Microsoft Office','Excel','PowerPoint','Word','Google Workspace',
+      'Communication','Teamwork','Leadership','Problem Solving',
+      'Time Management','Project Management','Agile','Scrum',
+      'Critical Thinking','Creativity','Adaptability'
     ];
-
     this.setupSkillInput();
   }
 
@@ -599,30 +576,29 @@ class JobApplicationManager {
       display: none;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     `;
-    
     skillInput.parentElement.style.position = 'relative';
     skillInput.parentElement.appendChild(suggestionsContainer);
 
     skillInput.addEventListener('input', (e) => {
-      const value = e.target.value.toLowerCase().trim();
-      
+      const value = (e.target.value || '').toLowerCase().trim();
+
       const validationMessage = skillInput.parentElement.parentElement.querySelector('.validation-message');
       if (validationMessage) {
         validationMessage.textContent = '';
         validationMessage.className = 'validation-message';
       }
       skillInput.classList.remove('error', 'success');
-      
+
       if (value.length < 2) {
         suggestionsContainer.style.display = 'none';
         suggestionsContainer.innerHTML = '';
         return;
       }
-      
-      const matches = this.skillsDatabase.filter(skill => 
-        skill.toLowerCase().includes(value)
-      ).slice(0, 10);
-      
+
+      const matches = this.skillsDatabase
+        .filter(skill => skill.toLowerCase().includes(value))
+        .slice(0, 10);
+
       if (matches.length > 0) {
         suggestionsContainer.innerHTML = matches.map(skill => `
           <div class="suggestion-item" style="
@@ -630,18 +606,16 @@ class JobApplicationManager {
             cursor: pointer;
             border-bottom: 1px solid #f0f0f0;
             transition: background 0.2s;
-          " onmouseover="this.style.background='#f5f5f5'" 
-             onmouseout="this.style.background='white'">
+          " onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='white'">
             <i class="fas fa-lightbulb" style="color: #4a90e2; margin-right: 8px;"></i>
             ${this.highlightMatch(skill, value)}
           </div>
         `).join('');
-        
         suggestionsContainer.style.display = 'block';
-        
-        suggestionsContainer.querySelectorAll('.suggestion-item').forEach((item, index) => {
+
+        suggestionsContainer.querySelectorAll('.suggestion-item').forEach((item, idx) => {
           item.addEventListener('click', () => {
-            skillInput.value = matches[index];
+            skillInput.value = matches[idx];
             suggestionsContainer.style.display = 'none';
             skillInput.focus();
           });
@@ -651,24 +625,22 @@ class JobApplicationManager {
         suggestionsContainer.innerHTML = '';
       }
     });
-    
+
     document.addEventListener('click', (e) => {
       if (!skillInput.contains(e.target) && !suggestionsContainer.contains(e.target)) {
         suggestionsContainer.style.display = 'none';
       }
     });
-    
+
     skillInput.addEventListener('keydown', (e) => {
       const items = suggestionsContainer.querySelectorAll('.suggestion-item');
       if (items.length === 0) return;
-      
+
       let currentIndex = -1;
       items.forEach((item, index) => {
-        if (item.classList.contains('active')) {
-          currentIndex = index;
-        }
+        if (item.classList.contains('active')) currentIndex = index;
       });
-      
+
       if (e.key === 'ArrowDown') {
         e.preventDefault();
         if (currentIndex < items.length - 1) {
@@ -688,130 +660,61 @@ class JobApplicationManager {
         }
       } else if (e.key === 'Enter' && currentIndex >= 0) {
         e.preventDefault();
-        items[currentIndex].click();
+        items[currentIndex].dispatchEvent(new Event('click'));
       } else if (e.key === 'Escape') {
         suggestionsContainer.style.display = 'none';
       }
     });
   }
-  
+
   highlightMatch(text, query) {
-    const index = text.toLowerCase().indexOf(query);
-    if (index === -1) return text;
-    
-    const before = text.substring(0, index);
-    const match = text.substring(index, index + query.length);
-    const after = text.substring(index + query.length);
-    
+    const idx = text.toLowerCase().indexOf(query);
+    if (idx === -1) return text;
+    const before = text.substring(0, idx);
+    const match = text.substring(idx, idx + query.length);
+    const after = text.substring(idx + query.length);
     return `${before}<strong style="color: #4a90e2;">${match}</strong>${after}`;
   }
 
+  // ===== File validation =====
   initFileValidation() {
     const fileInputs = this.form.querySelectorAll('input[type="file"]');
-    
     fileInputs.forEach(input => {
       input.addEventListener('change', (e) => this.validateFile(e.target));
     });
   }
 
   validateFile(input) {
-    const file = input.files[0];
+    const file = input.files?.[0];
     if (!file) return true;
-
     const maxSize = input.id === 'cv' ? 5 * 1024 * 1024 : 2 * 1024 * 1024;
-    
     if (file.size > maxSize) {
       this.showStatus(`File "${file.name}" too large. Maximum size: ${maxSize / (1024 * 1024)}MB`, 'error');
       input.value = '';
       return false;
     }
-
     return true;
   }
 
+  // ===== Map & Geolocation =====
   initMap() {
     this.map = L.map("map").setView([-6.2088, 106.8456], 13);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: '© OpenStreetMap contributors'
     }).addTo(this.map);
-    
     this.map.on("click", (e) => this.setLocation(e.latlng));
-  }
-
-  calculateDuration(entry) {
-    if (!entry) return;
-    
-    const num = entry.getAttribute('data-entry-id');
-    const startDateInput = entry.querySelector(`[name="tanggalMulaiKerja${num}"]`);
-    const endDateInput = entry.querySelector(`[name="tanggalSelesaiKerja${num}"]`);
-    const durationInput = entry.querySelector(`[name="durasiKerja${num}"]`);
-    const statusSelect = entry.querySelector(`[name="statusKerja${num}"]`);
-    
-    if (!startDateInput || !durationInput) return;
-    
-    const startDate = startDateInput.value;
-    let endDate = endDateInput?.value;
-    
-    if (statusSelect && statusSelect.value === 'Still Working') {
-      const today = new Date();
-      endDate = today.toISOString().split('T')[0];
-    }
-    
-    if (!startDate) {
-      durationInput.value = '';
-      return;
-    }
-    
-    if (!endDate && statusSelect?.value !== 'Still Working') {
-      durationInput.value = '';
-      return;
-    }
-    
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    
-    if (end < start) {
-      durationInput.value = 'Invalid dates';
-      return;
-    }
-    
-    let years = end.getFullYear() - start.getFullYear();
-    let months = end.getMonth() - start.getMonth();
-    let days = end.getDate() - start.getDate();
-    
-    if (days < 0) {
-      months--;
-      const prevMonth = new Date(end.getFullYear(), end.getMonth(), 0);
-      days += prevMonth.getDate();
-    }
-    
-    if (months < 0) {
-      years--;
-      months += 12;
-    }
-    
-    const parts = [];
-    if (years > 0) parts.push(`${years} year${years > 1 ? 's' : ''}`);
-    if (months > 0) parts.push(`${months} month${months > 1 ? 's' : ''}`);
-    if (days > 0) parts.push(`${days} day${days > 1 ? 's' : ''}`);
-    
-    durationInput.value = parts.length > 0 ? parts.join(', ') : '0 days';
   }
 
   async setLocation(latlng) {
     if (this.marker) this.map.removeLayer(this.marker);
-    
     this.marker = L.marker(latlng).addTo(this.map);
     this.marker.bindPopup('<i class="fas fa-spinner fa-spin"></i> Getting address...').openPopup();
 
     try {
-      const res = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latlng.lat}&lon=${latlng.lng}`
-      );
-      const data = await res.json();
-      const address = data.display_name || "Selected Location";
+      // PAKAI PROXY BACKEND (bukan langsung Nominatim)
+      const data = await reverseGeocode(latlng.lat, latlng.lng);
+      const address = data?.display_name || "Selected Location";
       const link = `https://www.google.com/maps?q=${latlng.lat},${latlng.lng}`;
-      
       document.getElementById("alamatDomisili").value = `${address} - ${link}`;
       this.marker.bindPopup(`<strong>Selected Location</strong><br>${address}`).openPopup();
     } catch {
@@ -823,7 +726,7 @@ class JobApplicationManager {
 
     document.getElementById("locationLat").value = latlng.lat;
     document.getElementById("locationLng").value = latlng.lng;
-    
+
     const coordsDisplay = document.getElementById("location-coordinates-display");
     const coordsText = document.getElementById("location-coords-text");
     coordsText.textContent = `Lat: ${latlng.lat.toFixed(6)}, Lng: ${latlng.lng.toFixed(6)}`;
@@ -832,25 +735,21 @@ class JobApplicationManager {
 
   useCurrentLocation() {
     if (!navigator.geolocation) {
-      return this.showStatus("Geolocation is not supported by this browser", "error");
+      this.showStatus("Geolocation is not supported by this browser", "error");
+      return;
     }
-    
+
     this.showStatus("Requesting location permission...", "loading");
-    
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        const latlng = { 
-          lat: position.coords.latitude, 
-          lng: position.coords.longitude 
-        };
+        const latlng = { lat: position.coords.latitude, lng: position.coords.longitude };
         this.map.setView(latlng, 15);
         this.setLocation(latlng);
         this.showStatus("Location found successfully!", "success");
       },
       (error) => {
-        console.error("Geolocation error:", error);
         let message = "Unable to get your location";
-        
         switch(error.code) {
           case error.PERMISSION_DENIED:
             message = "Location access denied. Please:<br>1. Allow location access in your browser settings<br>2. Make sure location services are enabled on your device<br>3. Try refreshing the page and allow location when prompted";
@@ -864,21 +763,17 @@ class JobApplicationManager {
         }
         this.showStatus(message, "error");
       },
-      {
-        enableHighAccuracy: true,
-        timeout: 15000,
-        maximumAge: 0
-      }
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
     );
   }
 
+  // ===== Dynamic entries =====
   addEducation() {
     this.educationCount++;
     const container = document.getElementById("education-container");
     const div = document.createElement("div");
     div.classList.add("education-entry");
-    div.setAttribute('data-entry-id', this.educationCount);
-    
+    div.setAttribute('data-entry-id', String(this.educationCount));
     div.innerHTML = `
       ${this.educationCount > 1 ? `<button type="button" class="remove-btn" onclick="window.jobApp.removeEducation(${this.educationCount})"><i class="fas fa-times"></i></button>` : ''}
       <div class="form-grid-3">
@@ -913,7 +808,8 @@ class JobApplicationManager {
           <label><i class="fas fa-calendar-check"></i> Graduation Year *</label>
           <input type="number" name="tahunLulus${this.educationCount}" required min="1980" max="2030" placeholder="2024" />
         </div>
-      </div>`;
+      </div>
+    `;
     container.appendChild(div);
   }
 
@@ -923,11 +819,8 @@ class JobApplicationManager {
       this.showStatus("At least one education entry is required", "error");
       return;
     }
-    
     const entry = document.querySelector(`.education-entry[data-entry-id="${id}"]`);
-    if (entry) {
-      entry.remove();
-    }
+    if (entry) entry.remove();
   }
 
   addExperience() {
@@ -935,8 +828,7 @@ class JobApplicationManager {
     const container = document.getElementById("experience-container");
     const div = document.createElement("div");
     div.classList.add("experience-entry");
-    div.setAttribute('data-entry-id', this.experienceCount);
-    
+    div.setAttribute('data-entry-id', String(this.experienceCount));
     div.innerHTML = `
       ${this.experienceCount > 1 ? `<button type="button" class="remove-btn" onclick="window.jobApp.removeExperience(${this.experienceCount})"><i class="fas fa-times"></i></button>` : ''}
       <div class="form-grid-3">
@@ -970,7 +862,8 @@ class JobApplicationManager {
       <div class="form-group">
         <label><i class="fas fa-clock"></i> Duration</label>
         <input type="text" name="durasiKerja${this.experienceCount}" readonly placeholder="Duration will be calculated automatically" class="duration-field" />
-      </div>`;
+      </div>
+    `;
     container.appendChild(div);
   }
 
@@ -980,17 +873,14 @@ class JobApplicationManager {
       this.showStatus("At least one work experience entry is required", "error");
       return;
     }
-    
     const entry = document.querySelector(`.experience-entry[data-entry-id="${id}"]`);
-    if (entry) {
-      entry.remove();
-    }
+    if (entry) entry.remove();
   }
 
+  // ===== Collect & format =====
   collectEducation() {
     const entries = document.querySelectorAll(".education-entry");
-    const educationList = [];
-    
+    const list = [];
     entries.forEach((entry) => {
       const num = entry.getAttribute('data-entry-id');
       const jenjang = entry.querySelector(`select[name="jenjang${num}"]`)?.value?.trim() || '';
@@ -998,48 +888,33 @@ class JobApplicationManager {
       const institusi = entry.querySelector(`input[name="institusi${num}"]`)?.value?.trim() || '';
       const mulai = entry.querySelector(`input[name="tahunMulai${num}"]`)?.value?.trim() || '';
       const lulus = entry.querySelector(`input[name="tahunLulus${num}"]`)?.value?.trim() || '';
-      
       if (jenjang && jurusan && institusi && mulai && lulus) {
-        const formatted = `${jenjang} ${jurusan} - ${institusi} - ${mulai} - ${lulus}`;
-        educationList.push(formatted);
+        list.push(`${jenjang} ${jurusan} - ${institusi} - ${mulai} - ${lulus}`);
       }
     });
-    
-    return educationList;
+    return list;
   }
 
   collectExperience() {
     const entries = document.querySelectorAll(".experience-entry");
-    const experienceList = [];
-    
+    const list = [];
     entries.forEach((entry) => {
       const num = entry.getAttribute('data-entry-id');
-      const jabatanInput = entry.querySelector(`input[name="jabatan${num}"]`);
-      const perusahaanInput = entry.querySelector(`input[name="perusahaan${num}"]`);
-      const mulaiInput = entry.querySelector(`input[name="tanggalMulaiKerja${num}"]`);
-      const selesaiInput = entry.querySelector(`input[name="tanggalSelesaiKerja${num}"]`);
-      const statusSelect = entry.querySelector(`select[name="statusKerja${num}"]`);
-      const durasiInput = entry.querySelector(`input[name="durasiKerja${num}"]`);
-      
-      const jabatan = jabatanInput?.value?.trim() || '';
-      const perusahaan = perusahaanInput?.value?.trim() || '';
-      const mulai = mulaiInput?.value?.trim() || '';
-      const selesai = selesaiInput?.value?.trim() || "Present";
-      const status = statusSelect?.value?.trim() || '';
-      const durasi = durasiInput?.value?.trim() || '';
-      
-      console.log(`Experience Entry ${num}:`, {jabatan, perusahaan, mulai, selesai, status, durasi});
-      
+      const jabatan = entry.querySelector(`input[name="jabatan${num}"]`)?.value?.trim() || '';
+      const perusahaan = entry.querySelector(`input[name="perusahaan${num}"]`)?.value?.trim() || '';
+      const mulai = entry.querySelector(`input[name="tanggalMulaiKerja${num}"]`)?.value?.trim() || '';
+      const selesai = entry.querySelector(`input[name="tanggalSelesaiKerja${num}"]`)?.value?.trim() || "Present";
+      const status = entry.querySelector(`select[name="statusKerja${num}"]`)?.value?.trim() || '';
+      const durasi = entry.querySelector(`input[name="durasiKerja${num}"]`)?.value?.trim() || '';
+
       if (jabatan && perusahaan && mulai && status) {
         const startFormatted = this.formatDateForDisplay(mulai);
-        const endFormatted = selesai === "Present" ? "Present" : this.formatDateForDisplay(selesai);
+        const endFormatted = (selesai === "Present") ? "Present" : this.formatDateForDisplay(selesai);
         const durasiText = durasi ? ` (${durasi})` : '';
-        experienceList.push(`${jabatan} at ${perusahaan} (${startFormatted} - ${endFormatted})${durasiText} - ${status}`);
+        list.push(`${jabatan} at ${perusahaan} (${startFormatted} - ${endFormatted})${durasiText} - ${status}`);
       }
     });
-    
-    console.log('Collected Experience:', experienceList);
-    return experienceList;
+    return list;
   }
 
   formatDateForDisplay(dateString) {
@@ -1048,9 +923,10 @@ class JobApplicationManager {
     return `${day}-${month}-${year}`;
   }
 
+  // ===== Validation =====
   validateForm() {
     let isValid = true;
-    let errorMessages = [];
+    const errorMessages = [];
     let firstErrorField = null;
 
     this.clearAllErrors();
@@ -1085,28 +961,27 @@ class JobApplicationManager {
     if (emailField.value && !this.isValidEmail(emailField.value)) {
       isValid = false;
       const msg = 'Please enter a valid email address';
-      errorMessages.push(msg);
       this.markFieldAsError(emailField, msg);
       if (!firstErrorField) firstErrorField = emailField;
+      errorMessages.push(msg);
     }
 
     const phoneField = document.getElementById('nomorTelepon');
     if (phoneField.value && !this.isValidPhone(phoneField.value)) {
       isValid = false;
       const msg = 'Please enter a valid phone number (10-15 digits)';
-      errorMessages.push(msg);
       this.markFieldAsError(phoneField, msg);
       if (!firstErrorField) firstErrorField = phoneField;
+      errorMessages.push(msg);
     }
 
-    const educationEntries = document.querySelectorAll('.education-entry');
-    if (educationEntries.length === 0) {
+    const eduEntries = document.querySelectorAll('.education-entry');
+    if (eduEntries.length === 0) {
       isValid = false;
       errorMessages.push('At least one education entry is required');
     } else {
-      educationEntries.forEach((entry, index) => {
-        const inputs = entry.querySelectorAll('input[required], select[required]');
-        inputs.forEach(input => {
+      eduEntries.forEach((entry, index) => {
+        entry.querySelectorAll('input[required], select[required]').forEach(input => {
           if (!input.value || input.value.trim() === '') {
             isValid = false;
             const label = input.previousElementSibling?.textContent?.replace('*', '').trim() || 'Field';
@@ -1119,14 +994,13 @@ class JobApplicationManager {
       });
     }
 
-    const experienceEntries = document.querySelectorAll('.experience-entry');
-    if (experienceEntries.length === 0) {
+    const expEntries = document.querySelectorAll('.experience-entry');
+    if (expEntries.length === 0) {
       isValid = false;
       errorMessages.push('At least one work experience entry is required');
     } else {
-      experienceEntries.forEach((entry, index) => {
-        const inputs = entry.querySelectorAll('input[required], select[required]');
-        inputs.forEach(input => {
+      expEntries.forEach((entry, index) => {
+        entry.querySelectorAll('input[required], select[required]').forEach(input => {
           if (!input.value || input.value.trim() === '') {
             isValid = false;
             const label = input.previousElementSibling?.textContent?.replace('*', '').trim() || 'Field';
@@ -1143,18 +1017,12 @@ class JobApplicationManager {
       const uniqueErrors = [...new Set(errorMessages)];
       const errorCount = uniqueErrors.length;
       const displayErrors = uniqueErrors.slice(0, 5);
-      
       let statusMessage = `<strong>Found ${errorCount} error${errorCount > 1 ? 's' : ''}:</strong><br><ul style="margin: 8px 0; padding-left: 20px; text-align: left;">`;
-      displayErrors.forEach(err => {
-        statusMessage += `<li>${err}</li>`;
-      });
-      if (errorCount > 5) {
-        statusMessage += `<li><em>...and ${errorCount - 5} more error${errorCount - 5 > 1 ? 's' : ''}</em></li>`;
-      }
+      displayErrors.forEach(err => { statusMessage += `<li>${err}</li>`; });
+      if (errorCount > 5) statusMessage += `<li><em>...and ${errorCount - 5} more error${errorCount - 5 > 1 ? 's' : ''}</em></li>`;
       statusMessage += '</ul>';
-      
       this.showStatus(statusMessage, 'error');
-      
+
       if (firstErrorField) {
         setTimeout(() => {
           firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1162,189 +1030,159 @@ class JobApplicationManager {
         }, 100);
       }
     }
-
     return isValid;
   }
 
   markFieldAsError(field, message) {
     field.classList.add('error');
-    
     let validationMessage = field.parentElement.querySelector('.validation-message');
     if (!validationMessage) {
       validationMessage = document.createElement('div');
       validationMessage.className = 'validation-message';
       field.parentElement.appendChild(validationMessage);
     }
-    
     validationMessage.textContent = message;
     validationMessage.classList.add('error');
     validationMessage.style.display = 'block';
   }
 
   clearAllErrors() {
-    const errorFields = this.form.querySelectorAll('.error');
-    errorFields.forEach(field => {
-      field.classList.remove('error', 'success');
-    });
-
-    const validationMessages = this.form.querySelectorAll('.validation-message');
-    validationMessages.forEach(msg => {
+    this.form.querySelectorAll('.error').forEach(el => el.classList.remove('error', 'success'));
+    this.form.querySelectorAll('.validation-message').forEach(msg => {
       msg.textContent = '';
       msg.className = 'validation-message';
       msg.style.display = 'none';
     });
   }
 
-  isValidEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  }
+  isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
+  isValidPhone(phone) { return /^[0-9+\-\s]{10,15}$/.test(phone); }
 
-  isValidPhone(phone) {
-    return /^[0-9+\-\s]{10,15}$/.test(phone);
-  }
-
+  // ===== Submit =====
   async handleSubmit(e) {
     e.preventDefault();
-    
     this.status.style.display = "none";
-    
-    if (!this.validateForm()) {
-      return;
-    }
+    if (!this.validateForm()) return;
 
     const submitBtn = document.getElementById("submit-btn");
     const originalText = submitBtn.innerHTML;
-    
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
-    
+
     try {
       const experienceData = this.collectExperience();
       const educationData = this.collectEducation();
+      if (educationData.length === 0) throw new Error("Please add at least one education entry with all required fields filled");
+      if (experienceData.length === 0) throw new Error("Please add at least one work experience entry with all required fields filled");
 
-      if (educationData.length === 0) {
-        throw new Error("Please add at least one education entry with all required fields filled");
-      }
-      
-      if (experienceData.length === 0) {
-        throw new Error("Please add at least one work experience entry with all required fields filled");
-      }
-    
-      document.getElementById("pendidikanTerakhir").value = educationData.join("; ");
-      document.getElementById("pengalamanKerja").value = experienceData.join(", ");
+      (document.getElementById("pendidikanTerakhir") as HTMLInputElement).value = educationData.join("; ");
+      (document.getElementById("pengalamanKerja") as HTMLInputElement).value = experienceData.join(", ");
 
       const formData = new FormData(this.form);
-      
+
+      // Hanya izinkan field file tertentu
       const supportedFileFields = ['cv', 'photo', 'ktp', 'kk', 'ijazah'];
-      const allKeys = Array.from(formData.keys());
-      
-      allKeys.forEach(key => {
-        const value = formData.get(key);
-        if (value instanceof File && !supportedFileFields.includes(key)) {
-          console.log(`Removing unsupported file field: ${key}`);
-          formData.delete(key);
-        }
+      Array.from(formData.keys()).forEach((key) => {
+        const val = formData.get(key);
+        if (val instanceof File && !supportedFileFields.includes(key)) formData.delete(key);
       });
-      
-      console.log("=== FORM DATA BEING SENT ===");
-      const formDataObject = {};
-      for (let [key, value] of formData.entries()) {
-        if (value instanceof File) {
-          console.log(`${key}: [FILE] ${value.name} (${value.size} bytes, ${value.type})`);
-          formDataObject[key] = `[FILE] ${value.name}`;
-        } else {
-          console.log(`${key}: ${value}`);
-          formDataObject[key] = value;
-        }
-      }
-      console.log("=== FORM DATA OBJECT ===", formDataObject);
-      
-      const response = await fetch("https://qualita-indonesia.com/api/api/v1/applicants", {
+
+      const response = await fetch(apiJoin('applicants'), {
         method: "POST",
         body: formData
       });
-      
-      const responseText = await response.text();
-      console.log("=== SERVER RESPONSE ===");
-      console.log("Status:", response.status, response.statusText);
-      console.log("Response body:", responseText);
-      
-      let data;
-      try {
-        data = JSON.parse(responseText);
-      } catch (parseError) {
-        console.error("Failed to parse JSON response:", parseError);
-        throw new Error(`Server returned invalid response (${response.status}): ${responseText.substring(0, 200)}`);
-      }
-      
+
+      // Handle response (tanpa console log di prod)
+      const text = await response.text();
+      let data = {};
+      try { data = JSON.parse(text); } catch { /* biarkan fallback */ }
+
       if (!response.ok) {
-        let errorMessage = data.message || data.error || response.statusText;
-        
+        let msg = (data && (data.message || data.error)) || response.statusText;
         if (response.status === 400) {
           if (data.errors && Array.isArray(data.errors)) {
-            errorMessage = "Validation errors:<br>" + data.errors.map(err => `• ${err}`).join("<br>");
+            msg = "Validation errors:<br>" + data.errors.map((err) => `• ${err}`).join("<br>");
           } else if (data.details) {
-            errorMessage = `Bad Request: ${errorMessage}<br><small>${JSON.stringify(data.details)}</small>`;
+            msg = `Bad Request: ${msg}`;
           } else {
-            errorMessage = `Bad Request (400): ${errorMessage}<br><small>Check console for details</small>`;
+            msg = `Bad Request (400): ${msg}`;
           }
         } else if (response.status === 413) {
-          errorMessage = "File too large. Please reduce file sizes and try again.";
+          msg = "File too large. Please reduce file sizes and try again.";
         } else if (response.status === 500) {
-          errorMessage = "Server error. Please try again later or contact support.";
+          msg = "Server error. Please try again later or contact support.";
         }
-        
-        console.error("Server error details:", data);
-        throw new Error(errorMessage);
+        throw new Error(msg);
       }
-      
-      if (data.success) {
+
+      if (data && data.success) {
         this.showStatus("Application submitted successfully! We'll contact you soon.", "success");
         this.clearAllErrors();
         this.form.reset();
-        
         document.getElementById("education-container").innerHTML = '';
         document.getElementById("experience-container").innerHTML = '';
         this.educationCount = 0;
         this.experienceCount = 0;
         this.addEducation();
         this.addExperience();
-        
-        if (this.marker) {
-          this.map.removeLayer(this.marker);
-          this.marker = null;
-        }
-        
+        if (this.marker) { this.map.removeLayer(this.marker); this.marker = null; }
         const coordsDisplay = document.getElementById("location-coordinates-display");
-        if (coordsDisplay) {
-          coordsDisplay.style.display = "none";
-        }
-        
+        if (coordsDisplay) coordsDisplay.style.display = "none";
         this.status.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
       } else {
-        const errorDetail = data.message || data.error || "Submission failed";
-        throw new Error(errorDetail);
+        const errDetail = (data && (data.message || data.error)) || "Submission failed";
+        throw new Error(errDetail);
       }
     } catch (error) {
-      console.error("=== SUBMISSION ERROR ===", error);
-      let errorMessage = error.message;
-      
-      if (errorMessage.includes("Failed to fetch")) {
-        errorMessage = "Cannot connect to server. Please check if the server is running at http://localhost:4000";
-      } else if (errorMessage.includes("NetworkError")) {
-        errorMessage = "Network error. Please check your internet connection and try again.";
+      let msg = (error && error.message) || "Submission failed";
+      if (msg.includes("Failed to fetch")) {
+        msg = "Cannot connect to server. Please check your connection or server availability.";
       }
-      
-      this.showStatus(`<strong>Submission Failed</strong><br>${errorMessage}`, "error");
+      this.showStatus(`<strong>Submission Failed</strong><br>${msg}`, "error");
       this.status.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
     } finally {
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalText;
     }
   }
 
+  // ===== Duration calc =====
+  calculateDuration(entry) {
+    if (!entry) return;
+    const num = entry.getAttribute('data-entry-id');
+    const startDateInput = entry.querySelector(`[name="tanggalMulaiKerja${num}"]`);
+    const endDateInput = entry.querySelector(`[name="tanggalSelesaiKerja${num}"]`);
+    const durationInput = entry.querySelector(`[name="durasiKerja${num}"]`);
+    const statusSelect = entry.querySelector(`[name="statusKerja${num}"]`);
+    if (!startDateInput || !durationInput) return;
+
+    const startDate = startDateInput.value;
+    let endDate = endDateInput?.value;
+    if (statusSelect && statusSelect.value === 'Still Working') {
+      const today = new Date();
+      endDate = today.toISOString().split('T')[0];
+    }
+    if (!startDate) { durationInput.value = ''; return; }
+    if (!endDate && statusSelect?.value !== 'Still Working') { durationInput.value = ''; return; }
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    if (end < start) { durationInput.value = 'Invalid dates'; return; }
+
+    let years = end.getFullYear() - start.getFullYear();
+    let months = end.getMonth() - start.getMonth();
+    let days = end.getDate() - start.getDate();
+    if (days < 0) { months--; const prevMonth = new Date(end.getFullYear(), end.getMonth(), 0); days += prevMonth.getDate(); }
+    if (months < 0) { years--; months += 12; }
+
+    const parts = [];
+    if (years > 0) parts.push(`${years} year${years > 1 ? 's' : ''}`);
+    if (months > 0) parts.push(`${months} month${months > 1 ? 's' : ''}`);
+    if (days > 0) parts.push(`${days} day${days > 1 ? 's' : ''}`);
+    durationInput.value = parts.length > 0 ? parts.join(', ') : '0 days';
+  }
+
+  // ===== UI status =====
   showStatus(message, type) {
     this.status.innerHTML = `
       <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
@@ -1352,7 +1190,7 @@ class JobApplicationManager {
     `;
     this.status.className = `status ${type}`;
     this.status.style.display = "flex";
-    
+
     clearTimeout(this._statusTimer);
     if (type !== 'loading') {
       this._statusTimer = setTimeout(() => {
