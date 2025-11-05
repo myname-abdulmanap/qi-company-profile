@@ -3,7 +3,7 @@ title: "Testing Post Pertama"
 category: "careers"
 slug: "testing-post-pertama"
 description: "Deskripsi singkat untuk testing post."
-heroImage: "https://via.placeholder.com/600x400.png"
+heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1758165014/uploads/ehjc7qhtlouxmvyrgdre.png"
 status: "draft"
 type: "Freelancer"
 locations:
