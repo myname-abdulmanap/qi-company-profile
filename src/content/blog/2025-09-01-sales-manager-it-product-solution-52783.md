@@ -4,15 +4,17 @@ category: "careers"
 slug: "sales-manager-it-product-solution-52783"
 description: "Berpengalaman dalam penjualan produk & solusi IT, business development, serta manajemen tim sales. Terbukti mampu membangun relasi dengan klien korporasi, mencapai target revenue, dan menghadirkan solusi teknologi sesuai kebutuhan bisnis."
 heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1756700142/uploads/vjoujvcdpmmdgr4y0xkd.png"
-status: "published"
+status: "closed"
 type: "Non Freelancer"
 locations:
   - name: "Jakarta"
     status: "available"
   - name: "Bekasi"
-    status: "availabl"
+    status: "available"
 pubDate: "2025-09-04T01:58:59.521Z"
+endDate: "2025-11-05T15:17:00Z"
 ---
+
 
 
 
