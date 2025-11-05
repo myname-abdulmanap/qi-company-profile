@@ -8,9 +8,9 @@ status: "published"
 type: "Non Freelancer"
 locations:
   - name: "Jakarta"
-    status: "active"
+    status: "available"
   - name: "Bekasi"
-    status: "active"
+    status: "available"
 pubDate: "2025-09-04T01:58:59.521Z"
 ---
 
