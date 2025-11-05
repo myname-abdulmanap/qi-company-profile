@@ -1342,7 +1342,7 @@ class JobApplicationManager {
       }
       console.log("=== FORM DATA OBJECT ===", formDataObject);
       
-      const response = await fetch("http://localhost:4000/api/v1/applicants", {
+      const response = await fetch("https://qualita-indonesia.com/api/api/v1/applicants", {
         method: "POST",
         body: formData
       });
