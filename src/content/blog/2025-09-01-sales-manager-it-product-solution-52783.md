@@ -10,7 +10,7 @@ locations:
   - name: "Jakarta"
     status: "available"
   - name: "Bekasi"
-    status: "full"
+    status: "availabl"
 pubDate: "2025-09-04T01:58:59.521Z"
 ---
 
