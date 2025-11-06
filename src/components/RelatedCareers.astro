@@ -1,79 +1,78 @@
 ---
+// RelatedJobs.astro
 import { getCollection } from 'astro:content';
 import FormattedDate from './FormattedDate.astro';
 
-// Props need to match what's actually being passed from the parent component
 export interface Props {
-  // We only specify what we actually receive/need
   category: string | string[];
 }
 
-// Get the current post's data from props
 const { category } = Astro.props;
 
-// Get the current URL to extract the slug
+// Ambil slug saat ini dari URL
 const currentPath = Astro.url.pathname;
 const currentSlug = currentPath.split('/').filter(Boolean).pop();
 
-// Create an array of categories regardless of input type
-const categories = Array.isArray(category) ? category : [category];
+// Normalisasi kategori input jadi array
+const categories = (Array.isArray(category) ? category : [category]).filter(Boolean);
 
-// Get all blog posts
+// Ambil semua post (ganti 'blog' ke koleksi kamu bila perlu, mis. 'careers')
 const allPosts = await getCollection('blog');
 
-// Find related posts based on matching categories, excluding the current post
+// Filter related posts:
+// - Bukan post saat ini
+// - Status harus 'published' (case-insensitive)
+// - Ada kategori yang match (case-insensitive)
 const relatedPosts = allPosts
   .filter((post) => {
-    // Skip the current post by comparing slug in URL path
+    // Skip current
     if (post.data.slug === currentSlug) return false;
 
-    // Skip posts with status 'draft'
-    if (post.data.status === 'draft') return false;
+    // Hanya published
+    const status = String(post.data.status ?? '').toLowerCase();
+    if (status !== 'published') return false;
 
-    // Get post categories, ensuring we handle both string and array
+    // Match kategori
     const postCats = Array.isArray(post.data.category)
       ? post.data.category
       : [post.data.category];
 
-    // Check if there's any category match
-    return categories.some((category) =>
-      postCats.some(
-        (postCategory) =>
-          postCategory?.toLowerCase?.() === category?.toLowerCase?.()
-      )
-    );
-  })
-  // Sort by publication date (latest first)
-  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
-  // Get the top 3 related posts
-  .slice(0, 3);
+    const hasCategoryMatch =
+      categories.length > 0 &&
+      categories.some((cat) =>
+        postCats.some((pc) => pc?.toLowerCase?.() === cat?.toLowerCase?.())
+      );
 
+    return hasCategoryMatch;
+  })
+  // Urutkan terbaru dulu
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  // Ambil 3 teratas
+  .slice(0, 3);
 ---
 
-{
-  relatedPosts.length > 0 && (
-    <div class="related-posts">
-      <h3 class="related-posts-title">Related Jobs</h3>
-      <div class="related-posts-container">
-        {relatedPosts.map((post) => (
-          <a href={`/careers/${post.data.slug}`} class="related-post-card">
-            {post.data.heroImage && (
-              <div class="related-post-image">
-                <img src={post.data.heroImage} alt={post.data.title} loading="lazy" />
-              </div>
-            )}
-            <div class="related-post-content">
-              <h4 class="related-post-title">{post.data.title}</h4>
-              <p class="related-post-date">
-                <FormattedDate date={post.data.pubDate} />
-              </p>
+{relatedPosts.length > 0 && (
+  <div class="related-posts">
+    <h3 class="related-posts-title">Related Jobs</h3>
+    <div class="related-posts-container">
+      {relatedPosts.map((post) => (
+        <a href={`/careers/${post.data.slug}`} class="related-post-card">
+          {post.data.heroImage && (
+            <div class="related-post-image">
+              <img src={post.data.heroImage} alt={post.data.title} loading="lazy" />
             </div>
-          </a>
-        ))}
-      </div>
+          )}
+          <div class="related-post-content">
+            <h4 class="related-post-title">{post.data.title}</h4>
+            <p class="related-post-date">
+              <FormattedDate date={post.data.pubDate} />
+            </p>
+          </div>
+        </a>
+      ))}
     </div>
-  )
-}
+  </div>
+)}
 
 <style>
   .related-posts {
@@ -100,9 +99,7 @@ const relatedPosts = allPosts
     background-color: var(--bg-color);
     border-radius: 8px;
     overflow: hidden;
-    transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     text-decoration: none;
     height: 100%;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
@@ -131,7 +128,6 @@ const relatedPosts = allPosts
 
   .related-post-content {
     padding: 0.85rem;
-
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -152,13 +148,11 @@ const relatedPosts = allPosts
     margin: 0;
   }
 
-  /* Responsive styles */
   @media (max-width: 768px) {
     .related-posts-container {
       grid-template-columns: repeat(2, 1fr);
       gap: 0.8rem;
     }
-
     .related-post-image {
       height: 110px;
     }
@@ -168,11 +162,9 @@ const relatedPosts = allPosts
     .related-posts-container {
       grid-template-columns: 1fr;
     }
-
     .related-post-image {
       height: 130px;
     }
-
     .related-posts-title {
       font-size: 1.2rem;
       margin-bottom: 0.75rem;
