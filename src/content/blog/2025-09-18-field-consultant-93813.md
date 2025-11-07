@@ -5,9 +5,13 @@ slug: "field-consultant-93813"
 description: "Field Consultant bertugas mempromosikan produk pertanian, melakukan survei lapangan, mendampingi petani, serta mengelola program dan kegiatan edukasi."
 heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1758165014/uploads/ehjc7qhtlouxmvyrgdre.png"
 status: "published"
+type: "Non Freelancer"
+locations:
+  - name: "Seluruh Indonesia"
+    status: "available"
 pubDate: "2025-09-18T03:13:56.659Z"
-
 ---
+
 
 # Tanggung Jawab Pekerjaan
 - Mengidentifikasi potensi pasar/wilayah baru untuk mempromosikan produk agrikultur FMC
