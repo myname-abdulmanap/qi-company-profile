@@ -5,9 +5,15 @@ slug: "product-manager-95670"
 description: "Product Manager dengan keahlian dalam memahami kebutuhan klien, menyusun solusi teknis, serta mengelola roadmap produk untuk mendukung pertumbuhan bisnis."
 heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1758092707/uploads/gu4ujm4lhjxoifybhzmv.png"
 status: "published"
+type: "Non Freelancer"
+locations:
+  - name: "Jakarta"
+    status: "available"
+  - name: "Bekasi"
+    status: "available"
 pubDate: "2025-09-17T07:12:34.481Z"
-
 ---
+
 
 
 # Kualifikasi :
