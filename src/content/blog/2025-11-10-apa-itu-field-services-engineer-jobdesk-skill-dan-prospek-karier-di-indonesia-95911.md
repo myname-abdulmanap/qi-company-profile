@@ -10,6 +10,7 @@ pubDate: "2025-11-10T04:59:53.654Z"
 ---
 
 
+
 # Apa Itu Field Service Engineer? Jobdesk, Skill, dan Prospek Karier di Indonesia
 
 **Qualita Indonesia** – Dalam era transformasi digital dan infrastruktur yang terus berkembang, peran *Field Service Engineer* (FSE) dan *Field Engineer* kian strategis di berbagai industri. Dari telekomunikasi, utilitas energi, otomasi pabrik, kesehatan, ritel, hingga *smart infrastructure*, mereka adalah garda terdepan yang memastikan sistem dan perangkat beroperasi optimal di lokasi pelanggan. 
@@ -184,10 +185,10 @@ Mayoritas perusahaan mencari lulusan D3/S1 Teknik (Elektro, Informatika, Telekom
 
 Sertifikasi membantu menstandarkan kompetensi dan mempercepat *trust* pelanggan. Pilih yang relevan dengan industri sasaran:
 
-- * Jaringan: CompTIA Network+, CCNA
-- * Sistem/Keamanan: CompTIA A+, Linux Essentials, Security+
-- * Otomasi/Instrumentasi: ISA/IEC dasar, PLC vendor training
-- * Keselamatan: K3 Umum, *Working at Height*, *Electrical Safety*
+- Jaringan: CompTIA Network+, CCNA
+- Sistem/Keamanan: CompTIA A+, Linux Essentials, Security+
+- Otomasi/Instrumentasi: ISA/IEC dasar, PLC vendor training
+- Keselamatan: K3 Umum, *Working at Height*, *Electrical Safety*
 
 ---
 
@@ -213,10 +214,10 @@ FSE dibutuhkan di sektor telekomunikasi (BTS, *microwave*, *fiber*), manufaktur 
 
 Tantangan tipikal mencakup akses lokasi sulit, waktu respons terbatas, suku cadang tidak tersedia, variasi konfigurasi antarsitus, hingga komunikasi multi-pihak. Kuncinya adalah persiapan matang, *spare-part strategy*, *knowledge base* yang baik, dan koordinasi cepat.
 
-- * *Pre-visit checklist* & *spare kit* minimal
-- * *Remote triage* untuk memperkecil waktu di lokasi
-- * Dokumentasi standar dan *lessons learned* terstruktur
-- * Eskalasi jelas, jalur komunikasi satu pintu
+- Pre-visit checklist* & *spare kit* minimal
+- Remote triage* untuk memperkecil waktu di lokasi
+- Dokumentasi standar dan *lessons learned* terstruktur
+-  Eskalasi jelas, jalur komunikasi satu pintu
 
 ---
 
@@ -224,10 +225,10 @@ Tantangan tipikal mencakup akses lokasi sulit, waktu respons terbatas, suku cada
 
 Untuk menonjol saat melamar *Field Service Engineer*, fokus pada bukti *hands-on* dan *problem-solving* nyata. Tunjukkan proyek, sertifikat, dan portofolio yang relevan.
 
-- * Tulis pengalaman lapangan dengan metrik (contoh: peningkatan FTFR, pemangkasan MTTR)
-- * Sertakan dokumentasi contoh (checklist, RCA, foto *before–after*)
-- * Tekankan soft skill: komunikasi, *time management*, dan keselamatan kerja
-- * Siapkan studi kasus singkat saat wawancara (alur diagnosa, keputusan teknis)
+- Tulis pengalaman lapangan dengan metrik (contoh: peningkatan FTFR, pemangkasan MTTR)
+- Sertakan dokumentasi contoh (checklist, RCA, foto *before–after*)
+- Tekankan soft skill: komunikasi, *time management*, dan keselamatan kerja
+- Siapkan studi kasus singkat saat wawancara (alur diagnosa, keputusan teknis)
 
 
 ---
