@@ -1,0 +1,306 @@
+---
+// src/components/AutoTOC.astro
+// Inject TOC otomatis setelah paragraf pertama, compact, collapsible, bernomor
+---
+<div id="auto-toc-placeholder"></div>
+
+<script>
+  function injectAutoTOC() {
+    const articleBody = document.querySelector('.article-body');
+    if (!articleBody) return;
+
+    const firstParagraph = articleBody.querySelector('p');
+    if (!firstParagraph) return;
+
+    // Cegah duplikasi
+    if (document.getElementById('auto-toc-container')) return;
+
+    // Kumpulkan H2 & H3 setelah paragraf pertama
+    const allHeadings = articleBody.querySelectorAll('h2, h3');
+    const headings = Array.from(allHeadings).filter((heading) => {
+      return (
+        firstParagraph.compareDocumentPosition(heading) &
+        Node.DOCUMENT_POSITION_FOLLOWING
+      );
+    });
+
+    if (headings.length === 0) return;
+
+    // Pastikan setiap heading punya ID
+    headings.forEach((heading) => {
+      if (!heading.id) {
+        const id = heading.textContent
+          .toLowerCase()
+          .trim()
+          .replace(/[^\w\s-]/g, '')
+          .replace(/\s+/g, '-');
+        heading.id = id;
+      }
+    });
+
+    // Hitung nomor untuk H2/H3
+    let h2Count = 0;
+    let h3Count = 0;
+    const numbered = headings.map((h) => {
+      if (h.tagName.toLowerCase() === 'h2') {
+        h2Count += 1;
+        h3Count = 0;
+        return { el: h, level: 'h2', num: String(h2Count) };
+      } else {
+        h3Count += 1;
+        return { el: h, level: 'h3', num: `${h2Count}.${h3Count}` };
+      }
+    });
+
+    // Simpan collapsed state per halaman
+    const storageKey = `auto-toc-collapsed:${location.pathname}`;
+    const stored = sessionStorage.getItem(storageKey);
+    const isInitiallyCollapsed = stored === null ? true : stored === 'true';
+
+    let tocHTML = `
+      <div class="auto-toc-container ${isInitiallyCollapsed ? 'is-collapsed' : ''}" id="auto-toc-container">
+        <div class="auto-toc-header">
+          <div class="auto-toc-left">
+            <h3 class="auto-toc-heading">Table of Contents</h3>
+          </div>
+          <button class="auto-toc-toggle" type="button" aria-expanded="${!isInitiallyCollapsed}" aria-controls="auto-toc-content">
+            <span class="auto-toc-toggle-label">${isInitiallyCollapsed ? 'Show' : 'Hide'}</span>
+            <svg class="auto-toc-chevron" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" />
+            </svg>
+          </button>
+        </div>
+        <div class="auto-toc-content" id="auto-toc-content" ${isInitiallyCollapsed ? 'hidden' : ''}>
+          <div class="auto-toc-list">
+    `;
+
+    // Bangun item dengan nomor
+    numbered.forEach(({ el, level, num }) => {
+      const id = el.id;
+      const text = el.textContent.trim();
+      tocHTML += `
+        <li class="auto-toc-item auto-toc-${level}">
+          <a href="#${id}" class="auto-toc-link">
+            <span class="auto-toc-num">${num}</span>
+            <span class="auto-toc-text">${text}</span>
+          </a>
+        </li>
+      `;
+    });
+
+    tocHTML += `
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Sisipkan setelah paragraf pertama
+    firstParagraph.insertAdjacentHTML('afterend', tocHTML);
+
+    // Toggle logic
+    const container = document.getElementById('auto-toc-container');
+    const toggleBtn = container.querySelector('.auto-toc-toggle');
+    const toggleLabel = toggleBtn.querySelector('.auto-toc-toggle-label');
+    const chevron = toggleBtn.querySelector('.auto-toc-chevron');
+    const content = container.querySelector('.auto-toc-content');
+
+    const setCollapsed = (collapsed) => {
+      container.classList.toggle('is-collapsed', collapsed);
+      toggleBtn.setAttribute('aria-expanded', String(!collapsed));
+      toggleLabel.textContent = collapsed ? 'Show' : 'Hide';
+      if (collapsed) {
+        content.hidden = true;
+        chevron.style.transform = 'rotate(0deg)';
+      } else {
+        content.hidden = false;
+        chevron.style.transform = 'rotate(180deg)';
+      }
+      sessionStorage.setItem(storageKey, String(collapsed));
+    };
+
+    toggleBtn.addEventListener('click', () => {
+      const collapsed = container.classList.contains('is-collapsed');
+      setCollapsed(!collapsed);
+    });
+
+    // Smooth scroll + highlight aktif
+    const tocLinks = container.querySelectorAll('.auto-toc-link');
+    tocLinks.forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href').slice(1);
+        const targetElement = document.getElementById(targetId);
+
+        if (targetElement) {
+          const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          const offset = 90;
+          const rectTop = targetElement.getBoundingClientRect().top;
+          const offsetPosition = rectTop + window.pageYOffset - offset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: prefersReduced ? 'auto' : 'smooth',
+          });
+
+          history.pushState(null, '', `#${targetId}`);
+        }
+      });
+    });
+
+    highlightActiveSection(headings, tocLinks);
+  }
+
+  function highlightActiveSection(headings, tocLinks) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            tocLinks.forEach((link) => link.classList.remove('active'));
+            const activeLink = Array.from(tocLinks).find(
+              (link) => link.getAttribute('href') === `#${id}`
+            );
+            if (activeLink) activeLink.classList.add('active');
+          }
+        });
+      },
+      { rootMargin: '-100px 0px -66%' }
+    );
+
+    headings.forEach((heading) => observer.observe(heading));
+  }
+
+  document.addEventListener('DOMContentLoaded', injectAutoTOC);
+  document.addEventListener('astro:page-load', injectAutoTOC);
+</script>
+
+<style is:global>
+  /* ====== Compact, readable, bernomor ====== */
+  .auto-toc-container {
+    background: var(--bg-main);
+   
+    border-radius: 8px;
+    padding: 0.75rem 0.85rem; 
+    margin: 0.9rem 0;
+  }
+
+  .auto-toc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+  }
+
+  .auto-toc-left {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    min-width: 0;
+  }
+
+  .auto-toc-heading {
+    font-size: 1rem;            /* normal */
+    font-weight: 300;
+    margin: 0;
+    color: var(--text-color, #111827);
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .auto-toc-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    font-size: .8rem;
+    font-weight: 600;
+    padding: .28rem .45rem;
+    border-radius: 6px;
+    border: 1px solid color-mix(in oklab, var(--border-color, #e5e7eb) 60%, transparent 40%);
+    background: transparent;
+    color: var(--text-color, #111827);
+    cursor: pointer;
+    transition: background .15s ease, border-color .15s ease;
+  }
+  .auto-toc-toggle:hover {
+    background: color-mix(in oklab, var(--bg-main, #fff) 6%, transparent 94%);
+    border-color: color-mix(in oklab, var(--border-color, #e5e7eb) 80%, transparent 20%);
+  }
+
+  .auto-toc-chevron {
+    width: 14px;
+    height: 14px;
+    transition: transform .2s ease;
+    opacity: .75;
+  }
+  .auto-toc-container:not(.is-collapsed) .auto-toc-chevron { transform: rotate(180deg); }
+
+  .auto-toc-content {
+    margin-top: .55rem;
+    font-size: .95rem; /* normal/readable */
+    line-height: 1.45;
+  }
+
+  .auto-toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .auto-toc-item { margin: 0; }
+
+  .auto-toc-h2 { margin-top: .18rem; }
+  .auto-toc-h2:first-child { margin-top: 0; }
+  .auto-toc-h3 { padding-left: 1.25rem; margin-top: .08rem; }
+
+  /* Link warna primary */
+  .auto-toc-link {
+    display: flex;
+    align-items: baseline;
+    gap: .5rem;
+    padding: .22rem .45rem;
+    text-decoration: none;
+    color: var(--text-color, #111827); /* PRIMARY */
+    border-radius: 6px;
+    transition: background .15s ease, padding .15s ease, color .15s ease;
+  }
+
+  .auto-toc-num {
+    min-width: 2.25rem; /* ruang untuk "10." dan "1.10" */
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    opacity: .9;
+  }
+
+  .auto-toc-text {
+    flex: 1 1 auto;
+  }
+
+  .auto-toc-link:hover {
+    background-color: var(--bg-main);
+    padding-left: .6rem;
+  }
+
+  .auto-toc-link.active {
+    font-weight: 700;
+    background-color: color-mix(in oklab, var(--border-color, #e5e7eb) 30%, transparent);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .auto-toc-container { padding: 0.65rem 0.75rem; margin: 0.8rem 0; }
+    .auto-toc-heading { font-size: .95rem; }
+    .auto-toc-content { font-size: .92rem; }
+    .auto-toc-h3 { padding-left: 1rem; }
+    .auto-toc-toggle { font-size: .76rem; padding: .24rem .4rem; }
+  }
+
+  @media (max-width: 480px) {
+    .auto-toc-container { padding: 0.55rem 0.7rem; }
+    .auto-toc-link { padding: .2rem .4rem; }
+    .auto-toc-heading { font-size: .92rem; }
+    .auto-toc-content { font-size: .9rem; }
+    .auto-toc-num { min-width: 2rem; }
+  }
+</style>
