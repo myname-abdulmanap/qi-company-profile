@@ -10,6 +10,7 @@ pubDate: "2025-11-10T04:59:53.654Z"
 ---
 
 
+
 # Apa Itu Field Service Engineer? Jobdesk, Skill, dan Prospek Karier di Indonesia
 
 **Qualita Indonesia** – Dalam era transformasi digital dan infrastruktur yang terus berkembang, peran *Field Service Engineer* (FSE) dan *Field Engineer* kian strategis di berbagai industri. Dari telekomunikasi, utilitas energi, otomasi pabrik, kesehatan, ritel, hingga *smart infrastructure*, mereka adalah garda terdepan yang memastikan sistem dan perangkat beroperasi optimal di lokasi pelanggan. 
@@ -159,7 +160,7 @@ FSE efektif menggabungkan *hard skill* dan *soft skill*. Secara teknis, mereka m
 
 ## Alat & Software yang Umum Digunakan
 
-![Flat lay peralatan FSE dengan multimeter, tools, dan laptop](https://images.unsplash.com/photo-1580193483776-cf5503049253?w=800&h=400&fit=crop)
+![Flat lay peralatan FSE dengan multimeter, tools, dan laptop](https://images.unsplash.com/photo-1581094794329-c8112a89af12)
 
 Dalam tugasnya, FSE memanfaatkan *toolkit* terstandar: *multimeter*, *oscilloscope* ringan, *crimping tool*, *labeling*, serta *laptop* dengan *diagnostic suite*. Di sisi perangkat lunak, mereka memakai aplikasi *field service management* untuk *dispatching/Ticketing*, *remote monitoring* (IoT/SCADA/NMS), *firmware flasher*, *terminal/SSH*, *VPN*, dan *documentation suite*. Integrasi ini mempercepat respons, memastikan *traceability*, serta memudahkan audit layanan.
 
