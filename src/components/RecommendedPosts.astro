@@ -1,0 +1,55 @@
+---
+import { getCollection } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+
+
+export interface Props {
+title?: string;
+limit?: number; // default 5
+}
+
+
+const { title = 'Recommended Articles', limit = 5 } = Astro.props as Props;
+
+
+const currentPath = Astro.url.pathname;
+const currentSlug = currentPath.split('/').filter(Boolean).pop();
+
+
+const allPosts = await getCollection('blog');
+
+
+// Site-wide latest, exclude current, filter out drafts/closed
+const recPosts = allPosts
+.filter((post) => {
+if (post.data.slug === currentSlug) return false;
+const st = (post.data.status || 'published').toLowerCase();
+return st !== 'draft' && st !== 'closed';
+})
+.sort((a, b) => (b.data.pubDate?.getTime?.() ?? 0) - (a.data.pubDate?.getTime?.() ?? 0))
+.slice(0, Math.max(1, limit));
+---
+{recPosts.length > 0 && (
+<div class="sidebar-section">
+<h3 class="sidebar-title">{title}</h3>
+<ul class="popular-posts-list">
+{recPosts.map((post) => (
+<li class="popular-post-item">
+<div class="popular-post-thumbnail">
+{post.data.heroImage ? (
+<img src={post.data.heroImage} alt={post.data.title} loading="lazy" decoding="async" />
+) : (
+<img src="https://res.cloudinary.com/dwkkbhn4z/image/upload/v1762747424/uploads/rmuzxuwvdseuq0ni04dp.webp" alt="thumbnail" loading="lazy" decoding="async" />
+)}
+</div>
+<div class="popular-post-content">
+<a href={`/posts/${post.data.slug}`}>{post.data.title}</a>
+<div class="popular-post-date">
+<FormattedDate date={post.data.pubDate} />
+</div>
+</div>
+</li>
+))}
+</ul>
+</div>
+)}
