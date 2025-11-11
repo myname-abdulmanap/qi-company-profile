@@ -9,6 +9,7 @@ type: "Non Freelancer"
 pubDate: "2025-11-10T04:59:53.654Z"
 ---
 
+
 # Apa Itu Field Service Engineer? Jobdesk, Skill, dan Prospek Karier di Indonesia
 
 **Qualita Indonesia** – Dalam era transformasi digital dan infrastruktur yang terus berkembang, peran *Field Service Engineer* (FSE) dan *Field Engineer* kian strategis di berbagai industri. Dari telekomunikasi, utilitas energi, otomasi pabrik, kesehatan, ritel, hingga *smart infrastructure*, mereka adalah garda terdepan yang memastikan sistem dan perangkat beroperasi optimal di lokasi pelanggan. 
@@ -19,7 +20,7 @@ Di tengah kompleksitas proyek, ekspektasi *uptime* yang tinggi, serta kebutuhan 
 
 ## Definisi Field Service Engineer
 
-![Engineer dengan helm safety memeriksa peralatan teknis di lapangan](https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&h=400&fit=crop)
+![Engineer dengan helm safety memeriksa peralatan teknis di lapangan](https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=400&fit=crop)
 
 *Field Service Engineer* adalah profesional teknis yang bekerja di lapangan (*on-site*) untuk melakukan instalasi, konfigurasi, pemeliharaan preventif, perbaikan, dan *troubleshooting* pada perangkat atau sistem teknologi milik pelanggan. Berbeda dari peran teknis yang dominan bekerja di kantor atau laboratorium, FSE menghabiskan sebagian besar waktunya berpindah lokasi proyek, menganalisis kondisi nyata, serta menerjemahkan standar teknis menjadi implementasi yang andal. 
 
@@ -181,9 +182,9 @@ Siklus kerja FSE biasanya mengikuti alur yang konsisten agar SLA terpenuhi denga
 
 ## Kualifikasi & Latar Pendidikan
 
-![Graduation cap dengan peralatan engineering dan sertifikat](https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&h=400&fit=crop)
+Mayoritas perusahaan mencari lulusan D3/S1 Teknik (Elektro, Informatika, Telekomunikasi, Mekatronika, Instrumentasi, atau sejenis), namun *bootcamp* dan pengalaman *hands-on* yang kuat juga sangat dihargai. 
 
-Mayoritas perusahaan mencari lulusan D3/S1 Teknik (Elektro, Informatika, Telekomunikasi, Mekatronika, Instrumentasi, atau sejenis), namun *bootcamp* dan pengalaman *hands-on* yang kuat juga sangat dihargai. Kandidat ideal menguasai dasar elektrikal, jaringan, sistem operasi, keamanan dasar, dan membaca dokumen teknis berbahasa Inggris. Sertifikasi akan memperkuat daya saing.
+Kandidat ideal menguasai dasar elektrikal, jaringan, sistem operasi, keamanan dasar, dan membaca dokumen teknis berbahasa Inggris. Sertifikasi akan memperkuat daya saing.
 
 
 
