@@ -1,5 +1,5 @@
 ---
-// src/pages/posts/[slug].astro (contoh path; sesuaikan dgn project-mu)
+// src/pages/posts/[slug].astro (contoh path)
 import type { CollectionEntry } from "astro:content";
 import BaseHead from "../components/BaseHead.astro";
 import HeaderBlog from "../components/HeaderBlog.astro";
@@ -11,9 +11,7 @@ import SosialShareButtons from "../components/SosialShareButtons.astro";
 import TableOfContents from "../components/TableOfContents.astro";
 import { ClientRouter } from "astro:transitions";
 
-type Props = CollectionEntry<"blog">["data"] & {
-  slug: string;
-};
+type Props = CollectionEntry<"blog">["data"] & { slug: string };
 
 // Props dari parent/route
 const currentUrl = new URL(Astro.url.pathname, Astro.site);
@@ -25,28 +23,28 @@ const site = Astro.site?.href ?? "";
 const firstCat = categories?.[0] ?? "Uncategorized";
 const firstCatSlug = encodeURIComponent(firstCat.toLowerCase());
 
-// BreadcrumbList object → akan di-JSON.stringify
+// BreadcrumbList object → nanti di-JSON.stringify
 const breadcrumbLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
-  itemListElement: [
+  "itemListElement": [
     {
       "@type": "ListItem",
-      position: 1,
-      name: "Posts",
-      item: new URL("posts", site).toString()
+      "position": 1,
+      "name": "Posts",
+      "item": new URL("posts", site).toString()
     },
     {
       "@type": "ListItem",
-      position: 2,
-      name: firstCat,
-      item: new URL(`posts/category/${firstCatSlug}`, site).toString()
+      "position": 2,
+      "name": firstCat,
+      "item": new URL(`posts/category/${firstCatSlug}`, site).toString()
     },
     {
       "@type": "ListItem",
-      position: 3,
-      name: title,
-      item: currentUrl.toString()
+      "position": 3,
+      "name": title,
+      "item": currentUrl.toString()
     }
   ]
 };
@@ -55,10 +53,11 @@ const breadcrumbLd = {
   <head>
     <BaseHead title={title} description={description} />
 
-    <!-- Schema.org Breadcrumb (valid & dievaluasi) -->
-    <script type="application/ld+json">
-      {JSON.stringify(breadcrumbLd)}
-    </script>
+    <!-- Schema.org Breadcrumb (pakai set:html agar JSON mentah disisipkan) -->
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(breadcrumbLd)}
+    />
 
     <style>
       /* Smooth rendering */
@@ -82,7 +81,7 @@ const breadcrumbLd = {
         max-width: 720px;
       }
 
-      /* ============ Breadcrumb ============ */
+      /* ============ Breadcrumb UI ============ */
       .blog-breadcrumb {
         display: flex;
         align-items: center;
