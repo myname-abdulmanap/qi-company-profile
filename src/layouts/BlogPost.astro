@@ -1,4 +1,5 @@
 ---
+// src/pages/posts/[slug].astro (contoh path; sesuaikan dgn project-mu)
 import type { CollectionEntry } from "astro:content";
 import BaseHead from "../components/BaseHead.astro";
 import HeaderBlog from "../components/HeaderBlog.astro";
@@ -8,32 +9,55 @@ import RelatedPosts from "../components/RelatedPosts.astro";
 import PopularPosts from "../components/PopularPosts.astro";
 import SosialShareButtons from "../components/SosialShareButtons.astro";
 import TableOfContents from "../components/TableOfContents.astro";
+import { ClientRouter } from "astro:transitions";
+
 type Props = CollectionEntry<"blog">["data"] & {
   slug: string;
 };
 
+// Props dari parent/route
 const currentUrl = new URL(Astro.url.pathname, Astro.site);
 const { title, description, pubDate, updatedDate, heroImage, category, status } = Astro.props;
-import { ClientRouter } from "astro:transitions";
 
+// Normalisasi kategori
 const categories = Array.isArray(category) ? category : [category];
----
+const site = Astro.site?.href ?? "";
+const firstCat = categories?.[0] ?? "Uncategorized";
+const firstCatSlug = encodeURIComponent(firstCat.toLowerCase());
 
+// BreadcrumbList object → akan di-JSON.stringify
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Posts",
+      item: new URL("posts", site).toString()
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: firstCat,
+      item: new URL(`posts/category/${firstCatSlug}`, site).toString()
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: title,
+      item: currentUrl.toString()
+    }
+  ]
+};
+---
 <html lang="en">
   <head>
     <BaseHead title={title} description={description} />
 
-    <!-- Schema.org Breadcrumb -->
+    <!-- Schema.org Breadcrumb (valid & dievaluasi) -->
     <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Posts", "item": "${Astro.site}post" },
-          { "@type": "ListItem", "position": 2, "name": "${categories[0]}", "item": "${Astro.site}posts/category/${categories[0].toLowerCase()}" },
-          { "@type": "ListItem", "position": 3, "name": "${title}", "item": "${currentUrl}" }
-        ]
-      }
+      {JSON.stringify(breadcrumbLd)}
     </script>
 
     <style>
@@ -43,13 +67,13 @@ const categories = Array.isArray(category) ? category : [category];
 
       /* ============ Layout Container - COMPACT ============ */
       .blog-layout {
-        --sidebar-w: min(260px, 26vw); /* Dikecilkan dari 280px */
+        --sidebar-w: min(260px, 26vw);
         max-width: 1080px;
         margin: 0 auto;
         padding: 1.5rem 1rem;
         display: grid;
         grid-template-columns: minmax(0, 1fr) var(--sidebar-w);
-        gap: 1.8rem; /* Dikecilkan dari 2.5rem */
+        gap: 1.8rem;
         align-items: start;
       }
 
@@ -121,7 +145,6 @@ const categories = Array.isArray(category) ? category : [category];
         justify-content: center;
         flex-shrink: 0;
         border: 2px solid #000;
-        
       }
       .author-avatar img { 
         width: 100%; 
@@ -229,7 +252,7 @@ const categories = Array.isArray(category) ? category : [category];
       /* ============ Sidebar - ULTRA COMPACT & Sticky ============ */
       .blog-sidebar { 
         position: sticky; 
-        top: 110px; /* Dikecilkan dari 110px */
+        top: 110px;
         height: fit-content;
         max-height: calc(100vh - 110px);
         overflow-y: auto;
@@ -237,46 +260,43 @@ const categories = Array.isArray(category) ? category : [category];
         scrollbar-width: none;
         -ms-overflow-style: none;
       }
-
-      .blog-sidebar::-webkit-scrollbar {
-        display: none;
-      }
+      .blog-sidebar::-webkit-scrollbar { display: none; }
 
       /* Follow Us / Subscribe Section - COMPACT */
       .subscribe-section {
         text-align: center;
         background: linear-gradient(135deg, #4A90E2 0%, #3298ff 100%) !important;
         border-color: #4A90E2 !important;
-        padding: 1rem; /* Dikecilkan dari 1.2rem */
-        border-radius: 8px; /* Dikecilkan dari 10px */
-        margin-top: .8rem; /* Tambahkan spacing */
+        padding: 1rem;
+        border-radius: 8px;
+        margin-top: .8rem;
       }
       .subscribe-section .sidebar-title { 
         color: #ffffff; 
-        font-size: 0.83rem; /* Dikecilkan dari 0.88rem */
+        font-size: 0.83rem;
         font-weight: 900;
-        margin-bottom: .6rem; /* Dikecilkan dari .75rem */
+        margin-bottom: .6rem;
         letter-spacing: -0.01em;
       }
       .subscribe-description {
-        font-size: 0.78rem; /* Dikecilkan dari 0.82rem */
+        font-size: 0.78rem;
         color: #ffffff;
         opacity: .92;
-        margin-bottom: .7rem; /* Dikecilkan dari .8rem */
+        margin-bottom: .7rem;
         line-height: 1.4;
       }
       .social-links {
         display: flex;
         justify-content: center;
-        gap: .55rem; /* Dikecilkan dari .65rem */
+        gap: .55rem;
       }
       .social-link {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 34px; /* Dikecilkan dari 36px */
+        width: 34px;
         height: 34px;
-        border-radius: 7px; /* Dikecilkan dari 8px */
+        border-radius: 7px;
         background-color: rgba(255, 255, 255, 0.16);
         color: #ffffff;
         text-decoration: none;
@@ -287,81 +307,45 @@ const categories = Array.isArray(category) ? category : [category];
         background-color: rgba(255, 255, 255, 0.26);
         transform: translateY(-1px);
       }
-      .social-link svg { 
-        width: 17px; /* Dikecilkan dari 18px */
-        height: 17px; 
-      }
+      .social-link svg { width: 17px; height: 17px; }
 
       /* ============ Responsive Tweaks (lebih lebar di mobile) ============ */
+      @media (max-width: 1024px) {
+        .blog-layout {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+          padding: 1rem 0.75rem;
+        }
+        .blog-content-wrapper,
+        .article-body,
+        .prose { max-width: 100%; }
+      }
 
-/* <= 1024px tetap 1 kolom, tapi longgarkan sedikit */
-@media (max-width: 1024px) {
-  .blog-layout {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    /* perkecil padding samping agar konten lebih lebar */
-    padding: 1rem 0.75rem;
-  }
+      @media (max-width: 768px) {
+        .blog-layout { padding: 0.875rem 0.65rem; }
+        .blog-content-wrapper,
+        .article-body,
+        .prose { max-width: none; }
+        .prose :where(p) { font-size: 0.98rem; line-height: 1.7; }
+        .blog-sidebar { grid-template-columns: 1fr; }
+      }
 
-  /* pastikan konten tidak terkunci width-nya */
-  .blog-content-wrapper,
-  .article-body,
-  .prose {
-    max-width: 100%;
-  }
-}
+      @media (max-width: 480px) {
+        .blog-layout { padding: 0.75rem 0.5rem; }
+        .article-description { font-size: 0.96rem; }
+        .prose :where(p) { font-size: 0.96rem; }
+      }
 
-/* <= 768px: konten lebih lega */
-@media (max-width: 768px) {
-  /* kurangi padding samping lagi */
-  .blog-layout {
-    padding: 0.875rem 0.65rem;
-  }
-
-  /* jangan batasi lebar teks */
-  .blog-content-wrapper,
-  .article-body,
-  .prose {
-    max-width: none;
-  }
-
-  /* sedikit rapatkan jarak agar muat lebih banyak */
-  .prose :where(p) {
-    font-size: 0.98rem; /* tetap readable */
-    line-height: 1.7;
-  }
-
-  /* sidebar satu kolom (sudah OK) */
-  .blog-sidebar {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* <= 480px: hampir full-bleed dengan padding tipis */
-@media (max-width: 480px) {
-  .blog-layout {
-    padding: 0.75rem 0.5rem; /* lebih tipis lagi di sisi kiri/kanan */
-  }
-
-  /* biar teks tetap enak dibaca tapi tidak sempit */
-  .article-description { font-size: 0.96rem; }
-  .prose :where(p) { font-size: 0.96rem; }
-}
-
-/* ===== Optional: Full-bleed media di mobile (gambar/video melebar cantik) ===== */
-@media (max-width: 768px) {
-  .prose img,
-  .prose figure,
-  .prose video {
-    width: 100vw;               /* ambil lebar viewport */
-    max-width: 100vw;
-    margin-left: 50%;
-    transform: translateX(-50%); /* center keluar dari padding kontainer */
-  }
-}
-
-
-
+      @media (max-width: 768px) {
+        .prose img,
+        .prose figure,
+        .prose video {
+          width: 100vw;
+          max-width: 100vw;
+          margin-left: 50%;
+          transform: translateX(-50%);
+        }
+      }
     </style>
   </head>
 
@@ -374,7 +358,7 @@ const categories = Array.isArray(category) ? category : [category];
         <!-- Main Content -->
         <div class="blog-content-wrapper">
           <article class="blog">
-            <!-- Breadcrumb -->
+            <!-- Breadcrumb UI -->
             <nav class="blog-breadcrumb" aria-label="Breadcrumb">
               <a href="/posts">Articles</a>
               <span class="separator">›</span>
@@ -445,15 +429,10 @@ const categories = Array.isArray(category) ? category : [category];
           </article>
         </div>
 
-        <!-- Sidebar - Compact & Clean -->
+        <!-- Sidebar -->
         <aside class="blog-sidebar">
-          <!-- Table of Contents -->
           <TableOfContents />
-
-          <!-- Popular Posts -->
           <PopularPosts category={category} limit={5} />
-
-          <!-- Follow Us -->
           <div class="subscribe-section">
             <h3 class="sidebar-title">Follow Us / Ikuti Kami</h3>
             <p class="subscribe-description">
