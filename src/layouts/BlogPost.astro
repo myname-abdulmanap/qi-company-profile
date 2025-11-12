@@ -10,12 +10,11 @@ import PopularPosts from "../components/PopularPosts.astro";
 import SosialShareButtons from "../components/SosialShareButtons.astro";
 import TableOfContents from "../components/TableOfContents.astro";
 import { ClientRouter } from "astro:transitions";
+const currentUrl = new URL(Astro.url.pathname, Astro.site);
+const { title, description, pubDate, updatedDate, heroImage, category } = Astro.props;
 
 type Props = CollectionEntry<"blog">["data"] & { slug: string };
 
-// Props dari parent/route
-const currentUrl = new URL(Astro.url.pathname, Astro.site);
-const { title, description, pubDate, updatedDate, heroImage, category, status } = Astro.props;
 
 // Normalisasi kategori
 const categories = Array.isArray(category) ? category : [category];
@@ -51,7 +50,15 @@ const breadcrumbLd = {
 ---
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description} />
+     <BaseHead
+    title={title}
+    description={description}
+    image={heroImage ?? '/assets/img/banner.jpg'}    type="article"                              
+    publishedTime={pubDate}
+    modifiedTime={updatedDate}
+    canonical={currentUrl}                       
+  />
+
 
     <!-- Schema.org Breadcrumb (pakai set:html agar JSON mentah disisipkan) -->
     <script
