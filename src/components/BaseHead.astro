@@ -88,9 +88,8 @@ const articleModified = toISO(modifiedTime);
 <meta property="og:description" content={description} />
 <meta property="og:image" content={ogImageURL} />
 <meta property="og:locale" content="id_ID" />
-<!-- (Opsional) kamu bisa tambahkan og:image:width/height kalau tahu dimensinya -->
 
-<!-- Article meta kalau type=article -->
+
 {type === 'article' && articlePublished && <meta property="article:published_time" content={articlePublished} />}
 {type === 'article' && articleModified && <meta property="article:modified_time" content={articleModified} />}
 
@@ -119,3 +118,6 @@ const articleModified = toISO(modifiedTime);
 <script>
   window.plausible = window.plausible || function(){(window.plausible.q = window.plausible.q || []).push(arguments)}
 </script>
+<script
+  src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"
+  type="module"></script>
