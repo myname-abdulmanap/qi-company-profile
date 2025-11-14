@@ -12,6 +12,7 @@ pubDate: "2025-11-10T04:59:53.654Z"
 
 
 
+
 # Apa Itu Field Service Engineer? Jobdesk, Skill, dan Prospek Karier di Indonesia
 
 **Qualita Indonesia** – Dalam era transformasi digital dan infrastruktur yang terus berkembang, peran *Field Service Engineer* (FSE) dan *Field Engineer* kian strategis di berbagai industri. Dari telekomunikasi, utilitas energi, otomasi pabrik, kesehatan, ritel, hingga *smart infrastructure*, mereka adalah garda terdepan yang memastikan sistem dan perangkat beroperasi optimal di lokasi pelanggan. 
@@ -274,4 +275,4 @@ Bagi perusahaan yang mengandalkan field operations, mengadopsi field management 
 
 Apakah Anda seorang profesional yang tertarik membangun karier sebagai Field Engineer, atau perusahaan yang ingin mengoptimalkan field service operations? Kedua pihak sama-sama memiliki peluang besar di era digital ini.
 
-Waktunya bertindak. Waktunya meningkatkan field service Anda dengan Qifess. Coba dulu demo [di sini](https://qifess.com)
+Waktunya meningkatkan field service Anda dengan Qifess. Coba dulu demo [di sini](https://qifess.com)
