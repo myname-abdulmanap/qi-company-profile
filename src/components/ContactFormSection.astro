@@ -17,6 +17,17 @@
           <label for="name">Name</label>
           <input type="text" id="name" name="user_name" placeholder="enter your name" required />
         </div>
+
+        <div class="form-group">
+          <label for="phone">No Telp/Mobile</label>
+          <input type="tel" id="phone" name="phone" placeholder="enter your telephone number" />
+        </div>
+
+        <div class="form-group">
+          <label for="company">Company</label>
+          <input type="text" id="company" name="company" placeholder="enter your company" />
+        </div>
+
         <div class="form-group">
           <label for="email">Email</label>
           <input type="email" id="email" name="user_email" placeholder="enter your email" required />
@@ -24,9 +35,26 @@
       </div>
 
       <div class="form-group">
-        <label for="subject">Subject</label>
-        <input type="text" id="subject" name="subject" placeholder="enter subject" />
+        <label for="subject">Subject / Interested</label>
+        <select id="subject" required>
+          <option value="">-- Please select --</option>
+          <option value="Partnership & Collaboration">Partnership / Collaboration</option>
+          <option value="Career & Recruitment">Career / Recruitment</option>
+          <option value="Other">Other</option>
+        </select>
       </div>
+
+      <div class="form-group hidden" id="other-subject-wrapper">
+        <label for="other_subject">Please specify</label>
+        <input
+          type="text"
+          id="other_subject"
+          placeholder="Please specify your subject"
+        />
+      </div>
+
+      <!-- Hidden input for final subject value that will be sent to EmailJS -->
+      <input type="hidden" name="subject" id="subject_value" />
 
       <div class="form-group">
         <label for="message">Message</label>
@@ -99,11 +127,26 @@
     const form = document.getElementById('contact-form');
     const submitBtn = document.getElementById('submit-btn');
     const status = document.getElementById('status');
+    const subjectSelect = document.getElementById('subject');
+    const subjectValueInput = document.getElementById('subject_value');
+    const otherSubjectWrapper = document.getElementById('other-subject-wrapper');
+    const otherSubjectInput = document.getElementById('other_subject');
 
     if (!form || !submitBtn || !status) {
-      console.error('Form elements tidak ditemukan');
       return;
     }
+
+    // Show/hide "Other" input field based on subject selection
+    subjectSelect.addEventListener('change', function() {
+      if (this.value === 'Other') {
+        otherSubjectWrapper.classList.remove('hidden');
+        otherSubjectInput.required = true;
+      } else {
+        otherSubjectWrapper.classList.add('hidden');
+        otherSubjectInput.required = false;
+        otherSubjectInput.value = '';
+      }
+    });
 
     function showStatus(message, type) {
       status.textContent = message;
@@ -207,11 +250,11 @@
       // Validasi basic
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
-      const subject = document.getElementById('subject').value.trim();
+      const subject = subjectSelect.value.trim();
       const message = document.getElementById('message').value.trim();
 
-      if (!name || !email || !message) {
-        showStatus('Please fill in all required fields (Name, Email, Message).', 'error');
+      if (!name || !email || !subject || !message) {
+        showStatus('Please fill in all required fields.', 'error');
         return;
       }
 
@@ -221,11 +264,24 @@
         return;
       }
 
+      // Prepare final subject value
+      let finalSubject = subject;
+      if (subject === 'Other') {
+        const otherValue = otherSubjectInput.value.trim();
+        if (!otherValue) {
+          showStatus('Please specify your subject.', 'error');
+          return;
+        }
+        finalSubject = `Other - ${otherValue}`;
+      }
+
+      // Set the final subject value to hidden input BEFORE sending
+      subjectValueInput.value = finalSubject;
+
       // Honeypot check
       const honeypot = (form.querySelector('input[name="website"]')?.value || '').trim();
       if (honeypot) {
-        // Diam-diam sukses palsu agar bot tidak coba-coba lagi
-        showStatus('Message sent successfully! (ignored bot)', 'success');
+        showStatus('Message sent successfully!', 'success');
         form.reset();
         return;
       }
@@ -233,7 +289,7 @@
       setLoading(true);
 
       try {
-        // reCAPTCHA validation (still used for spam protection, just not sent to email)
+        // reCAPTCHA validation
         if (typeof grecaptcha !== 'undefined') {
           const recaptchaToken = grecaptcha.getResponse() || '';
           if (!recaptchaToken) {
@@ -245,21 +301,19 @@
 
         // Isi metadata SEBELUM kirim
         populateMetadataFields();
-
-        // Ambil IP publik (best-effort)
         form.querySelector('input[name="ip"]').value = await fetchPublicIP();
 
-        // Kirim via EmailJS (pakai form serialization)
         await emailjs.sendForm('service_ffsqvoa', 'template_vms7qa9', form);
         showStatus("Message sent successfully! We'll get back to you soon.", 'success');
         form.reset();
+        otherSubjectWrapper.classList.add('hidden');
+        otherSubjectInput.required = false;
+        subjectValueInput.value = '';
 
-        // Reset reCAPTCHA jika ada
         if (typeof grecaptcha !== 'undefined') {
           grecaptcha.reset();
         }
       } catch (error) {
-        console.error('FAILED...', error);
         showStatus('Failed to send message. Please try again later.', 'error');
       } finally {
         setLoading(false);
@@ -267,7 +321,7 @@
     });
 
     // Interaktivitas input
-    const inputs = document.querySelectorAll('#contact-form input, #contact-form textarea');
+    const inputs = document.querySelectorAll('#contact-form input, #contact-form textarea, #contact-form select');
     inputs.forEach((input) => {
       input.addEventListener('focus', function () {
         this.parentElement.style.transform = 'scale(1.01)';
@@ -306,11 +360,11 @@
   .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.5rem; }
   .form-group { margin-bottom: 1.5rem; }
   .form-group label { display: block; margin-bottom: 0.5rem; color: var(--text-color); font-weight: 500; }
-  .form-group input, .form-group textarea {
+  .form-group input, .form-group textarea, .form-group select {
     width: 100%; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 0.5rem; font-size: 1rem; color: var(--text-color);
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease; background: white;
   }
-  .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--primary); }
   .form-group textarea { height: 150px; resize: vertical; }
   .status { margin-top: 1.5rem; padding: 1rem; border-radius: 0.5rem; text-align: center; font-weight: 500; display: none; }
   .status.success { background: #d4edda; color: #155724; border: 2px solid #c3e6cb; }
