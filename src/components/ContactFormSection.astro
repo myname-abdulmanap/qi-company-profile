@@ -19,6 +19,11 @@
         </div>
 
         <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="user_email" placeholder="enter your email" required />
+        </div>
+
+        <div class="form-group">
           <label for="phone">No Telp/Mobile</label>
           <input type="tel" id="phone" name="phone" placeholder="enter your telephone number" />
         </div>
@@ -26,11 +31,6 @@
         <div class="form-group">
           <label for="company">Company</label>
           <input type="text" id="company" name="company" placeholder="enter your company" />
-        </div>
-
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="user_email" placeholder="enter your email" required />
         </div>
       </div>
 
@@ -65,7 +65,7 @@
       <div class="form-group">
         <div class="g-recaptcha" data-sitekey="6LcSPkYrAAAAAA3TN5ptXfbY_nsfOOCCPXjMMESG"></div>
       </div>
-      <p class="captcha-warning" style="margin-top: 1rem; color: #d9534f; font-size: 0.9rem;">
+      <p class="captcha-warning">
         * Jika captcha tidak muncul, silakan refresh halaman terlebih dahulu.
       </p>
 
@@ -354,30 +354,121 @@
 </script>
 
 <style>
-  .contact { padding: 8rem 1rem; background: var(--color-contact); }
-  .contact-container { max-width: 800px; margin: 0 auto; }
-  .contact-form { margin-top: 4rem; }
-  .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.5rem; }
-  .form-group { margin-bottom: 1.5rem; }
-  .form-group label { display: block; margin-bottom: 0.5rem; color: var(--text-color); font-weight: 500; }
-  .form-group input, .form-group textarea, .form-group select {
-    width: 100%; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 0.5rem; font-size: 1rem; color: var(--text-color);
-    transition: border-color 0.3s ease; background: white;
+  .contact { 
+    padding: 6rem 1rem; 
+    background: var(--color-contact); 
   }
-  .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--primary); }
-  .form-group textarea { height: 150px; resize: vertical; }
-  .status { margin-top: 1.5rem; padding: 1rem; border-radius: 0.5rem; text-align: center; font-weight: 500; display: none; }
-  .status.success { background: #d4edda; color: #155724; border: 2px solid #c3e6cb; }
-  .status.error { background: #f8d7da; color: #721c24; border: 2px solid #f5c6cb; }
+  
+  .contact-container { 
+    max-width: 600px; 
+    margin: 0 auto; 
+  }
+  
+  .contact-form { 
+    margin-top: 2.5rem; 
+  }
+  
+  .form-grid { 
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 1rem; 
+    margin-bottom: 1rem; 
+  }
+  
+  .form-group { 
+    margin-bottom: 1rem; 
+  }
+  
+  .form-group label { 
+    display: block; 
+    margin-bottom: 0.4rem; 
+    color: var(--text-color); 
+    font-weight: 500; 
+    font-size: 0.9rem;
+  }
+  
+  .form-group input, 
+  .form-group textarea, 
+  .form-group select {
+    width: 100%; 
+    padding: 0.75rem; 
+    border: 2px solid #e2e8f0; 
+    border-radius: 0.4rem; 
+    font-size: 0.95rem; 
+    color: var(--text-color);
+    transition: border-color 0.3s ease; 
+    background: (--input-bg);
+  }
+  
+  .form-group input:focus, 
+  .form-group textarea:focus, 
+  .form-group select:focus { 
+    outline: none; 
+    border-color: var(--primary); 
+  }
+  
+  .form-group textarea { 
+    height: 120px; 
+    resize: vertical; 
+  }
+  
+  .status { 
+    margin-top: 1rem; 
+    padding: 0.85rem; 
+    border-radius: 0.4rem; 
+    text-align: center; 
+    font-weight: 500; 
+    font-size: 0.9rem;
+    display: none; 
+  }
+  
+  .status.success { 
+    background: #d4edda; 
+    color: #155724; 
+    border: 2px solid #c3e6cb; 
+  }
+  
+  .status.error { 
+    background: #f8d7da; 
+    color: #721c24; 
+    border: 2px solid #f5c6cb; 
+  }
+  
+
   .loading {
-    display: inline-block; width: 16px; height: 16px; border: 2px solid #ffffff; border-radius: 50%;
-    border-top-color: transparent; animation: spin 1s ease-in-out infinite; margin-right: 8px;
+    display: inline-block; 
+    width: 14px; 
+    height: 14px; 
+    border: 2px solid #ffffff; 
+    border-radius: 50%;
+    border-top-color: transparent; 
+    animation: spin 1s ease-in-out infinite; 
+    margin-right: 6px;
   }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  
+  @keyframes spin { 
+    to { transform: rotate(360deg); } 
+  }
+  
   @media (max-width: 768px) {
-    .form-grid { grid-template-columns: 1fr; }
-    .contact { padding: 4rem 1rem; }
+    .form-grid { 
+      grid-template-columns: 1fr; 
+    }
+    .contact { 
+      padding: 3rem 1rem; 
+    }
+    .contact-container {
+      max-width: 100%;
+    }
   }
-  .captcha-warning { margin-top: 1rem; color: #d9534f; font-size: 0.9rem; }
-  .hidden { display: none; }
+  
+  .captcha-warning { 
+    margin-top: 0.5rem; 
+    color: #d9534f; 
+    font-size: 0.85rem; 
+  }
+  
+  .hidden { 
+    display: none; 
+  }
 </style>
