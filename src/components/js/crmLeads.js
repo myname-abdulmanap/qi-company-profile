@@ -19,15 +19,12 @@ export async function sendToCrmLeads({ client, message }) {
         description: message || ''
       }),
     });
-    console.log('CRM Leads response:', response);
     if (!response.ok) {
-      const text = await response.text();
-      console.log('CRM Leads error response body:', text);
+      await response.text();
       throw new Error('Failed to send to CRM leads');
     }
     return await response.json();
   } catch (error) {
-    console.error('CRM Leads fetch error:', error);
     return { error: error.message };
   }
 }
