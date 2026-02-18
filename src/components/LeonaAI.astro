@@ -1,0 +1,783 @@
+---
+/**
+ * LeonaAI.astro
+ * Widget chatbot knowledge assistant - Leona AI
+ * Uses global CSS variables for consistent theming
+ */
+---
+
+<!-- Floating Chat Button -->
+<div id="leona-ai-widget">
+  <!-- Floating help text -->
+  <div class="leona-help-bubble">
+    <span>Butuh bantuan?</span>
+  </div>
+
+  <button
+    id="leona-toggle-btn"
+    class="leona-fab"
+    aria-label="Open Leona AI Chat"
+  >
+    <img
+      src="/assets/img/leona.png"
+      alt="Leona AI"
+      class="leona-fab-img chat-icon"
+    />
+    <svg
+      class="close-icon hidden"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+
+  <!-- Chat Popup -->
+  <div id="leona-popup" class="leona-popup hidden">
+    <!-- Header -->
+    <div class="leona-popup-header">
+      <div class="leona-avatar">
+        <img src="/assets/img/leona.png" alt="Leona AI" />
+      </div>
+      <div class="leona-header-info">
+        <h4>Leona AI</h4>
+        <span class="leona-status">
+          <span class="status-dot"></span>
+          Online
+        </span>
+      </div>
+      <button
+        id="leona-close-btn"
+        class="leona-close-btn"
+        aria-label="Close chat"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Messages Body -->
+    <div class="leona-popup-body" id="leona-messages">
+      <!-- Welcome Message -->
+      <div class="leona-message leona-bot">
+        <div class="leona-message-avatar">
+          <img src="/assets/img/leona.png" alt="Leona" />
+        </div>
+        <div class="leona-message-content">
+          <p>
+            Halo! 👋 Saya <strong>Leona AI</strong>, asisten knowledge PT.
+            Qualita Indonesia.
+          </p>
+          <p>Ada yang bisa saya bantu?</p>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="leona-quick-actions">
+        <button
+          class="leona-quick-btn"
+          data-message="Apa saja produk Qualita Indonesia?">Produk</button
+        >
+        <button
+          class="leona-quick-btn"
+          data-message="Bagaimana cara menghubungi Qualita Indonesia?"
+          >Kontak</button
+        >
+        <button
+          class="leona-quick-btn"
+          data-message="Apa saja layanan yang ditawarkan?">Layanan</button
+        >
+        <button
+          class="leona-quick-btn"
+          data-message="Apakah ada lowongan pekerjaan?">Karir</button
+        >
+      </div>
+    </div>
+
+    <!-- Footer Input -->
+    <div class="leona-popup-footer">
+      <form id="leona-form" class="leona-input-form">
+        <input
+          type="text"
+          id="leona-input"
+          class="leona-input"
+          placeholder="Ketik pesan..."
+          autocomplete="off"
+        />
+        <button type="submit" class="leona-send-btn" aria-label="Send message">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ================================
+     LEONA AI WIDGET
+     Uses CSS vars from global.css
+     ================================ */
+
+  #leona-ai-widget {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
+  /* Floating Help Bubble */
+  .leona-help-bubble {
+    background: var(--color-card, #fff);
+    color: var(--text-color, #333);
+    padding: 8px 14px;
+    border-radius: 18px 18px 4px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    animation:
+      helpPop 0.4s ease,
+      helpFloat 3s ease-in-out 0.4s infinite;
+    transform-origin: bottom right;
+  }
+
+  @keyframes helpPop {
+    0% {
+      opacity: 0;
+      transform: scale(0.8) translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  @keyframes helpFloat {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-4px);
+    }
+  }
+
+  .leona-help-bubble span {
+    display: inline-block;
+    animation: textWave 2s ease-in-out infinite;
+  }
+
+  @keyframes textWave {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  /* Floating Button */
+  .leona-fab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background: var(--primary, #2563eb);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transition: all 0.4s ease;
+    color: #fff;
+    width: 56px;
+    height: 56px;
+  }
+
+  .leona-fab:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  }
+
+  .leona-fab-img {
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .leona-fab .close-icon {
+    width: 22px;
+    height: 22px;
+    margin: 7px;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  /* Popup */
+  .leona-popup {
+    position: absolute;
+    bottom: 65px;
+    right: 0;
+    width: 350px;
+    max-width: calc(100vw - 48px);
+    height: 460px;
+    max-height: calc(100vh - 120px);
+    background: var(--color-card, #fff);
+    border-radius: 24px 24px 8px 24px;
+    box-shadow: 0 12px 50px rgba(0, 0, 0, 0.18);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes popIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9) translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  /* Header */
+  .leona-popup-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--primary, #2563eb);
+    color: #fff;
+  }
+
+  .leona-avatar {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .leona-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .leona-header-info {
+    flex: 1;
+  }
+
+  .leona-header-info h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .leona-status {
+    font-size: 12px;
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    background: #4ade80;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+      box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.5);
+    }
+    50% {
+      opacity: 0.8;
+      box-shadow: 0 0 0 6px rgba(74, 222, 128, 0);
+    }
+  }
+
+  .leona-close-btn {
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+  }
+
+  .leona-close-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: rotate(90deg);
+  }
+
+  .leona-close-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Messages Body */
+  .leona-popup-body {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--bg-main, #f9f9f9);
+  }
+
+  .leona-popup-body::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .leona-popup-body::-webkit-scrollbar-thumb {
+    background: var(--secondary, #94a3b8);
+    border-radius: 10px;
+  }
+
+  /* Messages */
+  .leona-message {
+    display: flex;
+    gap: 10px;
+    max-width: 85%;
+  }
+
+  .leona-message.leona-bot {
+    align-self: flex-start;
+  }
+
+  .leona-message.leona-user {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+  }
+
+  .leona-message-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .leona-message-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Small avatar for dynamic messages */
+  .leona-message-avatar-sm {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: var(--primary, #2563eb);
+    padding: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .leona-message-avatar-sm img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+  }
+
+  .leona-message.leona-user .leona-message-avatar {
+    background: var(--accent, #f4e6b5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .leona-message.leona-user .leona-message-avatar-sm {
+    background: var(--accent, #f4e6b5);
+  }
+
+  .leona-message-content {
+    background: var(--color-card, #fff);
+    padding: 12px 14px;
+    border-radius: 18px 18px 18px 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    color: var(--text-color, #333);
+  }
+
+  .leona-message.leona-user .leona-message-content {
+    background: var(--primary, #2563eb);
+    color: #fff;
+    border-radius: 18px 18px 6px 18px;
+  }
+
+  .leona-message-content p {
+    margin: 0 0 6px 0;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .leona-message-content p:last-child {
+    margin-bottom: 0;
+  }
+
+  .leona-message-content a {
+    color: var(--link-color, #0066cc);
+    text-decoration: underline;
+  }
+
+  .leona-message.leona-user .leona-message-content a {
+    color: var(--accent, #f4e6b5);
+  }
+
+  /* Quick Actions */
+  .leona-quick-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 0;
+  }
+
+  .leona-quick-btn {
+    padding: 8px 16px;
+    background: var(--color-card, #fff);
+    border: 1px solid var(--border-color, #ddd);
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-color, #333);
+    font-weight: 500;
+  }
+
+  .leona-quick-btn:hover {
+    background: var(--primary, #2563eb);
+    color: #fff;
+    border-color: var(--primary, #2563eb);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Footer */
+  .leona-popup-footer {
+    padding: 12px 14px;
+    background: var(--color-card, #fff);
+    border-top: 1px solid var(--border-color, #eee);
+  }
+
+  .leona-input-form {
+    display: flex;
+    gap: 10px;
+  }
+
+  .leona-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color, #ddd);
+    border-radius: 24px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.25s ease;
+    background: var(--bg-main, #f9f9f9);
+    color: var(--text-color, #333);
+  }
+
+  .leona-input:focus {
+    border-color: var(--primary, #2563eb);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    background: var(--color-card, #fff);
+  }
+
+  .leona-input::placeholder {
+    color: var(--secondary, #94a3b8);
+  }
+
+  .leona-send-btn {
+    width: 44px;
+    height: 44px;
+    background: var(--primary, #2563eb);
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .leona-send-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+  }
+
+  .leona-send-btn:active {
+    transform: scale(0.95);
+  }
+
+  .leona-send-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Typing */
+  .leona-typing {
+    display: flex;
+    gap: 5px;
+    padding: 8px 12px;
+  }
+
+  .leona-typing span {
+    width: 8px;
+    height: 8px;
+    background: var(--secondary, #94a3b8);
+    border-radius: 50%;
+    animation: bounce 1.4s infinite ease-in-out;
+  }
+
+  .leona-typing span:nth-child(1) {
+    animation-delay: 0s;
+  }
+  .leona-typing span:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .leona-typing span:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes bounce {
+    0%,
+    60%,
+    100% {
+      transform: translateY(0);
+    }
+    30% {
+      transform: translateY(-8px);
+    }
+  }
+
+  /* Mobile */
+  @media (max-width: 480px) {
+    #leona-ai-widget {
+      bottom: 16px;
+      right: 16px;
+    }
+
+    .leona-help-bubble {
+      font-size: 12px;
+      padding: 6px 12px;
+    }
+
+    .leona-fab {
+      width: 52px;
+      height: 52px;
+    }
+
+    .leona-fab-img {
+      width: 54px;
+      height: 54px;
+    }
+
+    .leona-popup {
+      width: calc(100vw - 32px);
+      height: calc(100vh - 100px);
+      bottom: 60px;
+      right: -8px;
+      border-radius: 20px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const toggleBtn = document.getElementById("leona-toggle-btn");
+    const closeBtn = document.getElementById("leona-close-btn");
+    const popup = document.getElementById("leona-popup");
+    const chatIcon = toggleBtn?.querySelector(".chat-icon");
+    const closeIcon = toggleBtn?.querySelector(".close-icon");
+    const helpBubble = document.querySelector(
+      ".leona-help-bubble",
+    ) as HTMLElement;
+    const form = document.getElementById("leona-form");
+    const input = document.getElementById("leona-input") as HTMLInputElement;
+    const messagesContainer = document.getElementById("leona-messages");
+    const quickBtns = document.querySelectorAll(".leona-quick-btn");
+
+    function togglePopup() {
+      const isHidden = popup?.classList.contains("hidden");
+
+      if (isHidden) {
+        popup?.classList.remove("hidden");
+        chatIcon?.classList.add("hidden");
+        closeIcon?.classList.remove("hidden");
+        if (helpBubble) helpBubble.style.display = "none";
+        input?.focus();
+      } else {
+        popup?.classList.add("hidden");
+        chatIcon?.classList.remove("hidden");
+        closeIcon?.classList.add("hidden");
+        if (helpBubble) helpBubble.style.display = "block";
+      }
+    }
+
+    toggleBtn?.addEventListener("click", togglePopup);
+    closeBtn?.addEventListener("click", togglePopup);
+
+    function addMessage(text: string, isUser: boolean = false) {
+      const messageDiv = document.createElement("div");
+      messageDiv.className = `leona-message ${isUser ? "leona-user" : "leona-bot"}`;
+
+      const avatarContent = isUser
+        ? `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`
+        : `<img src="/assets/img/leona.png" alt="Leona" />`;
+
+      messageDiv.innerHTML = `
+        <div class="leona-message-avatar">${avatarContent}</div>
+        <div class="leona-message-content"><p>${text}</p></div>
+      `;
+
+      messagesContainer?.appendChild(messageDiv);
+      messagesContainer?.scrollTo({
+        top: messagesContainer.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+
+    function showTyping() {
+      const typingDiv = document.createElement("div");
+      typingDiv.className = "leona-message leona-bot";
+      typingDiv.id = "leona-typing";
+      typingDiv.innerHTML = `
+        <div class="leona-message-avatar"><img src="/assets/img/leona.png" alt="Leona" /></div>
+        <div class="leona-message-content">
+          <div class="leona-typing">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      `;
+      messagesContainer?.appendChild(typingDiv);
+      messagesContainer?.scrollTo({
+        top: messagesContainer.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+
+    function removeTyping() {
+      document.getElementById("leona-typing")?.remove();
+    }
+
+    function getBotResponse(userMessage: string): string {
+      const msg = userMessage.toLowerCase();
+
+      if (msg.includes("produk")) {
+        return 'Kami menyediakan berbagai solusi IT termasuk EDC, payment solutions, AI Vision Camera Intelligence, dan lainnya. Kunjungi halaman <a href="/products">Produk</a> untuk info lengkap!';
+      } else if (msg.includes("kontak") || msg.includes("hubungi")) {
+        return 'Hubungi kami di <strong>contact@qualita-indonesia.com</strong> atau kunjungi <a href="/contact">halaman kontak</a>.';
+      } else if (msg.includes("layanan") || msg.includes("service")) {
+        return 'Kami menyediakan konsultasi IT, implementasi payment solutions, maintenance EDC, dan lainnya. Lihat <a href="/services">halaman layanan</a>!';
+      } else if (
+        msg.includes("karir") ||
+        msg.includes("lowongan") ||
+        msg.includes("kerja")
+      ) {
+        return 'Lihat lowongan terbaru di <a href="/careers">halaman karir</a> kami!';
+      } else if (msg.includes("alamat") || msg.includes("lokasi")) {
+        return "Kantor kami di Ruby Commercial, Summarecon, Jl. Bulevar Selatan Blok TD No.19, Marga Mulya, Bekasi Utara.";
+      } else if (
+        msg.includes("halo") ||
+        msg.includes("hai") ||
+        msg.includes("hi")
+      ) {
+        return "Halo! Ada yang bisa saya bantu? 😊";
+      } else {
+        return 'Terima kasih! Untuk info lebih lanjut, silakan hubungi <a href="/contact">tim kami</a> atau email ke <strong>contact@qualita-indonesia.com</strong>.';
+      }
+    }
+
+    form?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const message = input?.value.trim();
+      if (!message) return;
+
+      addMessage(message, true);
+      input.value = "";
+      showTyping();
+
+      setTimeout(
+        () => {
+          removeTyping();
+          addMessage(getBotResponse(message), false);
+        },
+        800 + Math.random() * 800,
+      );
+    });
+
+    quickBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const message = btn.getAttribute("data-message");
+        if (message && input) {
+          input.value = message;
+          form?.dispatchEvent(new Event("submit"));
+        }
+      });
+    });
+  });
+</script>
