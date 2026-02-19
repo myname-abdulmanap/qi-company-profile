@@ -40,12 +40,8 @@ export const POST: APIRoute = async ({ request }) => {
     return jsonResponse({ output: "message tidak boleh kosong" }, 400);
   }
 
-  // 3. Get API key from env
-  const apiKey = import.meta.env.LEONA_API_KEY;
-  if (!apiKey) {
-    console.error("[Leona API] LEONA_API_KEY is not configured");
-    return jsonResponse({ output: "Chatbot sedang tidak tersedia" }, 500);
-  }
+  // 3. API key (public)
+  const apiKey = "Yx14Dfqit7GuYxi7";
 
   // 4. Forward request to Leona API
   try {
