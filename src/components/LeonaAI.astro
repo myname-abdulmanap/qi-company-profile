@@ -18,6 +18,7 @@
     class="leona-fab"
     aria-label="Open Leona AI Chat"
   >
+    <span class="leona-pulse-ring"></span>
     <img
       src="/assets/img/leona.png"
       alt="Leona AI"
@@ -139,7 +140,7 @@
   </div>
 </div>
 
-<style>
+<style is:global>
   /* ================================
      LEONA AI WIDGET
      Uses CSS vars from global.css
@@ -147,7 +148,7 @@
 
   #leona-ai-widget {
     position: fixed;
-    bottom: 24px;
+    bottom: 12px;
     right: 24px;
     z-index: 9999;
     font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;
@@ -213,16 +214,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px;
-    background: var(--primary, #2563eb);
+    padding: 0;
+    background: transparent;
     border: none;
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: none;
     transition: all 0.4s ease;
     color: #fff;
     width: 56px;
     height: 56px;
+    overflow: visible;
+    position: relative;
   }
 
   .leona-fab:hover {
@@ -230,11 +233,88 @@
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
   }
 
+  .leona-fab:hover .leona-fab-img {
+    animation-play-state: paused;
+  }
+
+  /* Pulse ring behind avatar */
+  .leona-pulse-ring {
+    position: absolute;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(59, 130, 246, 0.2);
+    animation: leonaPulseRing 2.5s ease-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes leonaPulseRing {
+    0% {
+      transform: scale(0.85);
+      opacity: 0.6;
+    }
+    70% {
+      transform: scale(1.4);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1.4);
+      opacity: 0;
+    }
+  }
+
   .leona-fab-img {
-    width: 62px;
-    height: 62px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     object-fit: cover;
+    pointer-events: none;
+    position: relative;
+    top: 0px;
+    z-index: 1;
+    animation:
+      leonaBounce 2.5s ease-in-out infinite,
+      leonaWave 4s ease-in-out 1s infinite;
+    transform-origin: center bottom;
+  }
+
+  @keyframes leonaBounce {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    15% {
+      transform: translateY(-6px);
+    }
+    30% {
+      transform: translateY(0);
+    }
+    45% {
+      transform: translateY(-3px);
+    }
+    60% {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes leonaWave {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    10% {
+      transform: rotate(8deg);
+    }
+    20% {
+      transform: rotate(-6deg);
+    }
+    30% {
+      transform: rotate(4deg);
+    }
+    40% {
+      transform: rotate(0deg);
+    }
   }
 
   .leona-fab .close-icon {
@@ -252,17 +332,19 @@
     position: absolute;
     bottom: 65px;
     right: 0;
-    width: 350px;
+    width: 360px;
     max-width: calc(100vw - 48px);
-    height: 460px;
+    height: 480px;
     max-height: calc(100vh - 120px);
     background: var(--color-card, #fff);
-    border-radius: 24px 24px 8px 24px;
-    box-shadow: 0 12px 50px rgba(0, 0, 0, 0.18);
+    border-radius: 16px;
+    box-shadow:
+      0 20px 60px rgba(0, 0, 0, 0.15),
+      0 0 0 1px rgba(0, 0, 0, 0.05);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   @keyframes popIn {
@@ -280,21 +362,18 @@
   .leona-popup-header {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 14px 16px;
-    background: var(--primary, #2563eb);
+    gap: 10px;
+    padding: 12px 14px;
+    background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%);
     color: #fff;
   }
 
   .leona-avatar {
-    width: 50px;
-    height: 50px;
-    background: rgba(255, 255, 255, 0.15);
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
-    padding: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
   }
 
   .leona-avatar img {
@@ -302,6 +381,7 @@
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
+    image-rendering: -webkit-optimize-contrast;
   }
 
   .leona-header-info {
@@ -310,22 +390,24 @@
 
   .leona-header-info h4 {
     margin: 0;
-    font-size: 16px;
-    font-weight: 700;
+    font-size: 14px;
+    font-weight: 600;
     color: #fff;
+    letter-spacing: 0.2px;
   }
 
   .leona-status {
-    font-size: 12px;
-    opacity: 0.9;
+    font-size: 11px;
+    opacity: 0.85;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
+    margin-top: 2px;
   }
 
   .status-dot {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     background: #4ade80;
     border-radius: 50%;
     animation: pulse 2s infinite;
@@ -339,16 +421,16 @@
     }
     50% {
       opacity: 0.8;
-      box-shadow: 0 0 0 6px rgba(74, 222, 128, 0);
+      box-shadow: 0 0 0 5px rgba(74, 222, 128, 0);
     }
   }
 
   .leona-close-btn {
-    width: 32px;
-    height: 32px;
-    background: rgba(255, 255, 255, 0.15);
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.12);
     border: none;
-    border-radius: 50%;
+    border-radius: 8px;
     color: #fff;
     cursor: pointer;
     display: flex;
@@ -358,24 +440,24 @@
   }
 
   .leona-close-btn:hover {
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.22);
     transform: rotate(90deg);
   }
 
   .leona-close-btn svg {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
   }
 
   /* Messages Body */
   .leona-popup-body {
     flex: 1;
-    padding: 16px;
+    padding: 14px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    background: var(--bg-main, #f9f9f9);
+    gap: 8px;
+    background: var(--bg-main, #f5f7fa);
   }
 
   .leona-popup-body::-webkit-scrollbar {
@@ -390,8 +472,20 @@
   /* Messages */
   .leona-message {
     display: flex;
-    gap: 10px;
-    max-width: 85%;
+    gap: 8px;
+    max-width: 88%;
+    animation: msgIn 0.25s ease;
+  }
+
+  @keyframes msgIn {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .leona-message.leona-bot {
@@ -404,14 +498,15 @@
   }
 
   .leona-message-avatar {
-    width: 38px;
-    height: 38px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     overflow: hidden;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 2px;
   }
 
   .leona-message-avatar img {
@@ -420,56 +515,32 @@
     object-fit: cover;
   }
 
-  /* Small avatar for dynamic messages */
-  .leona-message-avatar-sm {
-    width: 24px;
-    height: 24px;
-    min-width: 24px;
-    border-radius: 50%;
-    overflow: hidden;
-    flex-shrink: 0;
-    background: var(--primary, #2563eb);
-    padding: 3px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .leona-message-avatar-sm img {
-    width: 18px;
-    height: 18px;
-    object-fit: contain;
-  }
-
   .leona-message.leona-user .leona-message-avatar {
-    background: var(--accent, #f4e6b5);
+    background: #1e3a5f;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  .leona-message.leona-user .leona-message-avatar-sm {
-    background: var(--accent, #f4e6b5);
   }
 
   .leona-message-content {
-    background: var(--color-card, #fff);
-    padding: 12px 14px;
-    border-radius: 18px 18px 18px 6px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    background: #fff;
+    padding: 10px 13px;
+    border-radius: 4px 14px 14px 14px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
     color: var(--text-color, #333);
   }
 
   .leona-message.leona-user .leona-message-content {
-    background: var(--primary, #2563eb);
+    background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%);
     color: #fff;
-    border-radius: 18px 18px 6px 18px;
+    border-radius: 14px 4px 14px 14px;
+    box-shadow: 0 2px 6px rgba(30, 58, 95, 0.2);
   }
 
   .leona-message-content p {
-    margin: 0 0 6px 0;
-    font-size: 14px;
-    line-height: 1.5;
+    margin: 0 0 4px 0;
+    font-size: 13px;
+    line-height: 1.55;
   }
 
   .leona-message-content p:last-child {
@@ -477,94 +548,95 @@
   }
 
   .leona-message-content a {
-    color: var(--link-color, #0066cc);
+    color: #3b82f6;
     text-decoration: underline;
   }
 
   .leona-message.leona-user .leona-message-content a {
-    color: var(--accent, #f4e6b5);
+    color: #93c5fd;
   }
 
   /* Quick Actions */
   .leona-quick-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    padding: 8px 0;
+    gap: 6px;
+    padding: 4px 0;
   }
 
   .leona-quick-btn {
-    padding: 8px 16px;
-    background: var(--color-card, #fff);
-    border: 1px solid var(--border-color, #ddd);
-    border-radius: 20px;
-    font-size: 13px;
+    padding: 6px 14px;
+    background: #fff;
+    border: 1px solid #d1d9e6;
+    border-radius: 16px;
+    font-size: 12px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    color: var(--text-color, #333);
+    transition: all 0.2s ease;
+    color: #1e3a5f;
     font-weight: 500;
   }
 
   .leona-quick-btn:hover {
-    background: var(--primary, #2563eb);
+    background: #1e3a5f;
     color: #fff;
-    border-color: var(--primary, #2563eb);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: #1e3a5f;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(30, 58, 95, 0.2);
   }
 
   /* Footer */
   .leona-popup-footer {
-    padding: 12px 14px;
-    background: var(--color-card, #fff);
-    border-top: 1px solid var(--border-color, #eee);
+    padding: 10px 12px;
+    background: #fff;
+    border-top: 1px solid #e8ecf1;
   }
 
   .leona-input-form {
     display: flex;
-    gap: 10px;
+    gap: 8px;
   }
 
   .leona-input {
     flex: 1;
-    padding: 12px 16px;
-    border: 1px solid var(--border-color, #ddd);
-    border-radius: 24px;
-    font-size: 14px;
+    padding: 10px 14px;
+    border: 1px solid #d1d9e6;
+    border-radius: 20px;
+    font-size: 13px;
     outline: none;
-    transition: all 0.25s ease;
-    background: var(--bg-main, #f9f9f9);
+    transition: all 0.2s ease;
+    background: #f5f7fa;
     color: var(--text-color, #333);
   }
 
   .leona-input:focus {
-    border-color: var(--primary, #2563eb);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-    background: var(--color-card, #fff);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+    background: #fff;
   }
 
   .leona-input::placeholder {
-    color: var(--secondary, #94a3b8);
+    color: #94a3b8;
+    font-size: 13px;
   }
 
   .leona-send-btn {
-    width: 44px;
-    height: 44px;
-    background: var(--primary, #2563eb);
+    width: 38px;
+    height: 38px;
+    background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%);
     border: none;
-    border-radius: 50%;
+    border-radius: 12px;
     color: #fff;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     flex-shrink: 0;
   }
 
   .leona-send-btn:hover {
-    transform: scale(1.08);
-    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+    transform: scale(1.06);
+    box-shadow: 0 4px 12px rgba(30, 58, 95, 0.3);
   }
 
   .leona-send-btn:active {
@@ -572,8 +644,8 @@
   }
 
   .leona-send-btn svg {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
   }
 
   /* Typing */
@@ -630,8 +702,8 @@
     }
 
     .leona-fab-img {
-      width: 54px;
-      height: 54px;
+      width: 44px;
+      height: 44px;
     }
 
     .leona-popup {
@@ -659,10 +731,80 @@
     const messagesContainer = document.getElementById("leona-messages");
     const quickBtns = document.querySelectorAll(".leona-quick-btn");
 
+    // ---- Session & History Persistence ----
+    const STORAGE_SESSION_KEY = "leona_session_id";
+    const STORAGE_HISTORY_KEY = "leona_chat_history";
+    const MAX_HISTORY = 50; // max messages to keep
+
+    interface ChatMessage {
+      text: string;
+      isUser: boolean;
+    }
+
+    // Get or create persistent session ID
+    function getSessionId(): number {
+      const stored = sessionStorage.getItem(STORAGE_SESSION_KEY);
+      if (stored) return parseInt(stored, 10);
+      const newId = Math.floor(Math.random() * 1_000_000);
+      sessionStorage.setItem(STORAGE_SESSION_KEY, String(newId));
+      return newId;
+    }
+
+    let sessionId = getSessionId();
+
+    // Load chat history from sessionStorage
+    function loadHistory(): ChatMessage[] {
+      try {
+        const raw = sessionStorage.getItem(STORAGE_HISTORY_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch {
+        return [];
+      }
+    }
+
+    // Save chat history to sessionStorage
+    function saveHistory(history: ChatMessage[]) {
+      const trimmed = history.slice(-MAX_HISTORY);
+      sessionStorage.setItem(STORAGE_HISTORY_KEY, JSON.stringify(trimmed));
+    }
+
+    // ---- End Persistence ----
+
+    // Reset chat to welcome state (clear dynamic messages, show welcome + quick actions)
+    function resetChatToWelcome() {
+      // Remove all dynamically added messages (keep only the original welcome + quick actions)
+      const allMessages = messagesContainer?.querySelectorAll(".leona-message");
+      const quickActions = messagesContainer?.querySelector(
+        ".leona-quick-actions",
+      );
+
+      allMessages?.forEach((msg, index) => {
+        if (index === 0) {
+          // First bot message is the static welcome message — show it
+          (msg as HTMLElement).style.display = "";
+        } else {
+          // Remove dynamically added messages
+          msg.remove();
+        }
+      });
+
+      // Show quick action buttons again
+      if (quickActions) (quickActions as HTMLElement).style.display = "";
+
+      // Clear typing indicator if any
+      document.getElementById("leona-typing")?.remove();
+
+      // Clear UI history but keep session ID so backend conversation stays connected
+      sessionStorage.removeItem(STORAGE_HISTORY_KEY);
+    }
+
     function togglePopup() {
       const isHidden = popup?.classList.contains("hidden");
 
       if (isHidden) {
+        // Reset to welcome state every time chat is opened
+        resetChatToWelcome();
+
         popup?.classList.remove("hidden");
         chatIcon?.classList.add("hidden");
         closeIcon?.classList.remove("hidden");
@@ -679,16 +821,23 @@
     toggleBtn?.addEventListener("click", togglePopup);
     closeBtn?.addEventListener("click", togglePopup);
 
-    function addMessage(text: string, isUser: boolean = false) {
+    function addMessage(
+      text: string,
+      isUser: boolean = false,
+      persist: boolean = true,
+    ) {
       const messageDiv = document.createElement("div");
       messageDiv.className = `leona-message ${isUser ? "leona-user" : "leona-bot"}`;
 
-      const avatarContent = isUser
-        ? `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`
-        : `<img src="/assets/img/leona.png" alt="Leona" />`;
+      let avatarHtml: string;
+      if (isUser) {
+        avatarHtml = `<div class="leona-message-avatar"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>`;
+      } else {
+        avatarHtml = `<div class="leona-message-avatar"><img src="/assets/img/leona.png" alt="Leona" /></div>`;
+      }
 
       messageDiv.innerHTML = `
-        <div class="leona-message-avatar">${avatarContent}</div>
+        ${avatarHtml}
         <div class="leona-message-content"><p>${text}</p></div>
       `;
 
@@ -697,6 +846,13 @@
         top: messagesContainer.scrollHeight,
         behavior: "smooth",
       });
+
+      // Save to history
+      if (persist) {
+        const history = loadHistory();
+        history.push({ text, isUser });
+        saveHistory(history);
+      }
     }
 
     function showTyping() {
@@ -704,7 +860,6 @@
       typingDiv.className = "leona-message leona-bot";
       typingDiv.id = "leona-typing";
       typingDiv.innerHTML = `
-        <div class="leona-message-avatar"><img src="/assets/img/leona.png" alt="Leona" /></div>
         <div class="leona-message-content">
           <div class="leona-typing">
             <span></span>
@@ -724,58 +879,62 @@
       document.getElementById("leona-typing")?.remove();
     }
 
-    function getBotResponse(userMessage: string): string {
-      const msg = userMessage.toLowerCase();
+    async function sendToLeona(userMessage: string): Promise<string> {
+      try {
+        const res = await fetch("/api/leona", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            session_id: sessionId,
+            message: userMessage,
+          }),
+        });
 
-      if (msg.includes("produk")) {
-        return 'Kami menyediakan berbagai solusi IT termasuk EDC, payment solutions, AI Vision Camera Intelligence, dan lainnya. Kunjungi halaman <a href="/products">Produk</a> untuk info lengkap!';
-      } else if (msg.includes("kontak") || msg.includes("hubungi")) {
-        return 'Hubungi kami di <strong>contact@qualita-indonesia.com</strong> atau kunjungi <a href="/contact">halaman kontak</a>.';
-      } else if (msg.includes("layanan") || msg.includes("service")) {
-        return 'Kami menyediakan konsultasi IT, implementasi payment solutions, maintenance EDC, dan lainnya. Lihat <a href="/services">halaman layanan</a>!';
-      } else if (
-        msg.includes("karir") ||
-        msg.includes("lowongan") ||
-        msg.includes("kerja")
-      ) {
-        return 'Lihat lowongan terbaru di <a href="/careers">halaman karir</a> kami!';
-      } else if (msg.includes("alamat") || msg.includes("lokasi")) {
-        return "Kantor kami di Ruby Commercial, Summarecon, Jl. Bulevar Selatan Blok TD No.19, Marga Mulya, Bekasi Utara.";
-      } else if (
-        msg.includes("halo") ||
-        msg.includes("hai") ||
-        msg.includes("hi")
-      ) {
-        return "Halo! Ada yang bisa saya bantu? 😊";
-      } else {
-        return 'Terima kasih! Untuk info lebih lanjut, silakan hubungi <a href="/contact">tim kami</a> atau email ke <strong>contact@qualita-indonesia.com</strong>.';
+        const data = await res.json();
+        return (
+          data.output ||
+          "Maaf, saya tidak bisa memproses permintaan Anda saat ini."
+        );
+      } catch {
+        return "Chatbot sedang tidak tersedia. Silakan coba lagi nanti.";
       }
+    }
+
+    async function handleSend(message: string) {
+      if (!message.trim()) return;
+
+      // Hide welcome & quick actions on first real message
+      const welcomeMsg = messagesContainer?.querySelector(
+        ".leona-message.leona-bot",
+      );
+      const quickActions = messagesContainer?.querySelector(
+        ".leona-quick-actions",
+      );
+      if (welcomeMsg) (welcomeMsg as HTMLElement).style.display = "none";
+      if (quickActions) (quickActions as HTMLElement).style.display = "none";
+
+      addMessage(message, true);
+      if (input) input.value = "";
+      showTyping();
+
+      const response = await sendToLeona(message);
+
+      removeTyping();
+      addMessage(response, false);
     }
 
     form?.addEventListener("submit", (e) => {
       e.preventDefault();
       const message = input?.value.trim();
       if (!message) return;
-
-      addMessage(message, true);
-      input.value = "";
-      showTyping();
-
-      setTimeout(
-        () => {
-          removeTyping();
-          addMessage(getBotResponse(message), false);
-        },
-        800 + Math.random() * 800,
-      );
+      handleSend(message);
     });
 
     quickBtns.forEach((btn) => {
       btn.addEventListener("click", () => {
         const message = btn.getAttribute("data-message");
-        if (message && input) {
-          input.value = message;
-          form?.dispatchEvent(new Event("submit"));
+        if (message) {
+          handleSend(message);
         }
       });
     });
