@@ -880,22 +880,37 @@
     }
 
     async function sendToLeona(userMessage: string): Promise<string> {
+      const LEONA_URL = "https://n8n.thinkshub.cloud/webhook/leona";
+      const LEONA_KEY = "Yx14Dfqit7GuYxi7";
+
       try {
-        const res = await fetch("/api/leona", {
+        const res = await fetch(LEONA_URL, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": LEONA_KEY,
+          },
           body: JSON.stringify({
             session_id: sessionId,
-            message: userMessage,
+            message: userMessage.trim(),
           }),
         });
+
+        if (!res.ok) {
+          console.error(`[Leona] HTTP ${res.status}`);
+          return "Chatbot sedang tidak tersedia. Silakan coba lagi nanti.";
+        }
 
         const data = await res.json();
         return (
           data.output ||
+          data.response ||
+          data.message ||
+          data.text ||
           "Maaf, saya tidak bisa memproses permintaan Anda saat ini."
         );
-      } catch {
+      } catch (err) {
+        console.error("[Leona] Request failed:", err);
         return "Chatbot sedang tidak tersedia. Silakan coba lagi nanti.";
       }
     }
