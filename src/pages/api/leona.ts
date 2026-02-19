@@ -62,10 +62,23 @@ export const POST: APIRoute = async ({ request }) => {
       return jsonResponse({ output: "Chatbot sedang tidak tersedia" }, 500);
     }
 
-    const data: LeonaAPIResponse = await response.json();
+    const data = await response.json();
+    console.log("[Leona API] Response:", JSON.stringify(data));
+
+    // Try multiple possible response fields
+    const output =
+      data.output || data.response || data.message || data.text || data.answer;
+
+    if (!output) {
+      console.error("[Leona API] No output field found in response:", data);
+      return jsonResponse(
+        { output: "Chatbot sedang tidak tersedia (format response tidak dikenali)" },
+        500,
+      );
+    }
 
     // 5. Return chatbot response
-    return jsonResponse({ output: data.output }, 200);
+    return jsonResponse({ output }, 200);
   } catch (error) {
     console.error("[Leona API] Request failed:", error);
     return jsonResponse({ output: "Chatbot sedang tidak tersedia" }, 500);
