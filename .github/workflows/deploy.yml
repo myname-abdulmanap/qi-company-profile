@@ -26,15 +26,15 @@ jobs:
 
     - name: Upload dist to server with rsync (delete old)
       run: |
-        # Buat file key sementara
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
         chmod 600 private_key.pem
-        # Kirim dist pakai rsync
+
         rsync -avz --delete \
+          --chmod=D775,F664 \
           -e "ssh -i private_key.pem -o StrictHostKeyChecking=no -p 22" \
           dist/ kangdev@qualita-indonesia.com:/home/kangdev/astro-sites/qualita-indonesia/dist
 
-    - name: Restart only qualita container
+    - name: Fix permission & reload nginx
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: qualita-indonesia.com
@@ -42,6 +42,12 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         script: |
-          cd /home/kangdev/astro-sites
-          sudo docker exec astro-qualita nginx -s reload
+          # set group supaya nginx bisa baca
+          sudo chgrp -R www-data /home/kangdev/astro-sites/qualita-indonesia/dist
+          sudo chmod -R 775 /home/kangdev/astro-sites/qualita-indonesia/dist
 
+          # optional tapi bagus: biar file baru ikut group www-data
+          sudo find /home/kangdev/astro-sites/qualita-indonesia/dist -type d -exec chmod g+s {} \;
+
+          # reload nginx di container
+          sudo docker exec astro-qualita nginx -s reload
