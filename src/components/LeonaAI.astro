@@ -7,7 +7,7 @@
 ---
 
 <!-- Floating Chat Button -->
-<div id="leona-ai-widget">
+<div id="leona-ai-widget" transition:persist="leona-widget">
   <!-- Floating help text -->
   <div class="leona-help-bubble">
     <span>Butuh bantuan?</span>
@@ -717,8 +717,11 @@
 </style>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("astro:page-load", () => {
     const toggleBtn = document.getElementById("leona-toggle-btn");
+    if (!toggleBtn || toggleBtn.dataset.leonaInit === "true") return;
+    toggleBtn.dataset.leonaInit = "true";
+
     const closeBtn = document.getElementById("leona-close-btn");
     const popup = document.getElementById("leona-popup");
     const chatIcon = toggleBtn?.querySelector(".chat-icon");
