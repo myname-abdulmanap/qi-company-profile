@@ -4,10 +4,11 @@ category: "Info"
 slug: "cara-protectqube-membantu-mendeteksi-vandalisme-atm-secara-real-time-64721"
 description: "Vandalisme ATM bisa terjadi kapan saja. protectQube mendeteksi ancaman secara real-time melalui sensor IoT dan AI analytics  mengirim alert dalam hitungan detik agar tim keamanan bisa bertindak sebelum kerusakan meluas."
 heroImage: "https://res.cloudinary.com/dwkkbhn4z/image/upload/v1773618944/uploads/zzwl1yjdvpuq9mnhnh2e.jpg"
-status: "draft"
+status: "published"
 type: "Non Freelancer"
 pubDate: "2026-03-15T23:58:00.958Z"
 ---
+
 
 
 # ProtectQube: Solusi Monitoring ATM Berbasis IoT & AI untuk Mencegah Vandalisme
